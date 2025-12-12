@@ -3,7 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "pytorchexample"
+name = "Federated_Learning"
 version = "1.0.0"
 description = "Federated Learning with PyTorch and Flower (Quickstart Example)"
 license = "Apache-2.0"
@@ -21,8 +21,8 @@ packages = ["."]
 publisher = "flwrlabs"
 
 [tool.flwr.app.components]
-serverapp = "pytorchexample.server_app:app"
-clientapp = "pytorchexample.client_app:app"
+serverapp = "Federated_Learning.server_app:app"
+clientapp = "Federated_Learning.client_app:app"
 
 [tool.flwr.app.config]
 num-server-rounds = 10         # BASIC: Single round first
