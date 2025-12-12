@@ -1188,7 +1188,7 @@ def train(net, trainloader, valloader, multiclass_loader, multiclass_val_loader,
             
             if (epoch + 1) % 5 == 0:
                 print(f"Client {cid} - Joint Epoch {epoch+1}: Train Loss: {train_loss:.4f}, Binary Acc: {train_acc:.4f}")
-                print(f"Val Avg Acc: {val_avg_acc:.4f}, Val Avg Prec: {val_avg_prec:.4f}, Val Macro F1: {val_macro_f1:.4f}, Val Avg FPR: {val_avg_fpr:.4f}")
+                print(f"Val Avg Acc: {val_avg_acc:.4f}, Val Macro F1: {val_macro_f1:.4f}, Val Avg FPR: {val_avg_fpr:.4f}")
                 print(f"No improvement count: {joint_no_improve_count}/{joint_patience}")
                 
         except Exception as e:
@@ -1220,6 +1220,7 @@ def train(net, trainloader, valloader, multiclass_loader, multiclass_val_loader,
         "early_stop_joint": joint_no_improve_count >= joint_patience if 'joint_no_improve_count' in locals() else False
     }
 
+    
     client_accept = file_handle(cid,  final_metrics, temp)
     print(f"Client {cid}: All 3 phases of training completed successfully!")
     return final_metrics, client_accept

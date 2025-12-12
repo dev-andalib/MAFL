@@ -180,41 +180,48 @@ def read_file(client_id, output_folder):
             return None
 
 # 3. Save or update the accuracy in the JSON file for the client
-def save_sa(client_id, E, temp, output_folder, update=False):
+def save_sa(client_id, output_dict, temp, output_folder, weights, update=False):
     
     # update 
     output_file = os.path.join(output_folder, f"{client_id}.json")
     if os.path.exists(output_file):
         existing_data = read_file(client_id, output_folder)
+
         if update:
-            existing_data["E"] = E
+            existing_data["val_accuracy"] = output_dict.get('val_accuracy')
+            existing_data["val_f1"] = output_dict.get('val_f1')
+            existing_data["val_fpr"] = output_dict.get('val_fpr')
             existing_data['temp'] = temp
+
+            ### for energy ##
+            curr_metrics = [output_dict.get('val_accuracy'), output_dict.get('val_f1'), 1-output_dict.get('val_fpr') ]
+            curr_E = weights.compute_energy(curr_metrics)
+            existing_data['prev_E'] = curr_E
+            existing_data['theta'] = weights.theta.tolist()
             
             with open(output_file, 'w') as f:
                 json.dump(existing_data, f, indent=4)
 
     #new save           
     else:
-        client_data = {"E": E, 
-                       "temp":temp,
+        ### for energy ##
+        curr_metrics = [output_dict.get('val_accuracy'), output_dict.get('val_f1'), 1-output_dict.get('val_fpr') ]
+        curr_E = weights.compute_energy(curr_metrics)
+        client_data = {
+            "val_accuracy": output_dict.get('val_accuracy'),
+            "val_f1": output_dict.get('val_f1'),
+            "val_fpr": output_dict.get('val_fpr'),
+            "temp":temp,
+            "prev_E": curr_E,
+            "theta" : weights.theta.tolist(),
                        }
         with open(output_file, 'w') as f:
             json.dump(client_data, f, indent=4)
 
-# energy calculation for clients
-def energy_calc(output_dict):
-    acc = output_dict['val_accuracy']
-    prec = output_dict['val_precision']
-    rec = output_dict['val_recall']
-    fpr = output_dict['val_fpr']
 
-    wa = 0.25 # weight for accuracy
-    wp = 0.25 # weight for precision
-    wr = 0.25 # weight for recall
-    wfpr = 0.25 # weight for false positive rate
 
-    E = (wa * acc) + (wp * prec) + (wr * rec) + (wfpr * (1-fpr)) # weights add up to 1
-    return E
+
+
 
 # SA send model updates or not
 def file_handle(client, output_dict, temp):
@@ -222,26 +229,25 @@ def file_handle(client, output_dict, temp):
     if type(client) == int or type(client) == str:
         
         if isFirst(client, output_folder): # file not created yet
-             if len(output_dict) == 0:
-               E = 0
-               save_sa(client, E, temp, output_folder) # so make a copy
-               return True  # Accept first client regardless
-             else:
-              E = energy_calc(output_dict)
-              save_sa(client, E, temp, output_folder)
-              return True  # Accept first client regardless  
-        
+                weights = SoftmaxWeightUpdater()
+                save_sa(client, output_dict, temp, output_folder, weights) 
+                return True  # Accept first client regardless
+            
         else:
             existing_data = read_file(client, output_folder) # read acc
             if existing_data != None:
-                prev_E = existing_data.get('E')
-                curr_E = energy_calc(output_dict) # get current E
-
+                prev_E = existing_data.get('prev_E')
+                curr_metrics = [output_dict.get('val_accuracy'), output_dict.get('val_f1'), 1-output_dict.get('val_fpr') ] # get current E
+                
+                weights = SoftmaxWeightUpdater(init_theta=existing_data.get('theta'))
+                curr_E = weights.compute_energy(curr_metrics)
+                weights.step(curr_metrics, prev_E)
+                
                 if curr_E:
                     update = fl_sa(prev_E, curr_E, temp, output_folder, client) # SA below this function
                     if not update:
                         count_update(output_folder, client, 1)
-                    save_sa(client, curr_E, temp, output_folder, update=update)
+                    save_sa(client, output_dict, temp, output_folder, update=update)
                     return update     # based on sa will update or not
                 else:
                     return False  # If curr_E is None/falsy, reject
@@ -312,30 +318,28 @@ def fl_sa(prev_E, curr_E, temp, output_folder, client_id):
 
 # weight_updater.py
 class SoftmaxWeightUpdater:
-    def __init__(self, init_theta=None, lr=0.5):
+    def __init__(self, init_theta=None, lr=0.05): # initialize theta for weights [accuracy, f1, fpr]
         self.theta = np.array(init_theta) if init_theta is not None else np.zeros(3, dtype=float)
         self.lr = float(lr)
 
-    def softmax(self):
+    def softmax(self): # for summing the weights to 1 through normalization
         t = self.theta
         tmax = np.max(t)
         ex = np.exp(t - tmax)
         return ex / np.sum(ex)
 
-    def compute_energy(self, metrics):
+    def compute_energy(self, metrics): # compute energy based on weights and metrics
         w = self.softmax()
-        return float(np.dot(w, metrics)), w
+        return float(np.dot(w, metrics))
 
-    def step(self, metrics):
+    def step(self, metrics, prev_E,): # update theta based on metrics and previous energy (as average energy)
         metrics = np.asarray(metrics, dtype=float)
         weights_before = self.softmax()
-        E_before = float(np.dot(weights_before, metrics))
-        grad = weights_before * (metrics - E_before)
+        grad = weights_before * (metrics - prev_E)
         self.theta = self.theta + self.lr * grad
-
-        weights_after = self.softmax()
-        E_after = float(np.dot(weights_after, metrics))
-        return E_before, E_after, weights_before, weights_after
+        
+        
+        
 
 
 
