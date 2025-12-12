@@ -305,6 +305,39 @@ def fl_sa(prev_E, curr_E, temp, output_folder, client_id):
         
 
 
+### Things to check
+# ensure the weights give energy is limited to 0 to 1
+# ensure weights add up to 1 or less
+
+
+# weight_updater.py
+class SoftmaxWeightUpdater:
+    def __init__(self, init_theta=None, lr=0.5):
+        self.theta = np.array(init_theta) if init_theta is not None else np.zeros(3, dtype=float)
+        self.lr = float(lr)
+
+    def softmax(self):
+        t = self.theta
+        tmax = np.max(t)
+        ex = np.exp(t - tmax)
+        return ex / np.sum(ex)
+
+    def compute_energy(self, metrics):
+        w = self.softmax()
+        return float(np.dot(w, metrics)), w
+
+    def step(self, metrics):
+        metrics = np.asarray(metrics, dtype=float)
+        weights_before = self.softmax()
+        E_before = float(np.dot(weights_before, metrics))
+        grad = weights_before * (metrics - E_before)
+        self.theta = self.theta + self.lr * grad
+
+        weights_after = self.softmax()
+        E_after = float(np.dot(weights_after, metrics))
+        return E_before, E_after, weights_before, weights_after
+
+
 
 # def print_result(path):
 #     for i in range(10):
