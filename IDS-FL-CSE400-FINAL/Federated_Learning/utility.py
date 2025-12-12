@@ -336,7 +336,7 @@ class SoftmaxWeightUpdater:
         metrics = np.asarray(metrics, dtype=float)
         weights_before = self.softmax()
         grad = weights_before * (metrics - prev_E)
-        self.theta = self.theta + self.lr * grad
+        self.theta = self.theta - self.lr * grad
         
         
         
