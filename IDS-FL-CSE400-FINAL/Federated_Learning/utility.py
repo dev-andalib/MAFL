@@ -247,7 +247,7 @@ def file_handle(client, output_dict, temp):
                     update = fl_sa(prev_E, curr_E, temp, output_folder, client) # SA below this function
                     if not update:
                         count_update(output_folder, client, 1)
-                    save_sa(client, output_dict, temp, output_folder, update=update)
+                    save_sa(client, output_dict, temp, output_folder, weights,  update=update)
                     return update     # based on sa will update or not
                 else:
                     return False  # If curr_E is None/falsy, reject
@@ -311,12 +311,10 @@ def fl_sa(prev_E, curr_E, temp, output_folder, client_id):
         
 
 
-### Things to check
-# ensure the weights give energy is limited to 0 to 1
-# ensure weights add up to 1 or less
 
 
-# weight_updater.py
+
+# weight updater
 class SoftmaxWeightUpdater:
     def __init__(self, init_theta=None, lr=0.05): # initialize theta for weights [accuracy, f1, fpr]
         self.theta = np.array(init_theta) if init_theta is not None else np.zeros(3, dtype=float)

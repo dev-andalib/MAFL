@@ -3,9 +3,9 @@
 import torch
 from flwr.client import ClientApp, NumPyClient
 from flwr.common import Context
-from pytorchexample.task import get_weights, load_data, set_weights, test, train, Net
-from pytorchexample.getdist import get_class_distribution
-from pytorchexample.communication_utils import (
+from Federated_Learning.task import get_weights, load_data, set_weights, test, train, Net
+from Federated_Learning.getdist import get_class_distribution
+from Federated_Learning.communication_utils import (
     calculate_and_log_communication, 
     get_zero_parameters_for_rejected_client,
     comm_tracker

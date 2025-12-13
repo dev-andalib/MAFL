@@ -4,7 +4,7 @@ from typing import List, Tuple, Dict, Optional, Union
 from flwr.common import Context, Metrics, ndarrays_to_parameters, Parameters, FitRes, Scalar, EvaluateRes, parameters_to_ndarrays
 from flwr.server import ServerApp, ServerAppComponents, ServerConfig
 from flwr.server.strategy import FedAvg, FedProx, FedAdam
-from pytorchexample.task import get_weights, Net, test, set_weights, load_preprocessing_info, apply_preprocessing_to_test_data
+from Federated_Learning.task import get_weights, Net, test, set_weights, load_preprocessing_info, apply_preprocessing_to_test_data
 import numpy as np
 import torch
 import os
@@ -14,14 +14,14 @@ from torch.utils.data import DataLoader, TensorDataset
 from datasets import load_dataset
 import pandas as pd
 from functools import reduce
-from pytorchexample.utility import print_msg
-from pytorchexample.helper import evaluate_hierarchical, create_sequences
+from Federated_Learning.utility import print_msg
+from Federated_Learning.helper import evaluate_hierarchical, create_sequences
 from sklearn.preprocessing import LabelEncoder
-from pytorchexample.communication_utils import generate_communication_report, comm_tracker
+from Federated_Learning.communication_utils import generate_communication_report, comm_tracker
 
 class SA(FedAvg): 
     """Custom FedAvg strategy that handles models with different multiclass head sizes and tracks communication."""
-    def __init__(self, start_temp = 0.00002, cooling=0.99, **kwargs):
+    def __init__(self, start_temp = 0.02, cooling=0.99, **kwargs):
         super().__init__(**kwargs)
         self.start_temp = start_temp
         self.cooling = cooling
