@@ -12,7 +12,7 @@ import shutil
 ##################################################
 #           BASIC UTILITY FUNCTION               #
 ##################################################
-def save_metrics_graphs(metrics_dict, client_id, file_name, output_folder=r"D:\MAFL\ANDALIB_SA\client_metrics"):
+def save_metrics_graphs(metrics_dict, client_id, file_name, output_folder=r"D:\T24\MAFL\ANDALIB_SA\client_metrics"):
     
     # 1. Define the directory path (e.g., .../client_metrics/train_metrics)
     # 'file_name' acts as the subdirectory name here
@@ -228,7 +228,7 @@ def energy_calc(output_dict):
 
 # SA send model updates or not
 def file_handle(client, output_dict, temp):
-    output_folder = "D:\\MAFL\\ANDALIB_SA\\client_sa_metrics"
+    output_folder = "D:\T24\MAFL\ANDALIB_SA\client_sa_metrics"
     if type(client) == int or type(client) == str:
         
         if isFirst(client, output_folder): # file not created yet
