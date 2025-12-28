@@ -6,41 +6,63 @@ import math
 import random
 import torch
 
-def save_metrics_to_json(metrics_dict, message, client_id, output_folder="D:\MAFL\ANDALIB_SA\client_metrics"):
-    # Ensure the output directory exists
-    if not os.path.exists(output_folder):
-        os.makedirs(output_folder)
+
+
+
+##################################################
+#           BASIC UTILITY FUNCTION               #
+##################################################
+
+
+
+
+def save_metrics_graphs(metrics_dict, client_id, file_name, output_folder=r"D:\\MAFL\ANDALIB_SA\\client_metrics"):
+   
     
-    # Prepare the output dictionary with client id, message, and metrics
-    partition_data = {
-        "message": message,
+    
+    output_file = os.path.join(output_folder, file_name, f"client_{client_id}_metrics.json")
+    os.makedirs(output_file, exist_ok=True)
+
+    # 3. Initialize list to hold data
+    existing_data = []
+
+    # 4. Read existing data if the file exists
+    if os.path.exists(output_file):
+        try:
+            # Check if file is not empty before trying to load
+            if os.stat(output_file).st_size > 0:
+                with open(output_file, 'r') as f:
+                    loaded_data = json.load(f)
+                    
+                    # Ensure it is a list
+                    if isinstance(loaded_data, list):
+                        existing_data = loaded_data
+                    elif isinstance(loaded_data, dict):
+                        # Handle case where file might contain a single dict
+                        existing_data = [loaded_data]
+        except (json.JSONDecodeError, OSError) as e:
+            print(f"Warning: Could not read existing file {output_file}. Starting new list. Error: {e}")
+            existing_data = []
+
+    # 5. Prepare the new data entry
+    call_number = len(existing_data) + 1
+    
+    new_entry = {
+        "call_number": call_number,
+        "client_id": client_id,
         "metrics": metrics_dict
     }
-    
-    # Define the output file for this client
-    output_file = os.path.join(output_folder, f"client_{client_id}_metrics.json")
 
-    # Read existing data from the JSON file, if it exists
-    all_data = []
-    if os.path.exists(output_file):
-        with open(output_file, 'r') as f:
-            try:
-                all_data = json.load(f)
-                if not isinstance(all_data, list):
-                    all_data = [all_data]  # Convert single dict to list if needed
-            except json.JSONDecodeError:
-                all_data = []  # Handle empty or invalid JSON file
+    # 6. Append the new entry to the existing data
+    existing_data.append(new_entry)
 
-    # Calculate the call number (number of existing entries + 1)
-    call_number = len(all_data) + 1
-    partition_data["call_number"] = call_number
-
-    # Append the new data
-    all_data.append(partition_data)
-
-    # Write updated data back to the JSON file
+    # 7. Write the updated list back to the JSON file
     with open(output_file, 'w') as f:
-        json.dump(all_data, f, indent=4)
+        json.dump(existing_data, f, indent=4)
+
+
+
+
 
 def print_msg(msg, output_folder="printmsg/", 
               output_file_prefix="msg"):
@@ -128,27 +150,13 @@ def get_class_distribution(partition_id, dataloader, message,
     with open(output_file, 'w') as f:
         json.dump(all_data, f, indent=4)
 
-#average val_f1 from all clients
-def average_val_f1(folder):
-    val_f1_list = []
-    for file_name in os.listdir(folder):
-        if file_name.endswith(".json"):
-            file_path = os.path.join(folder, file_name)
-            with open(file_path, "r") as f:
-                try:
-                    data = json.load(f)
-                    if "val_f1" in data:
-                        val_f1_list.append(data["val_f1"])
-                except json.JSONDecodeError:
-                    print(f"Skipping {file_name} (invalid JSON)")
 
-    if val_f1_list:
-        avg_val_f1 = sum(val_f1_list) / len(val_f1_list)
-        return avg_val_f1, len(val_f1_list)
-    else:
-        return None, 0
 
-output_folder = "client_sa_metrics/"
+
+
+##################################################
+# Simulated Annealing for Smart Aggregation (SA) #
+##################################################
 
 # 1. Check if the client folder exists inside "SA Metrics" and create it if not
 def isFirst(client_id, output_folder):
@@ -218,7 +226,7 @@ def energy_calc(output_dict):
 
 # SA send model updates or not
 def file_handle(client, output_dict, temp):
-    global output_folder 
+    output_folder = "D:\\MAFL\\ANDALIB_SA\\client_sa_metrics"
     if type(client) == int or type(client) == str:
         
         if isFirst(client, output_folder): # file not created yet

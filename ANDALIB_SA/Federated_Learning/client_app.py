@@ -15,9 +15,7 @@ from Federated_Learning.communication_utils import (
 class FlowerClient(NumPyClient):
     def __init__(self, trainloader, valloader, testloader, pos_weight, local_epochs, learning_rate, cid: int):
         # Use GPU if available, otherwise CPU
-        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        print(f"Client {cid} using device: {self.device}")
-        
+        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")        
         self.net = BinaryNIDS().to(self.device)
         self.trainloader = trainloader
         self.valloader = valloader
@@ -46,7 +44,7 @@ class FlowerClient(NumPyClient):
             cid=self.cid,
             temp=temp,
         )
-        results["accept"] = client_accept
+        results['train']["accept"] = client_accept
         
         # COMMUNICATION OPTIMIZATION: Return different parameters based on SA decision
         if client_accept:
@@ -72,7 +70,7 @@ class FlowerClient(NumPyClient):
             }
         )
         
-        return model_weights, len(self.trainloader.dataset), results
+        return model_weights, len(self.trainloader.dataset), results['train']
 
     def evaluate(self, parameters, config):
         set_weights(self.net, parameters)
@@ -90,7 +88,9 @@ def client_fn(context: Context):
     num_partitions = context.node_config["num-partitions"]
     # Read run_config to fetch hyperparameters relevant to this run
     batch_size = context.run_config["batch-size"]
-    trainloader, valloader, testloader,   pos_weight = data_load_preprocess(partition_id, num_partitions, batch_size)
+    trainloader, valloader, testloader,   pos_weight = data_load_preprocess(partition_id, 
+                                                                            num_partitions, 
+                                                                            batch_size)
     # get_class_distribution(partition_id, trainloader, "Training data class distribution")
     # get_class_distribution(partition_id, valloader, "Validation data class distribution")
     # get_class_distribution(partition_id, testloader, "Test data class distribution")    

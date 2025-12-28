@@ -4,14 +4,13 @@ from typing import List, Tuple, Dict, Optional, Union
 from flwr.common import Context, Metrics, ndarrays_to_parameters, Parameters, FitRes, Scalar, EvaluateRes, parameters_to_ndarrays
 from flwr.server import ServerApp, ServerAppComponents, ServerConfig
 from flwr.server.strategy import FedAvg, FedProx, FedAdam
-from Federated_Learning.task import get_weights, Net, test, set_weights, load_preprocessing_info, apply_preprocessing_to_test_data
+from Federated_Learning.task import get_weights, BinaryNIDS, test, set_weights
 import numpy as np
 import torch
 import os
 import json
 from datetime import datetime
 from torch.utils.data import DataLoader, TensorDataset
-from datasets import load_dataset
 import pandas as pd
 from functools import reduce
 from Federated_Learning.utility import print_msg
@@ -163,7 +162,7 @@ def gen_evaluate_fn(
     def evaluate(server_round, parameters_ndarrays, config):
         """Evaluate global model on centralized test set."""
         device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-        net = Net(input_features=20, num_attack_types=9)
+        net = BinaryNIDS(input_features=20, seq_length=10)
         set_weights(net, parameters_ndarrays)
         net.to(device)
         loss, test_size, output_dict = test(net, testloader, device=device, num_classes=9) # dummy temp and prev acc send for now
@@ -182,7 +181,7 @@ class CommunicationAwareSA(SA):
         failures: List[Union[Tuple[flwr.server.client_proxy.ClientProxy, FitRes], BaseException]],) -> Tuple[flwr.common.Parameters, dict]:
         
         # Call parent aggregation
-        result = super().aggregate_fit(server_round, results['train'], failures)
+        result = super().aggregate_fit(server_round, results, failures)
         
         # Generate communication report every 5 rounds or at the end
         if server_round % 5 == 0 or server_round >= 10:  # Adjust based on your total rounds
@@ -221,7 +220,7 @@ def server_fn(context: Context):
     print(f" Starting FL with SA client selection ({num_rounds} rounds, {context.run_config['min_available_clients']} min clients)")
     print(f"Communication cost tracking enabled - results will be saved to JSON files")
 
-    ndarrays = get_weights(Net(input_features=20, seq_length=10))
+    ndarrays = get_weights(BinaryNIDS(input_features=20, seq_length=10))
     parameters = ndarrays_to_parameters(ndarrays)
     
     # Log model size information

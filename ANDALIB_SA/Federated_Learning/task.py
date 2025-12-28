@@ -9,16 +9,16 @@ from sklearn.model_selection import train_test_split
 from imblearn.over_sampling import BorderlineSMOTE
 from collections import Counter
 from collections import OrderedDict
-from Federated_Learning.utility import file_handle
+from Federated_Learning.utility import file_handle, save_metrics_graphs
+from flwr_datasets.partitioner import DirichletPartitioner
+from datasets import Dataset
+
 
 
 # -------------------------------------------------------------------------
 # 1. Get and set model weights
 # -------------------------------------------------------------------------
-from Federated_Learning.communication_utils import (
-    calculate_and_log_communication, 
-    get_zero_parameters_for_rejected_client
-)
+
 
 def get_weights(model):
     return [val.cpu().numpy() for _, val in model.state_dict().items()]
@@ -38,7 +38,7 @@ def set_weights(model, parameters):
 
 
 # -------------------------------------------------------------------------
-# 1. DATA LOAD & PREPROCESS
+# 1. DATA LOAD, PARTITION & PREPROCESS
 # -------------------------------------------------------------------------
 def create_sequences(X_data, y_data, seq_len):
     """Helper to create time-series sequences."""
@@ -46,6 +46,11 @@ def create_sequences(X_data, y_data, seq_len):
     if hasattr(y_data, 'values'): y_data = y_data.values
     
     num_samples = len(X_data) - seq_len + 1
+    
+    # Handle edge case where partition is smaller than sequence length
+    if num_samples <= 0:
+        return torch.FloatTensor([]), torch.FloatTensor([])
+
     X_seq = np.zeros((num_samples, seq_len, X_data.shape[1]))
     y_seq = np.zeros(num_samples)
 
@@ -56,12 +61,18 @@ def create_sequences(X_data, y_data, seq_len):
     return torch.FloatTensor(X_seq), torch.FloatTensor(y_seq)
 
 
-def data_load_preprocess(partition_id, batch_size, num_partitions, seq_length=10):
+def data_load_preprocess(partition_id, num_partitions, batch_size, seq_length=10, alpha=5):
     """
-    Loads data, applies SMOTE (train only), creates sequences, and returns DataLoaders.
+    Loads data, applies Dirichlet Partitioning (Non-IID), SMOTE (train only), 
+    creates sequences, and returns DataLoaders.
+    
+    Args:
+        alpha (float): Parameter for Dirichlet distribution. 
+                       Lower value (e.g., 0.1) = High Heterogeneity (Non-IID).
+                       Higher value (e.g., 100) = Low Heterogeneity (IID).
     """
     # 1. Load Data
-    csv_path = "D:\MAFL\ANDALIB_SA\Recent_UpdatedNB15.csv"
+    csv_path = "D:\\MAFL\\ANDALIB_SA\\Recent_UpdatedNB15.csv" # Fixed path string for Windows
     try:
         df = pd.read_csv(csv_path)
     except FileNotFoundError:
@@ -81,20 +92,46 @@ def data_load_preprocess(partition_id, batch_size, num_partitions, seq_length=10
         'ct_src_dport_ltm', 'ackdat', 'synack'
     ]
     available_features = [f for f in final_features if f in df.columns]
-    X = df[available_features]
-    y = df["label"]
-
-    # 4. Partitioning Logic (Simple slicing based on partition_id)
-    # In a real scenario, you might split the dataset differently.
-    total_len = len(df)
-    chunk_size = total_len // num_partitions
-    start_idx = partition_id * chunk_size
-    end_idx = start_idx + chunk_size if partition_id < num_partitions - 1 else total_len
     
-    X = X.iloc[start_idx:end_idx]
-    y = y.iloc[start_idx:end_idx]
+    # Filter DF to relevant columns + label (needed for partitioning)
+    df = df[available_features + ['label']]
+
+    # ---------------------------------------------------------
+    # 4. Partitioning Logic (Dirichlet Partitioner)
+    # ---------------------------------------------------------
+    
+    # Convert Pandas DataFrame to HuggingFace Dataset
+    # (Required by flwr_datasets partitioners)
+    full_dataset = Dataset.from_pandas(df)
+
+    # Configure Dirichlet Partitioner
+    partitioner = DirichletPartitioner(
+        num_partitions=num_partitions,
+        partition_by="label",    # Split based on class labels
+        alpha=alpha,             # Controls degree of Non-IID
+        min_partition_size=seq_length + 10, # Ensure partition isn't empty
+        seed=42                  # CRITICAL: Ensures same split across all clients/runs
+    )
+    
+    # Assign the dataset to the partitioner
+    partitioner.dataset = full_dataset
+    
+    # Load the specific partition for this client
+    client_dataset = partitioner.load_partition(partition_id)
+    
+    # Convert back to Pandas for processing
+    df_partition = client_dataset.to_pandas()
+    
+    # Separate X and y
+    X = df_partition[available_features]
+    y = df_partition["label"]
+    
+    print(f"Partition {partition_id} size: {len(X)} | Distribution: {Counter(y)}")
+
+    # ---------------------------------------------------------
 
     # 5. Split: Train (64%), Val (16%), Test (20%)
+    # Use stratify=y to maintain the Dirichlet distribution in the splits
     X_temp, X_test, y_temp, y_test = train_test_split(
         X, y, test_size=0.2, stratify=y, random_state=42
     )
@@ -104,10 +141,15 @@ def data_load_preprocess(partition_id, batch_size, num_partitions, seq_length=10
 
     # 6. SMOTE (Train only)
     try:
-        smote = BorderlineSMOTE(sampling_strategy='auto', random_state=42, k_neighbors=5, m_neighbors=10, kind='borderline-1')
-        X_train_resampled, y_train_resampled = smote.fit_resample(X_train, y_train)
-    except ValueError:
-        # Fallback if dataset is too small for SMOTE
+        # Check if we have enough samples for SMOTE (k_neighbors=5 requires >= 6 samples)
+        if len(X_train) > 6 and min(Counter(y_train).values()) > 5:
+            smote = BorderlineSMOTE(sampling_strategy='auto', random_state=42, k_neighbors=5, m_neighbors=10, kind='borderline-1')
+            X_train_resampled, y_train_resampled = smote.fit_resample(X_train, y_train)
+        else:
+            print(f"Warning: Partition {partition_id} too small or disjoint for SMOTE. Using original data.")
+            X_train_resampled, y_train_resampled = X_train, y_train
+    except Exception as e:
+        print(f"SMOTE failed for partition {partition_id}: {e}. Using original data.")
         X_train_resampled, y_train_resampled = X_train, y_train
 
     # 7. Create Sequences
@@ -116,15 +158,23 @@ def data_load_preprocess(partition_id, batch_size, num_partitions, seq_length=10
     X_test_seq, y_test_seq = create_sequences(X_test, y_test, seq_length)
 
     # 8. DataLoaders
-    train_loader = DataLoader(TensorDataset(X_train_seq, y_train_seq), batch_size=batch_size, shuffle=True)
+    # drop_last=False ensures we don't crash if the last batch is small
+    train_loader = DataLoader(TensorDataset(X_train_seq, y_train_seq), batch_size=batch_size, shuffle=True, drop_last=False)
     val_loader = DataLoader(TensorDataset(X_val_seq, y_val_seq), batch_size=batch_size, shuffle=False)
     test_loader = DataLoader(TensorDataset(X_test_seq, y_test_seq), batch_size=batch_size, shuffle=False)
 
     # 9. Pos Weight (for binary loss)
+    # Handle cases where a partition might miss a class entirely (extreme Non-IID)
     binary_counts = Counter(y_train_seq.numpy())
-    w0 = 1.0 / np.sqrt(binary_counts.get(0, 1) / len(y_train_seq))
-    w1 = 1.0 / np.sqrt(binary_counts.get(1, 1) / len(y_train_seq))
-    pos_weight = torch.FloatTensor([w1 / w0])
+    count_0 = binary_counts.get(0, 1) # Default to 1 to avoid ZeroDivision
+    count_1 = binary_counts.get(1, 1)
+    
+    w0 = 1.0 / np.sqrt(count_0 / len(y_train_seq)) if len(y_train_seq) > 0 else 1.0
+    w1 = 1.0 / np.sqrt(count_1 / len(y_train_seq)) if len(y_train_seq) > 0 else 1.0
+    
+    # Avoid division by zero if w0 is somehow 0
+    pos_weight_val = (w1 / w0) if w0 > 0 else 1.0
+    pos_weight = torch.FloatTensor([pos_weight_val])
 
     return train_loader, val_loader, test_loader, pos_weight
 
@@ -230,7 +280,7 @@ def train(model, train_loader, val_loader, device, epochs, learning_rate, pos_we
         for inputs, labels in train_loader:
             inputs, labels = inputs.to(device), labels.to(device)
             optimizer.zero_grad()
-            outputs = model(inputs).squeeze()
+            outputs = model(inputs).view(-1)
             train_loss = criterion(outputs, labels)
             train_loss.backward()
             preds = (outputs > 0.5).float()
@@ -259,7 +309,7 @@ def train(model, train_loader, val_loader, device, epochs, learning_rate, pos_we
         "train_f1": train_f1,
         "train_fpr": train_fpr
     }
-
+    save_metrics_graphs(results['train'], cid, "train_metrics")
 
 
 
@@ -275,7 +325,7 @@ def train(model, train_loader, val_loader, device, epochs, learning_rate, pos_we
     with torch.no_grad():
         for inputs, labels in val_loader:
             inputs, labels = inputs.to(device), labels.to(device)
-            outputs = model(inputs).squeeze()
+            outputs = model(inputs).view(-1)
             val_loss += criterion(outputs, labels).item()
             
             preds = (outputs > 0.5).float()
@@ -307,7 +357,7 @@ def train(model, train_loader, val_loader, device, epochs, learning_rate, pos_we
     # Logic for Client Acceptance (Placeholder: always accept)
     client_accept = file_handle(cid, results['val'], temp)
     
-    print(f"Client {cid} finished training. Val Acc: {val_accuracy:.4f}")
+    save_metrics_graphs(results['val'], cid, "val_metrics")
     return results, client_accept
 
 
@@ -337,7 +387,7 @@ def test(model, test_loader, device, cid):
     with torch.no_grad():
         for inputs, labels in test_loader:
             inputs, labels = inputs.to(device), labels.to(device)
-            outputs = model(inputs).squeeze()
+            outputs = model(inputs).view(-1)
             running_loss += criterion(outputs, labels).item()
             predicted = (outputs > 0.5).float()
             total += labels.size(0)
@@ -358,6 +408,8 @@ def test(model, test_loader, device, cid):
         "test_f1": f1,
         "test_fpr": fpr
     }
-    
+
+
+    save_metrics_graphs(result, cid, "test_metrics")
     # Return format expected by evaluate()
     return avg_loss, total, result
