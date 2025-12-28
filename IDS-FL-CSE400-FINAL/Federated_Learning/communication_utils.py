@@ -13,7 +13,7 @@ from datetime import datetime
 class CommunicationTracker:
     """Track and analyze communication costs in federated learning with simulated annealing."""
     
-    def __init__(self, output_folder="communication_metrics/"):
+    def __init__(self, output_folder="communication_metrics2/"):
         self.output_folder = output_folder
         self.ensure_output_folder()
         self.cleanup_previous_results()

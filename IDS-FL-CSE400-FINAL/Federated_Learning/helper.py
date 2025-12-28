@@ -19,31 +19,15 @@ def create_sequences(X, y_binary, y_attack_cat, seq_length=10):
     
     return X_seq, y_binary_seq, y_attack_cat_seq
 
-def train_epoch_joint(model, loader, binary_criterion, multiclass_criterion, optimizer, device, current_epoch=0):
-    """
-    JOINT TRAINING ANALYSIS:
-    - Combines binary and multiclass losses
-    - Only applies multiclass loss to attack samples
-    - Balances loss contributions with weighting factor
-    
-    FEDERATED LEARNING ADAPTATION:
-    - Epoch-normalized warmup schedule for consistent federated learning
-    - Ensures all clients complete warmup after exactly one local epoch
-    - Maintains consistent task balance (λ = 0.5) during federated aggregation
-    
-    FIXED ISSUES:
-    - Consistent threshold logic (0.0 for logits)
-    - Proper loss weighting between tasks
-    - Better handling of batches with no attacks
-    """
+def train_epoch_joint(model, loader, binary_criterion, multiclass_criterion, optimizer, device):
+
     model.train()
     total_loss = 0
     binary_correct = 0
     total = 0
     multiclass_batches = 0
-    total_batches = len(loader)  # Total number of batches per epoch for this client
     
-    for batch_idx, (batch_x, batch_y_binary, batch_y_attack) in enumerate(loader):
+    for batch_x, batch_y_binary, batch_y_attack in loader:
         batch_x = batch_x.to(device)
         batch_y_binary = batch_y_binary.to(device)
         batch_y_attack = batch_y_attack.to(device)
@@ -62,13 +46,9 @@ def train_epoch_joint(model, loader, binary_criterion, multiclass_criterion, opt
             attack_labels = batch_y_attack[attack_mask]
             attack_predictions = multiclass_output[attack_mask]
             multiclass_loss = multiclass_criterion(attack_predictions, attack_labels)
-            
-            # FEDERATED LEARNING: Epoch-normalized warmup schedule
-            # λ(e, b, Bclient) = 0.2 + 0.3 × min(1, (e + b/Bclient))
-            # where e is current epoch, b is batch index, Bclient is batches per epoch
-            epoch_progress = min(1.0, current_epoch + batch_idx / total_batches)
+            # ENHANCED: Adaptive loss balancing - increase multiclass weight over time
+            epoch_progress = min(1.0, multiclass_batches / 1000)  # Gradually increase weight
             multiclass_weight = 0.2 + 0.3 * epoch_progress  # Start at 0.2, increase to 0.5
-            
             total_loss_batch = binary_loss + multiclass_weight * multiclass_loss
             multiclass_batches += 1
         else:
@@ -78,7 +58,7 @@ def train_epoch_joint(model, loader, binary_criterion, multiclass_criterion, opt
         optimizer.step()
         
         total_loss += total_loss_batch.item()
-        # FIXED: Consistent threshold with other functions
+        
         predicted = (binary_output > 0.0).float()  # Use 0.0 for logits
         binary_correct += (predicted == batch_y_binary).sum().item()
         total += batch_y_binary.size(0)
@@ -86,15 +66,6 @@ def train_epoch_joint(model, loader, binary_criterion, multiclass_criterion, opt
     avg_loss = total_loss / len(loader)
     avg_acc = binary_correct / total
     
-    # Calculate current warmup progress
-    if current_epoch >= 1:
-        warmup_status = "completed (λ=0.5)"
-    else:
-        warmup_progress = min(1.0, current_epoch + (batch_idx / total_batches))  # Assuming we're at the end of epoch
-        warmup_lambda = 0.2 + 0.3 * warmup_progress
-        warmup_status = f"in progress (λ={warmup_lambda:.3f})"
-        
-    print(f"Joint training: {multiclass_batches}/{len(loader)} batches had attacks, warmup {warmup_status}")
     
     return avg_loss, avg_acc
 

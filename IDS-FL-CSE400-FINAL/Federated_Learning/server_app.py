@@ -243,7 +243,7 @@ def server_fn(context: Context):
     
 
     # Define the strategy with communication awareness
-    strategy = FedAvg(
+    strategy = CommunicationAwareSA(
         min_available_clients=context.run_config["min_available_clients"],
         fraction_fit=context.run_config["fraction-fit"],
         fraction_evaluate=context.run_config["fraction-evaluate"],

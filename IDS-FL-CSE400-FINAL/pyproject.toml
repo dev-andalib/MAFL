@@ -38,9 +38,9 @@ server-device = "cuda"
 default = "local-simulation-gpu"
 
 [tool.flwr.federations.local-simulation]
-options.num-supernodes = 5     # INCREASED: 2→3 for more federated diversity
+options.num-supernodes = 100     # INCREASED: 2→3 for more federated diversity
 
 [tool.flwr.federations.local-simulation-gpu]
-options.num-supernodes = 5     # INCREASED: 2→3 clients
+options.num-supernodes = 100     # INCREASED: 2→3 clients
 options.backend.client-resources.num-cpus = 2
 options.backend.client-resources.num-gpus = 0.25
