@@ -182,7 +182,7 @@ class CommunicationAwareSA(SA):
         failures: List[Union[Tuple[flwr.server.client_proxy.ClientProxy, FitRes], BaseException]],) -> Tuple[flwr.common.Parameters, dict]:
         
         # Call parent aggregation
-        result = super().aggregate_fit(server_round, results, failures)
+        result = super().aggregate_fit(server_round, results['train'], failures)
         
         # Generate communication report every 5 rounds or at the end
         if server_round % 5 == 0 or server_round >= 10:  # Adjust based on your total rounds
@@ -216,13 +216,12 @@ def server_fn(context: Context):
     """Construct components that set the ServerApp behaviour."""
     # Read from config
     num_rounds = context.run_config["num-server-rounds"]
-    server_device = context.run_config["server-device"]
-    batch_size = context.run_config["batch-size"]
+    
 
     print(f" Starting FL with SA client selection ({num_rounds} rounds, {context.run_config['min_available_clients']} min clients)")
     print(f"Communication cost tracking enabled - results will be saved to JSON files")
 
-    ndarrays = get_weights(Net(input_features=20, seq_length=10, num_attack_types=9))
+    ndarrays = get_weights(Net(input_features=20, seq_length=10))
     parameters = ndarrays_to_parameters(ndarrays)
     
     # Log model size information
@@ -232,7 +231,7 @@ def server_fn(context: Context):
         "model_architecture": "CNN-BiLSTM with Attention",
         "input_features": 20,
         "sequence_length": 10,
-        "attack_types": 9,
+        "attack_types": 2,
         "model_size_mb": model_size_mb,
         "total_parameters": sum(param.size for param in ndarrays)
     }

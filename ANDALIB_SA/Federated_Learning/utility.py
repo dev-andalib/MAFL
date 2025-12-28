@@ -6,7 +6,7 @@ import math
 import random
 import torch
 
-def save_metrics_to_json(metrics_dict, message, client_id, output_folder="E:/New_IDS - Copy/results/"):
+def save_metrics_to_json(metrics_dict, message, client_id, output_folder="D:\MAFL\ANDALIB_SA\client_metrics"):
     # Ensure the output directory exists
     if not os.path.exists(output_folder):
         os.makedirs(output_folder)
