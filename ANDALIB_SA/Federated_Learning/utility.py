@@ -5,61 +5,63 @@ import numpy as np
 import math
 import random
 import torch
-
+import shutil
 
 
 
 ##################################################
 #           BASIC UTILITY FUNCTION               #
 ##################################################
-
-
-
-
-def save_metrics_graphs(metrics_dict, client_id, file_name, output_folder=r"D:\\MAFL\ANDALIB_SA\\client_metrics"):
-   
+def save_metrics_graphs(metrics_dict, client_id, file_name, output_folder=r"D:\MAFL\ANDALIB_SA\client_metrics"):
     
+    # 1. Define the directory path (e.g., .../client_metrics/train_metrics)
+    # 'file_name' acts as the subdirectory name here
+    target_directory = os.path.join(output_folder, file_name)
     
-    output_file = os.path.join(output_folder, file_name, f"client_{client_id}_metrics.json")
-    os.makedirs(output_file, exist_ok=True)
+    # 2. Create the DIRECTORY
+    os.makedirs(target_directory, exist_ok=True)
 
-    # 3. Initialize list to hold data
+    # 3. Define the full FILE path
+    output_file_path = os.path.join(target_directory, f"client_{client_id}_metrics.json")
+
+    # [SAFETY FIX] Check if a FOLDER exists with the same name as the file (from previous bugs)
+    if os.path.exists(output_file_path) and os.path.isdir(output_file_path):
+        print(f"cleaning up incorrect directory: {output_file_path}")
+        try:
+            shutil.rmtree(output_file_path) # Force delete the folder
+        except OSError as e:
+            print(f"Error removing conflicting directory {output_file_path}: {e}")
+
+    # 4. Initialize list to hold data
     existing_data = []
 
-    # 4. Read existing data if the file exists
-    if os.path.exists(output_file):
+    # 5. Read existing data if the file exists
+    if os.path.exists(output_file_path) and os.path.isfile(output_file_path):
         try:
-            # Check if file is not empty before trying to load
-            if os.stat(output_file).st_size > 0:
-                with open(output_file, 'r') as f:
+            if os.stat(output_file_path).st_size > 0:
+                with open(output_file_path, 'r') as f:
                     loaded_data = json.load(f)
-                    
-                    # Ensure it is a list
                     if isinstance(loaded_data, list):
                         existing_data = loaded_data
                     elif isinstance(loaded_data, dict):
-                        # Handle case where file might contain a single dict
                         existing_data = [loaded_data]
         except (json.JSONDecodeError, OSError) as e:
-            print(f"Warning: Could not read existing file {output_file}. Starting new list. Error: {e}")
+            # If corrupted, start over
             existing_data = []
 
-    # 5. Prepare the new data entry
+    # 6. Prepare the new data entry
     call_number = len(existing_data) + 1
-    
     new_entry = {
         "call_number": call_number,
         "client_id": client_id,
         "metrics": metrics_dict
     }
 
-    # 6. Append the new entry to the existing data
+    # 7. Append and Write
     existing_data.append(new_entry)
 
-    # 7. Write the updated list back to the JSON file
-    with open(output_file, 'w') as f:
+    with open(output_file_path, 'w') as f:
         json.dump(existing_data, f, indent=4)
-
 
 
 
