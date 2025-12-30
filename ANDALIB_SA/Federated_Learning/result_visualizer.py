@@ -29,7 +29,7 @@ def plot_and_save_averaged_metrics(folder, metrics_folder, result_path):
     # 3. Find JSON Files
     json_pattern = os.path.join(source_dir, "*.json")
     json_files = glob.glob(json_pattern)
-    print(json_files)
+    
     
     if not json_files:
         print(f"❌ WARNING: No JSON files found matching: {json_pattern}")

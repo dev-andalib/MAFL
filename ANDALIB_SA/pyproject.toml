@@ -25,10 +25,10 @@ serverapp = "Federated_Learning.server_app:app"
 clientapp = "Federated_Learning.client_app:app"
 
 [tool.flwr.app.config]
-num-server-rounds = 1         # BASIC: Single round first
+num-server-rounds = 3         # BASIC: Single round first
 fraction-evaluate = 1.0
 fraction-fit = 1
-local-epochs = 10               # BASIC: Very simple epoch count
+local-epochs = 10              # BASIC: Very simple epoch count
 learning-rate = 0.001          # BASIC: Standard learning rate
 batch-size = 32                # BASIC: Small batch size
 min_available_clients = 3

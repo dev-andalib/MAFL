@@ -190,26 +190,43 @@ def read_file(client_id, output_folder):
             return None
 
 # 3. Save or update the accuracy in the JSON file for the client
-def save_sa(client_id, E, temp, output_folder, update=False):
-    
-    # update 
+def save_sa(client_id, E, temp, output_folder):
+    # Define the file path
     output_file = os.path.join(output_folder, f"{client_id}.json")
+    
+    # Check if the file exists
     if os.path.exists(output_file):
+        # Read the existing data
         existing_data = read_file(client_id, output_folder)
-        if update:
-            existing_data["E"] = E
-            existing_data['temp'] = temp
-            
-            with open(output_file, 'w') as f:
-                json.dump(existing_data, f, indent=4)
-
-    #new save           
+        
+        # Append new data (keeping count incremented)
+        call_number = len(existing_data) + 1
+        new_entry = {
+            "call_number": call_number,
+            "client_id": client_id,
+            "E": E,
+            "temp": temp
+        }
+        
+        # Append new entry to existing data
+        existing_data.append(new_entry)
+        
+        # Write the updated data back to the file
+        with open(output_file, 'w') as f:
+            json.dump(existing_data, f, indent=4)
+    
     else:
-        client_data = {"E": E, 
-                       "temp":temp,
-                       }
+        # If the file doesn't exist, create a new one with the first entry
+        client_data = [{
+            "call_number": 1,
+            "client_id": client_id,
+            "E": E,
+            "temp": temp
+        }]
+        
         with open(output_file, 'w') as f:
             json.dump(client_data, f, indent=4)
+
 
 
 
@@ -263,15 +280,26 @@ def file_handle(client, output_dict, temp):
 # to keep track of how many times the client did not send the updates by count
 def count_update(output_folder, client_id, count):
     output_file = os.path.join(output_folder, f"{client_id}.json")
+    
     if os.path.exists(output_file):
+        # Read existing data
         existing_data = read_file(client_id, output_folder)
-        if 'count' in existing_data:
-            existing_data['count'] += count
-        else:
-            existing_data['count'] = count
-
+        
+        # Find the most recent entry (the last one) in the list
+        latest_entry = existing_data[-1] if existing_data else None
+        
+        if latest_entry:
+            # Increment the count for the latest entry
+            if 'count' in latest_entry:
+                latest_entry['count'] += count
+            else:
+                latest_entry['count'] = count
+        
+        # Write the updated data back to the file
         with open(output_file, 'w') as f:
-                json.dump(existing_data, f, indent=4)
+            json.dump(existing_data, f, indent=4)
+
+            
         
 # simulated annealing function
 def fl_sa(prev_E, curr_E, temp, output_folder, client_id):

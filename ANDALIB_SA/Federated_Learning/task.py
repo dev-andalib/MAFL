@@ -371,9 +371,7 @@ def train(model, train_loader, val_loader, device, epochs, learning_rate, pos_we
 # 4. TESTING FUNCTION
 # -------------------------------------------------------------------------
 def test(model, test_loader, device, cid):
-    """
-    Evaluates the model on the test set.
-    """
+
     criterion = nn.BCELoss()
     model.eval()
     model.to(device)
@@ -381,17 +379,28 @@ def test(model, test_loader, device, cid):
     running_loss = 0.0
     correct = 0
     total = 0
-    tp, fp, fn, tn = 0, 0, 0, 0
+    tp, fp, fn, tn = 0, 0, 0, 0  # Initialize these values
     
     with torch.no_grad():
         for inputs, labels in test_loader:
             inputs, labels = inputs.to(device), labels.to(device)
             outputs = model(inputs).view(-1)
             running_loss += criterion(outputs, labels).item()
+
+            # Convert the model's output to binary predictions
             predicted = (outputs > 0.5).float()
+
+            # Calculate metrics
             total += labels.size(0)
             correct += (predicted == labels).sum().item()
-            
+
+            # Update TP, FP, FN, TN
+            tp += ((predicted == 1) & (labels == 1)).sum().item()  # True positives
+            fp += ((predicted == 1) & (labels == 0)).sum().item()  # False positives
+            fn += ((predicted == 0) & (labels == 1)).sum().item()  # False negatives
+            tn += ((predicted == 0) & (labels == 0)).sum().item()  # True negatives
+
+    # Calculate average loss and other metrics
     avg_loss = running_loss / len(test_loader)
     accuracy = correct / total
     precision = tp / (tp + fp) if (tp + fp) > 0 else 0
@@ -408,6 +417,6 @@ def test(model, test_loader, device, cid):
         "test_fpr": fpr
     }
 
-
+    # Save the metrics
     save_metrics_graphs(result, cid, "test_metrics")
     return avg_loss, total, result

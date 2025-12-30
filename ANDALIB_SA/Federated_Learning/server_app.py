@@ -210,7 +210,7 @@ class CommunicationAwareSA(SA):
                 with open(error_file, 'w') as f:
                     json.dump(error_report, f, indent=4)
         
-        if server_round == 1: # Adjust based on your total rounds
+        if server_round == 3: # Adjust based on your total rounds
             print("✅ Training complete. Generating final metrics plots...")
             try:
                 METRICS_BASE = r"D:\T24\MAFL\ANDALIB_SA\client_metrics" 
