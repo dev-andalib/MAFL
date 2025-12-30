@@ -15,10 +15,11 @@ from torch.utils.data import DataLoader, TensorDataset
 import pandas as pd
 from functools import reduce
 from Federated_Learning.utility import print_msg
-from Federated_Learning.result_visualizer import plot_and_save_averaged_metrics
+from Federated_Learning.result_visualizer import plot_and_save_averaged_metrics, plot_and_save_energy_temp
 from Federated_Learning.helper import evaluate_hierarchical, create_sequences
 from sklearn.preprocessing import LabelEncoder
 from Federated_Learning.communication_utils import generate_communication_report, comm_tracker
+import time
 
 class SA(FedAvg): 
     """Custom FedAvg strategy that handles models with different multiclass head sizes and tracks communication."""
@@ -155,23 +156,6 @@ def fit_weighted_avg(metrics: List[Tuple[int, Dict]]) -> Dict:
     }
 
 
-def gen_evaluate_fn(
-    testloader: DataLoader,
-    device: torch.device,
-):
-    """Generate the function for centralized evaluation."""
-
-    def evaluate(server_round, parameters_ndarrays, config):
-        """Evaluate global model on centralized test set."""
-        device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-        net = BinaryNIDS(input_features=20, seq_length=10)
-        set_weights(net, parameters_ndarrays)
-        net.to(device)
-        loss, test_size, output_dict = test(net, testloader, device=device, num_classes=9) # dummy temp and prev acc send for now
-        return loss, output_dict
-
-    return evaluate
-
 
 class CommunicationAwareSA(SA):
     """Extended SA strategy with communication reporting."""
@@ -217,11 +201,13 @@ class CommunicationAwareSA(SA):
                 METRICS_BASE = r"D:\T24\MAFL\ANDALIB_SA\client_metrics" 
                 RESULTS_BASE = r"D:\T24\MAFL\ANDALIB_SA\results"
                 plot_and_save_averaged_metrics('train_metrics',METRICS_BASE, RESULTS_BASE)
-                
                 plot_and_save_averaged_metrics('val_metrics',METRICS_BASE, RESULTS_BASE)
-                
                 plot_and_save_averaged_metrics('test_metrics',METRICS_BASE, RESULTS_BASE)
-                shutil.rmtree(os.path.join(METRICS_BASE ))
+                plot_and_save_energy_temp(r"D:\T24\MAFL\ANDALIB_SA\client_sa_metrics" , r"D:\T24\MAFL\ANDALIB_SA\results")
+                
+                
+
+
             except Exception as e:
                 print(f"Failed to generate plots: {e}")
         

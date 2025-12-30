@@ -38,7 +38,7 @@ def plot_and_save_averaged_metrics(folder, metrics_folder, result_path):
                     record['round'] = entry.get('call_number')
                     all_records.append(record)
         except Exception as e:
-            print(f"⚠️ Error reading {file_path}: {e}")
+            print(f"Error reading {file_path}: {e}")
 
     df = pd.DataFrame(all_records)
 
@@ -109,3 +109,105 @@ def plot_and_save_averaged_metrics(folder, metrics_folder, result_path):
     
 
 
+
+
+# Set matplotlib to non-interactive backend to prevent crashes on servers/headless environments
+plt.switch_backend('Agg')
+
+def plot_and_save_energy_temp(metrics_folder, result_path):
+    print(f"\n--- Processing ---")
+    
+    metrics_folder = os.path.abspath(metrics_folder)
+    result_path = os.path.abspath(result_path)
+    source_dir = os.path.join(metrics_folder)
+    final_output_dir = os.path.join(result_path)
+    os.makedirs(final_output_dir, exist_ok=True)
+    
+    json_pattern = os.path.join(source_dir, "*.json")
+    json_files = glob.glob(json_pattern)
+    
+    if not json_files:
+        print(f"WARNING: No JSON files found matching: {json_pattern}")
+        return
+
+    print(f"Found {len(json_files)} client metric files. Aggregating data...")
+    all_records = []
+
+    for file_path in json_files:
+        try:
+            with open(file_path, 'r') as f:
+                data = json.load(f)
+                if isinstance(data, dict): data = [data]
+                
+                for entry in data:
+                    # Access E and temp directly
+                    record = {
+                        'call_number': entry.get('call_number'),
+                        'client_id': entry.get('client_id'),
+                        'E': entry.get('E'),  # Direct access to 'E'
+                        'temp': entry.get('temp')  # Direct access to 'temp'
+                    }
+                    all_records.append(record)
+        except Exception as e:
+            print(f"Error reading {file_path}: {e}")
+    
+    df = pd.DataFrame(all_records)
+    
+    if df.empty:
+        print("WARNING: JSON files existed, but contained no valid data/metrics.")
+        return
+    
+    try:
+        # Aggregate the data by 'call_number' (rounds)
+        df_avg = df.groupby('call_number').mean().sort_index()
+    except Exception as e:
+        print(f"Error during aggregation (Are metrics numeric?): {e}")
+        return
+    
+    print(f"Aggregated {len(df)} records into {len(df_avg)} rounds.")
+    
+    # Create the first plot (Average Temperature vs Rounds)
+    fig, ax = plt.subplots(figsize=(8, 6))
+    
+    # Plotting Average Temperature for each round
+    ax.plot(df_avg.index, df_avg['temp'], color='g', marker='o', label="Average Temperature")
+    ax.set_title("Average Temperature per Round", fontsize=14, fontweight='bold')
+    ax.set_xlabel("Round Number", fontsize=12)
+    ax.set_ylabel("Average Temperature (temp)", fontsize=12)
+    
+    # Show grid for clarity
+    ax.grid(True, linestyle='--', alpha=0.7)
+    
+    # Save the first plot
+    output_image_path_temp = os.path.join(final_output_dir, "average_temperature_plot.png")
+    try:
+        print(f"Attempting to save plot to: {output_image_path_temp}")
+        plt.savefig(output_image_path_temp, dpi=300)
+        plt.close(fig)
+        print(f"Temperature graph saved successfully.")
+    except Exception as e:
+        print(f"Failed to save temperature graph: {e}")
+        return
+    
+    # Create the second plot (Average Energy vs Rounds)
+    fig, ax = plt.subplots(figsize=(8, 6))
+    
+    # Plotting Average Energy for each round
+    ax.plot(df_avg.index, df_avg['E'], color='b', marker='o', label="Average Energy")
+    ax.set_title("Average Energy per Round", fontsize=14, fontweight='bold')
+    ax.set_xlabel("Round Number", fontsize=12)
+    ax.set_ylabel("Average Energy (E)", fontsize=12)
+    
+    # Show grid for clarity
+    ax.grid(True, linestyle='--', alpha=0.7)
+    
+    # Save the second plot
+    output_image_path_energy = os.path.join(final_output_dir, "average_energy_plot.png")
+    try:
+        print(f"Attempting to save plot to: {output_image_path_energy}")
+        plt.savefig(output_image_path_energy, dpi=300)
+        plt.close(fig)
+        print(f"Energy graph saved successfully.")
+    except Exception as e:
+        print(f"Failed to save energy graph: {e}")
+        return

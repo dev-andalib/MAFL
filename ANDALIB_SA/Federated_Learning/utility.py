@@ -194,6 +194,10 @@ def save_sa(client_id, E, temp, output_folder):
             "E": E,
             "temp": temp
         }
+        if len(existing_data) > 0:
+            if 'count' in existing_data[-1]:
+                new_entry['count'] = existing_data[-1]['count']
+                
         existing_data.append(new_entry)
         with open(output_file, 'w') as f:
             json.dump(existing_data, f, indent=4)
@@ -243,9 +247,10 @@ def file_handle(client, output_dict, temp, output_folder=r"client_sa_metrics/"):
 
                 if curr_E:
                     update = fl_sa(prev_E, curr_E, temp, output_folder, client)  # Call SA function
+                    save_sa(client, curr_E, temp, output_folder)  # Save the new energy and temp
                     if not update:
                         count_update(output_folder, client, 1)  # Increment count if not updated
-                    save_sa(client, curr_E, temp, output_folder)  # Save the new energy and temp
+                    
                     return update     # Return whether the model was accepted based on SA decision
             else:
                 return False  # If no data exists, reject the client
