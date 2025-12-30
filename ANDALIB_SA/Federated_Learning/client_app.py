@@ -44,7 +44,7 @@ class FlowerClient(NumPyClient):
             cid=self.cid,
             temp=temp,
         )
-        results['train']["accept"] = client_accept
+        results['val']["accept"] = client_accept
         
         # COMMUNICATION OPTIMIZATION: Return different parameters based on SA decision
         if client_accept:

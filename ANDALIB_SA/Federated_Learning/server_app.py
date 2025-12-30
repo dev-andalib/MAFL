@@ -14,6 +14,7 @@ from torch.utils.data import DataLoader, TensorDataset
 import pandas as pd
 from functools import reduce
 from Federated_Learning.utility import print_msg
+from Federated_Learning.result_visualizer import plot_and_save_averaged_metrics
 from Federated_Learning.helper import evaluate_hierarchical, create_sequences
 from sklearn.preprocessing import LabelEncoder
 from Federated_Learning.communication_utils import generate_communication_report, comm_tracker
@@ -209,7 +210,20 @@ class CommunicationAwareSA(SA):
                 with open(error_file, 'w') as f:
                     json.dump(error_report, f, indent=4)
         
+        if server_round == 3: # Adjust based on your total rounds
+            print("✅ Training complete. Generating final metrics plots...")
+            try:
+                METRICS_BASE = r"D:\MAFL\ANDALIB_SA\client_metrics" 
+                RESULTS_BASE = r"D:\MAFL\ANDALIB_SA\results"
+                plot_and_save_averaged_metrics('train_metrics',METRICS_BASE, RESULTS_BASE)
+                plot_and_save_averaged_metrics('val_metrics',METRICS_BASE, RESULTS_BASE)
+                plot_and_save_averaged_metrics('test_metrics',METRICS_BASE, RESULTS_BASE)
+            except Exception as e:
+                print(f"❌ Failed to generate plots: {e}")
+        
         return result
+        
+        
 
 def server_fn(context: Context):
     """Construct components that set the ServerApp behaviour."""
@@ -238,6 +252,8 @@ def server_fn(context: Context):
     model_info_file = os.path.join(comm_tracker.output_folder, "model_info.json")
     with open(model_info_file, 'w') as f:
         json.dump(model_info, f, indent=4)
+    
+    
     
 
     # Define the strategy with communication awareness

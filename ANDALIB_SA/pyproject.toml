@@ -25,9 +25,9 @@ serverapp = "Federated_Learning.server_app:app"
 clientapp = "Federated_Learning.client_app:app"
 
 [tool.flwr.app.config]
-num-server-rounds = 10         # BASIC: Single round first
+num-server-rounds = 3         # BASIC: Single round first
 fraction-evaluate = 1.0
-fraction-fit = 1.0
+fraction-fit = 1
 local-epochs = 10               # BASIC: Very simple epoch count
 learning-rate = 0.001          # BASIC: Standard learning rate
 batch-size = 32                # BASIC: Small batch size
@@ -38,9 +38,9 @@ server-device = "cuda"
 default = "local-simulation-gpu"
 
 [tool.flwr.federations.local-simulation]
-options.num-supernodes = 100     
+options.num-supernodes = 10     
 
 [tool.flwr.federations.local-simulation-gpu]
-options.num-supernodes = 100     
+options.num-supernodes = 10     
 options.backend.client-resources.num-cpus = 2
 options.backend.client-resources.num-gpus = 0.25

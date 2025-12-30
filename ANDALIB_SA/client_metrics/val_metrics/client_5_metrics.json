@@ -1,0 +1,38 @@
+[
+    {
+        "call_number": 1,
+        "client_id": 5,
+        "metrics": {
+            "val_loss": 0.0369184742153714,
+            "val_accuracy": 0.9911971830985915,
+            "val_precision": 0.9878530215608867,
+            "val_recall": 1.0,
+            "val_f1": 0.9938893981057134,
+            "val_fpr": 0.030983733539891558
+        }
+    },
+    {
+        "call_number": 2,
+        "client_id": 5,
+        "metrics": {
+            "val_loss": 0.03705012941369,
+            "val_accuracy": 0.9911971830985915,
+            "val_precision": 0.9878530215608867,
+            "val_recall": 1.0,
+            "val_f1": 0.9938893981057134,
+            "val_fpr": 0.030983733539891558
+        }
+    },
+    {
+        "call_number": 3,
+        "client_id": 5,
+        "metrics": {
+            "val_loss": 0.034356492887985646,
+            "val_accuracy": 0.9920774647887324,
+            "val_precision": 0.9890544238370326,
+            "val_recall": 1.0,
+            "val_f1": 0.9944970956893917,
+            "val_fpr": 0.027885360185902403
+        }
+    }
+]

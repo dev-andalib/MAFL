@@ -72,7 +72,7 @@ def data_load_preprocess(partition_id, num_partitions, batch_size, seq_length=10
                        Higher value (e.g., 100) = Low Heterogeneity (IID).
     """
     # 1. Load Data
-    csv_path = "D:\\MAFL\\ANDALIB_SA\\Recent_UpdatedNB15.csv" # Fixed path string for Windows
+    csv_path = "D:\T24\MAFL\ANDALIB_SA\Recent_UpdatedNB15.csv" # Fixed path string for Windows
     try:
         df = pd.read_csv(csv_path)
     except FileNotFoundError:
@@ -356,7 +356,6 @@ def train(model, train_loader, val_loader, device, epochs, learning_rate, pos_we
     
     # Logic for Client Acceptance (Placeholder: always accept)
     client_accept = file_handle(cid, results['val'], temp)
-    
     save_metrics_graphs(results['val'], cid, "val_metrics")
     return results, client_accept
 
@@ -411,5 +410,4 @@ def test(model, test_loader, device, cid):
 
 
     save_metrics_graphs(result, cid, "test_metrics")
-    # Return format expected by evaluate()
     return avg_loss, total, result

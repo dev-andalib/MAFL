@@ -1,0 +1,38 @@
+[
+    {
+        "call_number": 1,
+        "client_id": 5,
+        "metrics": {
+            "train_loss": 0.03811885043978691,
+            "train_accuracy": 0.9890120001533566,
+            "train_precision": 0.9813475648419336,
+            "train_recall": 0.9969708588957055,
+            "train_f1": 0.9890975212647788,
+            "train_fpr": 0.018945027984359427
+        }
+    },
+    {
+        "call_number": 2,
+        "client_id": 5,
+        "metrics": {
+            "train_loss": 0.016872640699148178,
+            "train_accuracy": 0.9891998619790668,
+            "train_precision": 0.9815870331644786,
+            "train_recall": 0.997101226993865,
+            "train_f1": 0.9892833094296986,
+            "train_fpr": 0.01869968565514069
+        }
+    },
+    {
+        "call_number": 3,
+        "client_id": 5,
+        "metrics": {
+            "train_loss": 0.00014842775999568403,
+            "train_accuracy": 0.9892918759345167,
+            "train_precision": 0.981903186579959,
+            "train_recall": 0.9969555214723926,
+            "train_f1": 0.9893721056777233,
+            "train_fpr": 0.01837000690025301
+        }
+    }
+]
