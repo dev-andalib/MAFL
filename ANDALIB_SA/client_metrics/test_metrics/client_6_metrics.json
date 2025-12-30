@@ -3,7 +3,7 @@
         "call_number": 1,
         "client_id": 6,
         "metrics": {
-            "test_loss": 0.6870938971930859,
+            "test_loss": 0.6869290182793063,
             "test_accuracy": 0.6041109969167523,
             "test_precision": 0,
             "test_recall": 0,
@@ -15,20 +15,8 @@
         "call_number": 2,
         "client_id": 6,
         "metrics": {
-            "test_loss": 0.6870938971930859,
-            "test_accuracy": 0.6041109969167523,
-            "test_precision": 0,
-            "test_recall": 0,
-            "test_f1": 0,
-            "test_fpr": 0
-        }
-    },
-    {
-        "call_number": 3,
-        "client_id": 6,
-        "metrics": {
-            "test_loss": 0.6870938971930859,
-            "test_accuracy": 0.6041109969167523,
+            "test_loss": 0.6942208939128451,
+            "test_accuracy": 0.3969167523124358,
             "test_precision": 0,
             "test_recall": 0,
             "test_f1": 0,

@@ -1,5 +1,5 @@
 {
-    "timestamp": "2025-12-28T21:44:00.067073",
+    "timestamp": "2025-12-30T17:57:37.544170",
     "model_architecture": "CNN-BiLSTM with Attention",
     "input_features": 20,
     "sequence_length": 10,

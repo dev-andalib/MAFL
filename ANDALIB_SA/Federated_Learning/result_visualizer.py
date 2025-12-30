@@ -16,13 +16,12 @@ def plot_and_save_averaged_metrics(folder, metrics_folder, result_path):
     # Ensure we are working with absolute paths to avoid "File not found" errors
     metrics_folder = os.path.abspath(metrics_folder)
     result_path = os.path.abspath(result_path)
-
+    
     # Define Source (Where JSONs are) and Destination (Where Image goes)
     source_dir = os.path.join(metrics_folder, folder)
     final_output_dir = os.path.join(result_path, folder)
-
-    print(f"Looking for metrics in: {source_dir}")
-    print(f"Saving results to:      {final_output_dir}")
+    
+    
 
     # 2. Create Output Directory
     os.makedirs(final_output_dir, exist_ok=True)
@@ -30,6 +29,7 @@ def plot_and_save_averaged_metrics(folder, metrics_folder, result_path):
     # 3. Find JSON Files
     json_pattern = os.path.join(source_dir, "*.json")
     json_files = glob.glob(json_pattern)
+    print(json_files)
     
     if not json_files:
         print(f"❌ WARNING: No JSON files found matching: {json_pattern}")

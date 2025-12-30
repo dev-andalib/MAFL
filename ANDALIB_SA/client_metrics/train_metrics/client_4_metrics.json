@@ -3,36 +3,24 @@
         "call_number": 1,
         "client_id": 4,
         "metrics": {
-            "train_loss": 0.019475571811199188,
-            "train_accuracy": 0.9520531167407981,
-            "train_precision": 0.923964303852572,
-            "train_recall": 0.9851727694687984,
-            "train_f1": 0.9535873404135831,
-            "train_fpr": 0.08106226634007993
+            "train_loss": 0.03392267972230911,
+            "train_accuracy": 0.9507574292528846,
+            "train_precision": 0.9182828633301827,
+            "train_recall": 0.9895693656523982,
+            "train_f1": 0.9525943118138772,
+            "train_fpr": 0.08804950367410082
         }
     },
     {
         "call_number": 2,
         "client_id": 4,
         "metrics": {
-            "train_loss": 0.16609525680541992,
-            "train_accuracy": 0.9515180816089731,
-            "train_precision": 0.9219064371167307,
-            "train_recall": 0.9866039195461578,
-            "train_f1": 0.9531585732703052,
-            "train_fpr": 0.08356323320871471
-        }
-    },
-    {
-        "call_number": 3,
-        "client_id": 4,
-        "metrics": {
-            "train_loss": 0.0892772451043129,
-            "train_accuracy": 0.9504286727261007,
-            "train_precision": 0.9226246642955651,
-            "train_recall": 0.9833161423414131,
-            "train_f1": 0.9520040943191321,
-            "train_fpr": 0.08245455717416526
+            "train_loss": 0.16601234674453735,
+            "train_accuracy": 0.9511377554309289,
+            "train_precision": 0.9224824921516542,
+            "train_recall": 0.9850438370293966,
+            "train_f1": 0.9527372490335454,
+            "train_fpr": 0.08276395513729534
         }
     }
 ]

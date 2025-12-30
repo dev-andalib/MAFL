@@ -210,11 +210,11 @@ class CommunicationAwareSA(SA):
                 with open(error_file, 'w') as f:
                     json.dump(error_report, f, indent=4)
         
-        if server_round == 3: # Adjust based on your total rounds
+        if server_round == 1: # Adjust based on your total rounds
             print("✅ Training complete. Generating final metrics plots...")
             try:
-                METRICS_BASE = r"D:\MAFL\ANDALIB_SA\client_metrics" 
-                RESULTS_BASE = r"D:\MAFL\ANDALIB_SA\results"
+                METRICS_BASE = r"D:\T24\MAFL\ANDALIB_SA\client_metrics" 
+                RESULTS_BASE = r"D:\T24\MAFL\ANDALIB_SA\results"
                 plot_and_save_averaged_metrics('train_metrics',METRICS_BASE, RESULTS_BASE)
                 plot_and_save_averaged_metrics('val_metrics',METRICS_BASE, RESULTS_BASE)
                 plot_and_save_averaged_metrics('test_metrics',METRICS_BASE, RESULTS_BASE)
@@ -229,10 +229,6 @@ def server_fn(context: Context):
     """Construct components that set the ServerApp behaviour."""
     # Read from config
     num_rounds = context.run_config["num-server-rounds"]
-    
-
-    print(f" Starting FL with SA client selection ({num_rounds} rounds, {context.run_config['min_available_clients']} min clients)")
-    print(f"Communication cost tracking enabled - results will be saved to JSON files")
 
     ndarrays = get_weights(BinaryNIDS(input_features=20, seq_length=10))
     parameters = ndarrays_to_parameters(ndarrays)
