@@ -156,16 +156,17 @@ def get_class_distribution(partition_id, dataloader, message,
 
 
 
-##################################################
-# Simulated Annealing for Smart Aggregation (SA) #
-##################################################
+
+
+
+
+
+
+
 
 # 1. Check if the client folder exists inside "SA Metrics" and create it if not
 def isFirst(client_id, output_folder):
-     
     js = os.path.join(output_folder, f"{client_id}.json")
-    """Check if the folder for the client exists, and create it if not."""
-    # Create the base folder if it doesn't exist
     if not os.path.exists(output_folder):
         os.makedirs(output_folder)
         return True
@@ -176,30 +177,16 @@ def isFirst(client_id, output_folder):
 
 # 2. Read the accuracy from the JSON file for the client
 def read_file(client_id, output_folder):
-    
-    """Read the existing accuracy from the client's JSON file."""
     output_file = os.path.join(output_folder, f"{client_id}.json")
-    
-    try:
-        with open(output_file, 'r') as f:
-            existing_data = json.load(f)
-            # print_msg("It is working")
-        return existing_data
-    except (FileNotFoundError, json.JSONDecodeError) as e:
-            print(f"Error reading {output_file}: {e}")
-            return None
+    with open(output_file, 'r') as f:
+        return json.load(f)
 
 # 3. Save or update the accuracy in the JSON file for the client
 def save_sa(client_id, E, temp, output_folder):
-    # Define the file path
     output_file = os.path.join(output_folder, f"{client_id}.json")
     
-    # Check if the file exists
     if os.path.exists(output_file):
-        # Read the existing data
         existing_data = read_file(client_id, output_folder)
-        
-        # Append new data (keeping count incremented)
         call_number = len(existing_data) + 1
         new_entry = {
             "call_number": call_number,
@@ -207,28 +194,18 @@ def save_sa(client_id, E, temp, output_folder):
             "E": E,
             "temp": temp
         }
-        
-        # Append new entry to existing data
         existing_data.append(new_entry)
-        
-        # Write the updated data back to the file
         with open(output_file, 'w') as f:
             json.dump(existing_data, f, indent=4)
-    
     else:
-        # If the file doesn't exist, create a new one with the first entry
         client_data = [{
             "call_number": 1,
             "client_id": client_id,
             "E": E,
             "temp": temp
         }]
-        
         with open(output_file, 'w') as f:
             json.dump(client_data, f, indent=4)
-
-
-
 
 def energy_calc(output_dict): 
     acc = output_dict['val_accuracy']
@@ -242,107 +219,84 @@ def energy_calc(output_dict):
     E = (wa * acc) + (wr * f1) + (1 - fpr * wfpr) # weights add up to 1
     return E
 
-
 # SA send model updates or not
-def file_handle(client, output_dict, temp):
-    output_folder = "D:\T24\MAFL\ANDALIB_SA\client_sa_metrics"
-    if type(client) == int or type(client) == str:
+def file_handle(client, output_dict, temp, output_folder=r"client_sa_metrics/"):
+    if isinstance(client, (int, str)):  # Check if the client_id is a valid type
+        
         
         if isFirst(client, output_folder): # file not created yet
-             if len(output_dict) == 0:
-               E = 0
-               save_sa(client, E, temp, output_folder) # so make a copy
-               return True  # Accept first client regardless
-             else:
-              E = energy_calc(output_dict)
-              save_sa(client, E, temp, output_folder)
-              return True  # Accept first client regardless  
+            if len(output_dict) == 0:
+                E = 0
+                save_sa(client, E, temp, output_folder) # Create a copy
+                return True  # Accept first client regardless
+            else:
+                E = energy_calc(output_dict)
+                save_sa(client, E, temp, output_folder)
+                return True  # Accept first client regardless
         
         else:
-            existing_data = read_file(client, output_folder) # read acc
-            if existing_data != None:
-                prev_E = existing_data.get('E')
-                curr_E = energy_calc(output_dict) # get current E
+            existing_data = read_file(client, output_folder)  # Read existing client data
+            if existing_data:
+                latest_entry = existing_data[-1]  # Get the most recent entry
+                prev_E = latest_entry.get('E', 0)  # Access the energy value
+                curr_E = energy_calc(output_dict)  # Get current energy
 
                 if curr_E:
-                    update = fl_sa(prev_E, curr_E, temp, output_folder, client) # SA below this function
+                    update = fl_sa(prev_E, curr_E, temp, output_folder, client)  # Call SA function
                     if not update:
-                        count_update(output_folder, client, 1)
-                    save_sa(client, curr_E, temp, output_folder, update=update)
-                    return update     # based on sa will update or not
-                else:
-                    return False  # If curr_E is None/falsy, reject
+                        count_update(output_folder, client, 1)  # Increment count if not updated
+                    save_sa(client, curr_E, temp, output_folder)  # Save the new energy and temp
+                    return update     # Return whether the model was accepted based on SA decision
             else:
-                return False  # If existing_data is None, reject
-    
+                return False  # If no data exists, reject the client
     return False  # Default fallback - reject if type check fails
 
-# to keep track of how many times the client did not send the updates by count
+# Keep track of how many times the client did not send the updates by count
 def count_update(output_folder, client_id, count):
     output_file = os.path.join(output_folder, f"{client_id}.json")
     
     if os.path.exists(output_file):
-        # Read existing data
         existing_data = read_file(client_id, output_folder)
-        
-        # Find the most recent entry (the last one) in the list
         latest_entry = existing_data[-1] if existing_data else None
         
         if latest_entry:
-            # Increment the count for the latest entry
             if 'count' in latest_entry:
                 latest_entry['count'] += count
             else:
                 latest_entry['count'] = count
         
-        # Write the updated data back to the file
         with open(output_file, 'w') as f:
             json.dump(existing_data, f, indent=4)
 
-            
-        
-# simulated annealing function
+# Simulated annealing function to decide whether to accept updates or not
 def fl_sa(prev_E, curr_E, temp, output_folder, client_id):
     if curr_E is None or prev_E is None:
         return False
     
-    #  always accept a better solution
-    if curr_E > prev_E:
-        return True # yes accept weight from the client for aggregation
+    if curr_E > prev_E:  # Always accept a better solution
+        return True 
     
+    if temp <= 0:
+        return False
+
+    existing_data = read_file(client_id, output_folder)
+    
+    if 'count' in existing_data[-1]:  # Access the last entry in the list
+        r = curr_E / prev_E
+        k = 0.01 * math.exp(existing_data[-1]['count'])
+        temp = temp * (1 + k * (1 - r))
+
+        with open(os.path.join(output_folder, f"{client_id}.json"), 'w') as f:
+            json.dump(existing_data, f, indent=4)
+
+    # Change in energy and temperature
+    exp_T = math.exp((curr_E - prev_E) / temp)
+    random_probability = random.random()
+
+    if exp_T > random_probability:
+        return True  # Accept model update
     else:
-        # Ensure temperature is positive to avoid division by zero
-        if temp <= 0:
-            return False
-
-        existing_data = read_file(client_id, output_folder)
-        
-        if 'count' in existing_data:
-            
-            r = curr_E/prev_E
-            k = 0.01 * math.exp(existing_data['count'])
-            temp  = temp * (1 + k * (1 - r))
-            
-            with open(os.path.join(output_folder, f"{client_id}.json"), 'w') as f:
-                json.dump(existing_data, f, indent=4)
-            
-            
-
-        # change in E and the temperature.
-        exp_T = math.exp((curr_E - prev_E) / temp)
-
-        # Generate a random probability between 0 and 1
-        random_probability = random.random()
-
-        # The rest of your logic now works correctly
-        if exp_T > random_probability:
-            return True  # yes accept weight from the client's for aggregation
-        
-        else:
-            return False # no don't take the client's weights
-        
-
-
+        return False  # Reject model update
 
 
 

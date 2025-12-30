@@ -9,6 +9,7 @@ import numpy as np
 import torch
 import os
 import json
+import shutil
 from datetime import datetime
 from torch.utils.data import DataLoader, TensorDataset
 import pandas as pd
@@ -21,7 +22,7 @@ from Federated_Learning.communication_utils import generate_communication_report
 
 class SA(FedAvg): 
     """Custom FedAvg strategy that handles models with different multiclass head sizes and tracks communication."""
-    def __init__(self, start_temp = 0.02, cooling=0.99, **kwargs):
+    def __init__(self, start_temp = 0.02, cooling=0.1, **kwargs):
         super().__init__(**kwargs)
         self.start_temp = start_temp
         self.cooling = cooling
@@ -211,15 +212,18 @@ class CommunicationAwareSA(SA):
                     json.dump(error_report, f, indent=4)
         
         if server_round == 3: # Adjust based on your total rounds
-            print("✅ Training complete. Generating final metrics plots...")
+            print("Training complete. Generating final metrics plots...")
             try:
                 METRICS_BASE = r"D:\T24\MAFL\ANDALIB_SA\client_metrics" 
                 RESULTS_BASE = r"D:\T24\MAFL\ANDALIB_SA\results"
                 plot_and_save_averaged_metrics('train_metrics',METRICS_BASE, RESULTS_BASE)
+                
                 plot_and_save_averaged_metrics('val_metrics',METRICS_BASE, RESULTS_BASE)
+                
                 plot_and_save_averaged_metrics('test_metrics',METRICS_BASE, RESULTS_BASE)
+                shutil.rmtree(os.path.join(METRICS_BASE ))
             except Exception as e:
-                print(f"❌ Failed to generate plots: {e}")
+                print(f"Failed to generate plots: {e}")
         
         return result
         
