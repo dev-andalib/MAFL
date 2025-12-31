@@ -1,28 +1,26 @@
 """pytorchexample: A Flower / PyTorch app."""
 import flwr
-from typing import List, Tuple, Dict, Optional, Union
-from flwr.common import Context, Metrics, ndarrays_to_parameters, Parameters, FitRes, Scalar, EvaluateRes, parameters_to_ndarrays
+from typing import List, Tuple, Dict, Union
+from flwr.common import Context,  ndarrays_to_parameters, FitRes, parameters_to_ndarrays
 from flwr.server import ServerApp, ServerAppComponents, ServerConfig
-from flwr.server.strategy import FedAvg, FedProx, FedAdam
-from Federated_Learning.task import get_weights, BinaryNIDS, test, set_weights
+from flwr.server.strategy import FedAvg
+from Federated_Learning.task import get_weights, Net, test, set_weights
 import numpy as np
 import torch
 import os
 import json
 from datetime import datetime
-from torch.utils.data import DataLoader, TensorDataset
-import pandas as pd
-from functools import reduce
-from Federated_Learning.utility import print_msg
+from torch.utils.data import DataLoader
 from Federated_Learning.result_visualizer import plot_and_save_averaged_metrics, plot_and_save_energy_temp
-from Federated_Learning.helper import evaluate_hierarchical, create_sequences
-from sklearn.preprocessing import LabelEncoder
 from Federated_Learning.communication_utils import generate_communication_report, comm_tracker
 import time
 
+
+
+
 class SA(FedAvg): 
     """Custom FedAvg strategy that handles models with different multiclass head sizes and tracks communication."""
-    def __init__(self, start_temp = 0.02, cooling=0.1, **kwargs):
+    def __init__(self, start_temp = 0.02, cooling=0.99, **kwargs):
         super().__init__(**kwargs)
         self.start_temp = start_temp
         self.cooling = cooling
@@ -89,7 +87,7 @@ class SA(FedAvg):
             json.dump(round_stats, f, indent=4)
         
         # Minimal console output
-        print(f"🔄 Round {server_round}: {accepted_clients}/{total_clients} clients accepted ({accepted_clients/total_clients:.1%})")
+        print(f"Round {server_round}: {accepted_clients}/{total_clients} clients accepted ({accepted_clients/total_clients:.1%})")
         
         # If no clients accepted, return old parameters
         if not accepted_results:
@@ -155,6 +153,23 @@ def fit_weighted_avg(metrics: List[Tuple[int, Dict]]) -> Dict:
     }
 
 
+def gen_evaluate_fn(
+    testloader: DataLoader,
+    device: torch.device,
+):
+    """Generate the function for centralized evaluation."""
+
+    def evaluate(server_round, parameters_ndarrays, config):
+        """Evaluate global model on centralized test set."""
+        device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+        net = Net(input_features=20, num_attack_types=9)
+        set_weights(net, parameters_ndarrays)
+        net.to(device)
+        loss, test_size, output_dict = test(net, testloader, device=device, num_classes=9) # dummy temp and prev acc send for now
+        return loss, output_dict
+
+    return evaluate
+
 
 class CommunicationAwareSA(SA):
     """Extended SA strategy with communication reporting."""
@@ -193,8 +208,9 @@ class CommunicationAwareSA(SA):
                 error_file = os.path.join(comm_tracker.output_folder, f"error_round_{server_round}.json")
                 with open(error_file, 'w') as f:
                     json.dump(error_report, f, indent=4)
+
         
-        if server_round == 3: # Adjust based on your total rounds
+        if server_round == 10: # Adjust based on your total rounds
             print("Training complete. Generating final metrics plots...")
             try:
                 METRICS_BASE = r"D:\T24\MAFL\ANDALIB_SA\client_metrics" 
@@ -209,17 +225,20 @@ class CommunicationAwareSA(SA):
 
             except Exception as e:
                 print(f"Failed to generate plots: {e}")
+
         
         return result
-        
-        
 
 def server_fn(context: Context):
     """Construct components that set the ServerApp behaviour."""
     # Read from config
     num_rounds = context.run_config["num-server-rounds"]
+    
 
-    ndarrays = get_weights(BinaryNIDS(input_features=20, seq_length=10))
+    print(f" Starting FL with SA client selection ({num_rounds} rounds, {context.run_config['min_available_clients']} min clients)")
+    print(f"Communication cost tracking enabled - results will be saved to JSON files")
+
+    ndarrays = get_weights(Net(input_features=20, seq_length=10, num_attack_types=9))
     parameters = ndarrays_to_parameters(ndarrays)
     
     # Log model size information
@@ -229,7 +248,7 @@ def server_fn(context: Context):
         "model_architecture": "CNN-BiLSTM with Attention",
         "input_features": 20,
         "sequence_length": 10,
-        "attack_types": 2,
+        "attack_types": 9,
         "model_size_mb": model_size_mb,
         "total_parameters": sum(param.size for param in ndarrays)
     }
@@ -237,8 +256,6 @@ def server_fn(context: Context):
     model_info_file = os.path.join(comm_tracker.output_folder, "model_info.json")
     with open(model_info_file, 'w') as f:
         json.dump(model_info, f, indent=4)
-    
-    
     
 
     # Define the strategy with communication awareness
