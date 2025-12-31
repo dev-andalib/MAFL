@@ -40,7 +40,7 @@ class FlowerClient(NumPyClient):
         results, client_accept = train(self.net, self.trainloader, self.valloader, self.multiclass_loader, 
                        self.multiclass_val_loader, self.pos_weight, self.attack_class_weights, 
                        self.local_epochs, self.learning_rate, self.device, temp, self.cid)
-        results['val']["accept"] = client_accept
+        results["accept"] = client_accept
         
         # COMMUNICATION OPTIMIZATION: Return different parameters based on SA decision
         if client_accept:
@@ -56,15 +56,15 @@ class FlowerClient(NumPyClient):
             accepted=client_accept,
             parameters=model_weights,
             metrics={
-                "val_accuracy": results['val'].get("val_accuracy", 0.0),
-                "val_precision": results['val'].get("val_precision", 0.0),
-                "val_recall": results["val"].get("val_recall", 0.0),
-                "val_f1": results['val'].get("val_f1", 0.0),
-                "val_fpr": results['val'].get("val_fpr", 0.0)
+                "val_accuracy": results.get("val_accuracy", 0.0),
+                "val_precision": results.get("val_precision", 0.0),
+                "val_recall": results.get("val_recall", 0.0),
+                "val_f1": results.get("val_f1", 0.0),
+                "val_fpr": results.get("val_fpr", 0.0)
             }
         )
         
-        return model_weights, len(self.trainloader.dataset), results['val']
+        return model_weights, len(self.trainloader.dataset), results
 
     def evaluate(self, parameters, config):
         set_weights(self.net, parameters)

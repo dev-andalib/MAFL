@@ -10,7 +10,7 @@ import shutil
 ##################################################
 #           BASIC UTILITY FUNCTION               #
 ##################################################
-def save_metrics_graphs(metrics_dict, client_id, file_name, output_folder=r"D:\T24\MAFL\ANDALIB_SA\client_metrics"):
+def save_metrics_graphs(metrics_dict, client_id, file_name, output_folder=r"client_metrics/"):
     
     # 1. Define the directory path
     target_directory = os.path.join(output_folder, file_name)

@@ -958,7 +958,7 @@ def train(net, trainloader, valloader, multiclass_loader, multiclass_val_loader,
     # Create optimizer with only trainable parameters
     optimizer = torch.optim.Adam(get_trainable_params(net), lr=0.001)
     
-    num_epochs = epoch  # Updated: Set to 20 epochs
+    num_epochs = 10  # Updated: Set to 20 epochs
     results = {
         'bin' : {
             'train' : {
@@ -1321,6 +1321,20 @@ def test(net, testloader, device, cid=None):
     results['mul']['f1'] = multi_f1
     results['mul']['fpr'] = multi_fpr
     
+    
+
     save_metrics_graphs(results['bin'], cid, "bin_test_metrics")
     save_metrics_graphs(results['mul'], cid, "mul_test_metrics")
-    return total_loss, len(testloader), results
+
+
+
+    output_dict = {}
+    for i in results.keys():
+        for j in results[i].keys():
+            output_dict[f'{i}_{j}'] = results[i][j]
+
+    
+    
+    save_metrics_graphs(output_dict, 'test')
+    output_dict= {}
+    return total_loss, len(testloader), output_dict

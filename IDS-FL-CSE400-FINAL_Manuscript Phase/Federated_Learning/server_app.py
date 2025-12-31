@@ -210,11 +210,11 @@ class CommunicationAwareSA(SA):
                     json.dump(error_report, f, indent=4)
 
         
-        if server_round == 10: # Adjust based on your total rounds
+        if server_round == 2: # Adjust based on your total rounds
             print("Training complete. Generating final metrics plots...")
             try:
-                METRICS_BASE = r"D:\T24\MAFL\ANDALIB_SA\client_metrics" 
-                RESULTS_BASE = r"D:\T24\MAFL\ANDALIB_SA\results"
+                METRICS_BASE = r"D:\T24\MAFL\IDS-FL-CSE400-FINAL_Manuscript Phase\client_metrics" 
+                RESULTS_BASE = r"D:\T24\MAFL\IDS-FL-CSE400-FINAL_Manuscript Phase\results"
                 plot_and_save_averaged_metrics('train_metrics',METRICS_BASE, RESULTS_BASE)
                 plot_and_save_averaged_metrics('val_metrics',METRICS_BASE, RESULTS_BASE)
                 plot_and_save_averaged_metrics('test_metrics',METRICS_BASE, RESULTS_BASE)
