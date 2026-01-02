@@ -1192,14 +1192,14 @@ def train(net, trainloader, valloader, multiclass_loader, multiclass_val_loader,
     
     for epoch in range(joint_epochs):
         try:
-            train_loss, train_acc, train_avg_fpr, train_macro_f1 = train_epoch_joint(net, trainloader, binary_criterion, multiclass_criterion, optimizer_joint, device)
+            train_loss, train_acc,  train_macro_f1, train_avg_fpr = train_epoch_joint(net, trainloader, binary_criterion, multiclass_criterion, optimizer_joint, device)
             val_loss, val_avg_acc, val_avg_rec, val_avg_prec, val_avg_fpr, val_macro_f1 = evaluate_joint(net, valloader, multiclass_val_loader, binary_criterion, multiclass_criterion, device)
             
             # JOINT
             results['joint']['train']['loss'].append(train_loss)
             results['joint']['train']['acc'].append(train_acc)
-            results['joint']['train']['acc'].append(train_macro_f1)
-            results['joint']['train']['acc'].append(train_avg_fpr)
+            results['joint']['train']['f1'].append(train_macro_f1)
+            results['joint']['train']['fpr'].append(train_avg_fpr)
 
             results['joint']['val']['loss'].append(val_loss)
             results['joint']['val']['acc'].append(val_avg_acc)

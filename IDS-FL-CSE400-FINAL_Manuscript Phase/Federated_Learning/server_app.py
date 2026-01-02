@@ -137,12 +137,16 @@ def fit_weighted_avg(metrics: List[Tuple[int, Dict]]) -> Dict:
     weighted_accuracies = sum([metric["val_accuracy"] * num for num, metric in metrics])
     weighted_recalls = sum([metric["val_recall"] * num for num, metric in metrics])
     weighted_precisions = sum([metric["val_precision"] * num for num, metric in metrics])
+    weighted_f1_score = sum([metric["val_f1"] * num for num, metric in metrics])
+    weighted_fpr = sum([metric["val_fpr"] * num for num, metric in metrics])
 
     # Calculate weighted averages for rates
     val_loss_avg = weighted_val_losses / total_examples
     accuracy_avg = weighted_accuracies / total_examples
     recall_avg = weighted_recalls / total_examples
     precision_avg = weighted_precisions / total_examples
+    f1_score_avg = weighted_f1_score/ total_examples
+    fpr_score_avg = weighted_fpr/total_examples
 
 
     return {
@@ -150,6 +154,8 @@ def fit_weighted_avg(metrics: List[Tuple[int, Dict]]) -> Dict:
         "val_accuracy": accuracy_avg,
         "val_precision": precision_avg,
         "val_recall": recall_avg,
+        "val_f1" : f1_score_avg,
+        "val_fpr" : fpr_score_avg
     }
 
 
@@ -210,7 +216,7 @@ class CommunicationAwareSA(SA):
                     json.dump(error_report, f, indent=4)
 
         
-        if server_round == 2: # Adjust based on your total rounds
+        if server_round == 10: # Adjust based on your total rounds
             print("Training complete. Generating final metrics plots...")
             try:
                 METRICS_BASE = r"D:\T24\MAFL\IDS-FL-CSE400-FINAL_Manuscript Phase\client_metrics" 
