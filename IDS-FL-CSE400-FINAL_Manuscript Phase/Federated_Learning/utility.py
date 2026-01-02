@@ -170,7 +170,7 @@ def file_handle(client, output_dict, temp, output_folder=r"client_sa_metrics/"):
                 prev_E = latest_entry.get('E', 0)  
                 curr_E = energy_calc(output_dict)  
 
-                if curr_E:
+                if curr_E is not None:
                     update = fl_sa(prev_E, curr_E, temp, output_folder, client)  
                     save_sa(client, curr_E, temp, output_folder)  
                     if not update:

@@ -1,0 +1,62 @@
+[
+    {
+        "call_number": 1,
+        "client_id": 10,
+        "E": 0.5,
+        "temp": 0.02
+    },
+    {
+        "call_number": 2,
+        "client_id": 10,
+        "E": 0.5,
+        "temp": 0.0198
+    },
+    {
+        "call_number": 3,
+        "client_id": 10,
+        "E": 0.5,
+        "temp": 0.019602
+    },
+    {
+        "call_number": 4,
+        "client_id": 10,
+        "E": 0.5,
+        "temp": 0.01940598
+    },
+    {
+        "call_number": 5,
+        "client_id": 10,
+        "E": 0.5,
+        "temp": 0.0192119202
+    },
+    {
+        "call_number": 6,
+        "client_id": 10,
+        "E": 0.5,
+        "temp": 0.019019800998
+    },
+    {
+        "call_number": 7,
+        "client_id": 10,
+        "E": 0.5,
+        "temp": 0.01882960298802
+    },
+    {
+        "call_number": 8,
+        "client_id": 10,
+        "E": 0.5,
+        "temp": 0.0186413069581398
+    },
+    {
+        "call_number": 9,
+        "client_id": 10,
+        "E": 0.5,
+        "temp": 0.0184548938885584
+    },
+    {
+        "call_number": 10,
+        "client_id": 10,
+        "E": 0.5,
+        "temp": 0.018270344949672817
+    }
+]
