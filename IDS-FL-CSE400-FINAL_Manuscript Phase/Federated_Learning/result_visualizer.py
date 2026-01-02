@@ -75,7 +75,10 @@ def plot_and_save_averaged_metrics(folder, metrics_folder, result_path):
         ax.grid(True, linestyle='--', alpha=0.7)
         
         
-        ax.set_ylim(0, 1)
+        if metric.lower() != "loss":
+            ax.set_ylim(0, 1)
+
+        
 
         
         if len(df_avg) < 20:
