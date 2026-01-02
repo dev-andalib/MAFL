@@ -1,0 +1,2738 @@
+[
+    {
+        "timestamp": "2026-01-02T21:33:36.916176",
+        "client_id": 16,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7065625,
+            "val_precision": 0.6964802877428999,
+            "val_recall": 0.7554740646258504,
+            "val_f1": 0.7240764220365952,
+            "val_fpr": 0.20020032051282052
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:33:38.799128",
+        "client_id": 20,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7381868131868132,
+            "val_precision": 0.7372064210299505,
+            "val_recall": 0.7757536581065994,
+            "val_f1": 0.7556420561535651,
+            "val_fpr": 0.17280755459082392
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:33:44.513860",
+        "client_id": 64,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.735026455026455,
+            "val_precision": 0.7273269245100231,
+            "val_recall": 0.7728157469090111,
+            "val_f1": 0.7489509213647145,
+            "val_fpr": 0.16689827829463122
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:33:45.113001",
+        "client_id": 7,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.739247311827957,
+            "val_precision": 0.7462259653583346,
+            "val_recall": 0.7728424252660023,
+            "val_f1": 0.759128868511544,
+            "val_fpr": 0.18148754914809961
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:33:45.724838",
+        "client_id": 51,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7468270944741533,
+            "val_precision": 0.7332373508844097,
+            "val_recall": 0.799689223619005,
+            "val_f1": 0.7640439229531177,
+            "val_fpr": 0.19056369261584133
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:33:47.303606",
+        "client_id": 75,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.0,
+            "val_precision": 0.0,
+            "val_recall": 0.0,
+            "val_f1": 0.0,
+            "val_fpr": 0.0
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:33:47.726837",
+        "client_id": 15,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7738316151202749,
+            "val_precision": 0.7681743381249697,
+            "val_recall": 0.8068588260046287,
+            "val_f1": 0.7867126257152219,
+            "val_fpr": 0.14643970893970892
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:33:52.955680",
+        "client_id": 45,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7355797101449275,
+            "val_precision": 0.7261430904266177,
+            "val_recall": 0.7803945249597424,
+            "val_f1": 0.751649361886221,
+            "val_fpr": 0.17883455489387692
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:33:53.475491",
+        "client_id": 1,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7270069808027924,
+            "val_precision": 0.7333601161163237,
+            "val_recall": 0.7494428782386897,
+            "val_f1": 0.7412597096021206,
+            "val_fpr": 0.13904761904761906
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:33:56.908282",
+        "client_id": 3,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7335460992907802,
+            "val_precision": 0.7271376485865548,
+            "val_recall": 0.7743794326241136,
+            "val_f1": 0.7495337536117679,
+            "val_fpr": 0.17156546080964685
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:33:59.207791",
+        "client_id": 82,
+        "round": 1,
+        "accepted": false,
+        "communication_type": "rejected",
+        "size_bytes": 0,
+        "size_mb": 0.0,
+        "metrics": {
+            "val_accuracy": 0.7336507936507937,
+            "val_precision": 0.7262089331856774,
+            "val_recall": 0.7755160786248869,
+            "val_f1": 0.7495331465919701,
+            "val_fpr": 0.1740515680987034
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:34:00.144787",
+        "client_id": 33,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7593804537521816,
+            "val_precision": 0.7573578000304987,
+            "val_recall": 0.7830984024701302,
+            "val_f1": 0.7698750505934118,
+            "val_fpr": 0.12841091492776885
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:34:04.456669",
+        "client_id": 35,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7267713787085515,
+            "val_precision": 0.7269646154235273,
+            "val_recall": 0.7544636864008591,
+            "val_f1": 0.7403037170170093,
+            "val_fpr": 0.14476190476190476
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:34:05.744627",
+        "client_id": 12,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7442328042328042,
+            "val_precision": 0.7351083802696706,
+            "val_recall": 0.788688762782027,
+            "val_f1": 0.760330365208414,
+            "val_fpr": 0.18376759904450535
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:34:09.557953",
+        "client_id": 66,
+        "round": 1,
+        "accepted": false,
+        "communication_type": "rejected",
+        "size_bytes": 0,
+        "size_mb": 0.0,
+        "metrics": {
+            "val_accuracy": 0.7684391534391535,
+            "val_precision": 0.7746512746512746,
+            "val_recall": 0.7864270636291362,
+            "val_f1": 0.7804638763718048,
+            "val_fpr": 0.12415926378477152
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:34:09.778212",
+        "client_id": 38,
+        "round": 1,
+        "accepted": false,
+        "communication_type": "rejected",
+        "size_bytes": 0,
+        "size_mb": 0.0,
+        "metrics": {
+            "val_accuracy": 0.6969047619047619,
+            "val_precision": 0.6885102664919178,
+            "val_recall": 0.7437700468788552,
+            "val_f1": 0.7144595064303094,
+            "val_fpr": 0.19426432061834598
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:34:15.180378",
+        "client_id": 57,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7397747747747747,
+            "val_precision": 0.7281994323090213,
+            "val_recall": 0.7923186344238976,
+            "val_f1": 0.7579858587193551,
+            "val_fpr": 0.1936239830208702
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:34:15.863894",
+        "client_id": 59,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7192753623188406,
+            "val_precision": 0.7167550371155885,
+            "val_recall": 0.7535081665516448,
+            "val_f1": 0.7343853453983668,
+            "val_fpr": 0.1647250698974837
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:34:19.052366",
+        "client_id": 55,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7405181347150259,
+            "val_precision": 0.7343080890529254,
+            "val_recall": 0.7827516372530969,
+            "val_f1": 0.7572489039457951,
+            "val_fpr": 0.18221911022395937
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:34:19.640012",
+        "client_id": 46,
+        "round": 1,
+        "accepted": false,
+        "communication_type": "rejected",
+        "size_bytes": 0,
+        "size_mb": 0.0,
+        "metrics": {
+            "val_accuracy": 0.7701801801801802,
+            "val_precision": 0.7606288981288982,
+            "val_recall": 0.8029871977240399,
+            "val_f1": 0.780850196930599,
+            "val_fpr": 0.13942857142857143
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:34:26.148329",
+        "client_id": 88,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7943121693121693,
+            "val_precision": 0.7918611889200124,
+            "val_recall": 0.8178441209529292,
+            "val_f1": 0.8044926898831182,
+            "val_fpr": 0.11691638233694307
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:34:26.553572",
+        "client_id": 80,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7789473684210526,
+            "val_precision": 0.7741854636591479,
+            "val_recall": 0.8109061313076507,
+            "val_f1": 0.7918186555497655,
+            "val_fpr": 0.14508966513683497
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:34:29.122953",
+        "client_id": 95,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7802688172043011,
+            "val_precision": 0.7705069124423962,
+            "val_recall": 0.8147976130158194,
+            "val_f1": 0.7916029817928297,
+            "val_fpr": 0.14277522935779818
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:34:29.309648",
+        "client_id": 22,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7481560283687942,
+            "val_precision": 0.7420707570509648,
+            "val_recall": 0.7930518617021276,
+            "val_f1": 0.7661208113335773,
+            "val_fpr": 0.18364197530864196
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:34:32.267346",
+        "client_id": 13,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.0,
+            "val_precision": 0.0,
+            "val_recall": 0.0,
+            "val_f1": 0.0,
+            "val_fpr": 0.0
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:34:36.705177",
+        "client_id": 5,
+        "round": 1,
+        "accepted": false,
+        "communication_type": "rejected",
+        "size_bytes": 0,
+        "size_mb": 0.0,
+        "metrics": {
+            "val_accuracy": 0.7591889483065954,
+            "val_precision": 0.7490963557140028,
+            "val_recall": 0.8051488086905395,
+            "val_f1": 0.7754010695187166,
+            "val_fpr": 0.18044384399480543
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:34:37.549659",
+        "client_id": 53,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7378754578754578,
+            "val_precision": 0.7197802197802198,
+            "val_recall": 0.7885349944173474,
+            "val_f1": 0.7516048308127516,
+            "val_fpr": 0.1789263833511621
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:34:38.148919",
+        "client_id": 41,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7695365418894831,
+            "val_precision": 0.7658167351261981,
+            "val_recall": 0.802642999132066,
+            "val_f1": 0.7834896407169538,
+            "val_fpr": 0.15047185062441903
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:34:40.080360",
+        "client_id": 6,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7497754749568222,
+            "val_precision": 0.743200974188773,
+            "val_recall": 0.7878803818942164,
+            "val_f1": 0.7644614652949864,
+            "val_fpr": 0.1633229672330097
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:34:47.219329",
+        "client_id": 25,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7697517730496455,
+            "val_precision": 0.75395467160037,
+            "val_recall": 0.8352726063829787,
+            "val_f1": 0.7909524049611778,
+            "val_fpr": 0.22443922796035473
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:34:47.411612",
+        "client_id": 18,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7565151515151516,
+            "val_precision": 0.7464225589225589,
+            "val_recall": 0.8024750118990956,
+            "val_f1": 0.7727272727272727,
+            "val_fpr": 0.17964676878309016
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:34:47.860259",
+        "client_id": 36,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7574774774774775,
+            "val_precision": 0.7489060489060488,
+            "val_recall": 0.7950213371266003,
+            "val_f1": 0.7708108108108108,
+            "val_fpr": 0.1617141564902759
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:34:51.147701",
+        "client_id": 56,
+        "round": 1,
+        "accepted": false,
+        "communication_type": "rejected",
+        "size_bytes": 0,
+        "size_mb": 0.0,
+        "metrics": {
+            "val_accuracy": 0.7425641025641025,
+            "val_precision": 0.7420989862850328,
+            "val_recall": 0.7774384744233991,
+            "val_f1": 0.7590858416945373,
+            "val_fpr": 0.16993342803231073
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:34:56.808423",
+        "client_id": 73,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.757719298245614,
+            "val_precision": 0.7550148957298908,
+            "val_recall": 0.7952794357026587,
+            "val_f1": 0.7742546020222971,
+            "val_fpr": 0.16669868962072013
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:34:57.508665",
+        "client_id": 42,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7658199643493762,
+            "val_precision": 0.7692213248935937,
+            "val_recall": 0.7813086205448385,
+            "val_f1": 0.7751868894139755,
+            "val_fpr": 0.11314231481899942
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:34:57.518758",
+        "client_id": 60,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7631205673758865,
+            "val_precision": 0.7540991606480578,
+            "val_recall": 0.8115580673758864,
+            "val_f1": 0.7810067462376751,
+            "val_fpr": 0.19069246972090576
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:35:00.003680",
+        "client_id": 39,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7414814814814815,
+            "val_precision": 0.7303703703703703,
+            "val_recall": 0.7992707733640376,
+            "val_f1": 0.7621832358674463,
+            "val_fpr": 0.2157797004448435
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:35:06.672263",
+        "client_id": 0,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7568085106382978,
+            "val_precision": 0.7497154873824838,
+            "val_recall": 0.8009751773049645,
+            "val_f1": 0.77389696272675,
+            "val_fpr": 0.1802509746588694
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:35:07.916246",
+        "client_id": 29,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7504098360655738,
+            "val_precision": 0.7383206341876395,
+            "val_recall": 0.7954452970584815,
+            "val_f1": 0.7651022716432961,
+            "val_fpr": 0.17001104565537556
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:35:08.013863",
+        "client_id": 69,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7137344028520499,
+            "val_precision": 0.6957550518196015,
+            "val_recall": 0.7727832684715962,
+            "val_f1": 0.7310365611254313,
+            "val_fpr": 0.21335805095903687
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:35:10.427138",
+        "client_id": 34,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7410204081632653,
+            "val_precision": 0.7462585034013605,
+            "val_recall": 0.7685204081632653,
+            "val_f1": 0.757117969138875,
+            "val_fpr": 0.15384462151394424
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:35:15.683385",
+        "client_id": 67,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7286507936507937,
+            "val_precision": 0.7287469474969475,
+            "val_recall": 0.7625627107492392,
+            "val_f1": 0.7450223647231129,
+            "val_fpr": 0.16384938371935526
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:35:17.262504",
+        "client_id": 44,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7324866310160427,
+            "val_precision": 0.7418300653594772,
+            "val_recall": 0.7577484111207549,
+            "val_f1": 0.7496460140494617,
+            "val_fpr": 0.16192008348189052
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:35:17.874888",
+        "client_id": 8,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.0,
+            "val_precision": 0.0,
+            "val_recall": 0.0,
+            "val_f1": 0.0,
+            "val_fpr": 0.0
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:35:18.804216",
+        "client_id": 9,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7376344086021506,
+            "val_precision": 0.7283927024410131,
+            "val_recall": 0.7745454033665484,
+            "val_f1": 0.7503209757663296,
+            "val_fpr": 0.15837358934805554
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:35:22.145203",
+        "client_id": 94,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7744326241134751,
+            "val_precision": 0.7676724995028832,
+            "val_recall": 0.8169326241134751,
+            "val_f1": 0.7909679278901582,
+            "val_fpr": 0.1735479797979798
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:35:25.945616",
+        "client_id": 40,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7456994818652849,
+            "val_precision": 0.7482832139227011,
+            "val_recall": 0.7752426290734068,
+            "val_f1": 0.7613645064958268,
+            "val_fpr": 0.15556735436893204
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:35:29.533418",
+        "client_id": 54,
+        "round": 1,
+        "accepted": false,
+        "communication_type": "rejected",
+        "size_bytes": 0,
+        "size_mb": 0.0,
+        "metrics": {
+            "val_accuracy": 0.7241176470588235,
+            "val_precision": 0.7223473121305939,
+            "val_recall": 0.7627040344933785,
+            "val_f1": 0.7416176470588236,
+            "val_fpr": 0.17495706493206026
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:35:30.473612",
+        "client_id": 32,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7615095986038394,
+            "val_precision": 0.7597494739932475,
+            "val_recall": 0.8016378037320446,
+            "val_f1": 0.7797206825484198,
+            "val_fpr": 0.17581860330339033
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:35:32.237095",
+        "client_id": 28,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7703125,
+            "val_precision": 0.7606794724770642,
+            "val_recall": 0.8101084183673469,
+            "val_f1": 0.784080615942029,
+            "val_fpr": 0.1609375
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:35:34.874886",
+        "client_id": 31,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.0,
+            "val_precision": 0.0,
+            "val_recall": 0.0,
+            "val_f1": 0.0,
+            "val_fpr": 0.0
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:35:36.942606",
+        "client_id": 2,
+        "round": 1,
+        "accepted": false,
+        "communication_type": "rejected",
+        "size_bytes": 0,
+        "size_mb": 0.0,
+        "metrics": {
+            "val_accuracy": 0.7450877192982457,
+            "val_precision": 0.7453078450844091,
+            "val_recall": 0.7849158979924037,
+            "val_f1": 0.7642338605133523,
+            "val_fpr": 0.18143049672699268
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:35:39.994565",
+        "client_id": 17,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7605080213903743,
+            "val_precision": 0.7500874606427108,
+            "val_recall": 0.8024190161547722,
+            "val_f1": 0.7747672806496335,
+            "val_fpr": 0.1639341941329709
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:35:40.318497",
+        "client_id": 99,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7701351351351351,
+            "val_precision": 0.752912912912913,
+            "val_recall": 0.8298719772403983,
+            "val_f1": 0.7881471833279062,
+            "val_fpr": 0.20436212660411948
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:35:42.147898",
+        "client_id": 47,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7523661485319516,
+            "val_precision": 0.7417725412260155,
+            "val_recall": 0.7954430716088747,
+            "val_f1": 0.7670521388701159,
+            "val_fpr": 0.17109768378650553
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:35:44.377583",
+        "client_id": 79,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7648245614035087,
+            "val_precision": 0.7624332570556827,
+            "val_recall": 0.7925393380358112,
+            "val_f1": 0.7769982937393358,
+            "val_fpr": 0.13781206228886875
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:35:48.860786",
+        "client_id": 92,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7332971014492753,
+            "val_precision": 0.7198122529644269,
+            "val_recall": 0.7884029215550954,
+            "val_f1": 0.7515081853938556,
+            "val_fpr": 0.20183607520564043
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:35:51.017688",
+        "client_id": 65,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7510752688172043,
+            "val_precision": 0.740042404967439,
+            "val_recall": 0.7906040646287227,
+            "val_f1": 0.7639465559459172,
+            "val_fpr": 0.15626605504587157
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:35:52.200996",
+        "client_id": 49,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7075641025641026,
+            "val_precision": 0.7012696041822255,
+            "val_recall": 0.7451665981077746,
+            "val_f1": 0.7221569778821687,
+            "val_fpr": 0.168479792570881
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:35:55.243329",
+        "client_id": 98,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7245744680851064,
+            "val_precision": 0.7202887537993921,
+            "val_recall": 0.7611369680851063,
+            "val_f1": 0.7397983486821214,
+            "val_fpr": 0.16666666666666666
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:35:59.642379",
+        "client_id": 86,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7581578947368421,
+            "val_precision": 0.7594993581514762,
+            "val_recall": 0.7848073792729245,
+            "val_f1": 0.7718045112781954,
+            "val_fpr": 0.13878344683859922
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:36:02.847105",
+        "client_id": 93,
+        "round": 1,
+        "accepted": false,
+        "communication_type": "rejected",
+        "size_bytes": 0,
+        "size_mb": 0.0,
+        "metrics": {
+            "val_accuracy": 0.7626963350785341,
+            "val_precision": 0.7629299799383471,
+            "val_recall": 0.8043630017452007,
+            "val_f1": 0.7826841101396588,
+            "val_fpr": 0.18713431560965194
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:36:04.237574",
+        "client_id": 90,
+        "round": 1,
+        "accepted": false,
+        "communication_type": "rejected",
+        "size_bytes": 0,
+        "size_mb": 0.0,
+        "metrics": {
+            "val_accuracy": 0.7485449735449735,
+            "val_precision": 0.7431990615952879,
+            "val_recall": 0.7861529182772706,
+            "val_f1": 0.7636684303350969,
+            "val_fpr": 0.16614631849402706
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:36:05.402532",
+        "client_id": 4,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7103030303030302,
+            "val_precision": 0.7088744588744589,
+            "val_recall": 0.7555505550555055,
+            "val_f1": 0.7310072556551429,
+            "val_fpr": 0.20895858343337334
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:36:08.463650",
+        "client_id": 77,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7472751322751323,
+            "val_precision": 0.7381941353903971,
+            "val_recall": 0.7859884310661513,
+            "val_f1": 0.7608582608582608,
+            "val_fpr": 0.16298004326000898
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:36:09.756096",
+        "client_id": 72,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7551801801801802,
+            "val_precision": 0.7582371316039658,
+            "val_recall": 0.7793029871977241,
+            "val_f1": 0.7685263669839506,
+            "val_fpr": 0.1360501567398119
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:36:10.445995",
+        "client_id": 74,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.0,
+            "val_precision": 0.0,
+            "val_recall": 0.0,
+            "val_f1": 0.0,
+            "val_fpr": 0.0
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:36:10.599319",
+        "client_id": 30,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7432258064516128,
+            "val_precision": 0.7416934209855781,
+            "val_recall": 0.785861059505714,
+            "val_f1": 0.7626785427700209,
+            "val_fpr": 0.18953104428329606
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:36:12.271891",
+        "client_id": 78,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7571746880570409,
+            "val_precision": 0.7444071039591816,
+            "val_recall": 0.8050368172018927,
+            "val_f1": 0.7727207353268046,
+            "val_fpr": 0.1801974295760417
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:36:16.083915",
+        "client_id": 71,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7636842105263157,
+            "val_precision": 0.760004965243297,
+            "val_recall": 0.8004883342376561,
+            "val_f1": 0.7793492351568576,
+            "val_fpr": 0.16254756619628985
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:36:16.119583",
+        "client_id": 11,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7405027932960895,
+            "val_precision": 0.7292282834921678,
+            "val_recall": 0.7769158367743503,
+            "val_f1": 0.7518429994816564,
+            "val_fpr": 0.1528849744802689
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:36:26.229916",
+        "client_id": 17,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7605080213903743,
+            "val_precision": 0.7483783917607447,
+            "val_recall": 0.8050368172018927,
+            "val_f1": 0.7749674808498337,
+            "val_fpr": 0.16852135009627364
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:36:28.795682",
+        "client_id": 18,
+        "round": 1,
+        "accepted": false,
+        "communication_type": "rejected",
+        "size_bytes": 0,
+        "size_mb": 0.0,
+        "metrics": {
+            "val_accuracy": 0.7528342245989305,
+            "val_precision": 0.741405653170359,
+            "val_recall": 0.7997452193633283,
+            "val_f1": 0.7687165775401069,
+            "val_fpr": 0.18074809036899325
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:36:29.633539",
+        "client_id": 4,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7204545454545455,
+            "val_precision": 0.7246782897467829,
+            "val_recall": 0.7608010801080108,
+            "val_f1": 0.7420103649319801,
+            "val_fpr": 0.20070528211284516
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:36:30.381636",
+        "client_id": 16,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7203124999999999,
+            "val_precision": 0.7091391068759343,
+            "val_recall": 0.7684417517006803,
+            "val_f1": 0.7368797235481304,
+            "val_fpr": 0.19330929487179488
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:36:33.018720",
+        "client_id": 24,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7448797250859107,
+            "val_precision": 0.7407987282011754,
+            "val_recall": 0.7811382284872712,
+            "val_f1": 0.760082977118431,
+            "val_fpr": 0.1625243664717349
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:36:34.958185",
+        "client_id": 31,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.0,
+            "val_precision": 0.0,
+            "val_recall": 0.0,
+            "val_f1": 0.0,
+            "val_fpr": 0.0
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:36:38.042390",
+        "client_id": 28,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7771874999999999,
+            "val_precision": 0.7679171466973886,
+            "val_recall": 0.8153167517006803,
+            "val_f1": 0.7904118744955609,
+            "val_fpr": 0.15508814102564103
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:36:39.333307",
+        "client_id": 29,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7564754098360655,
+            "val_precision": 0.7434002924651736,
+            "val_recall": 0.8008371119637252,
+            "val_f1": 0.7703282776664896,
+            "val_fpr": 0.1650312960235641
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:36:39.996088",
+        "client_id": 26,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.753157894736842,
+            "val_precision": 0.7567853457172342,
+            "val_recall": 0.7796527400976668,
+            "val_f1": 0.7679317640835757,
+            "val_fpr": 0.14864893707845983
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:36:43.315467",
+        "client_id": 43,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.0,
+            "val_precision": 0.0,
+            "val_recall": 0.0,
+            "val_f1": 0.0,
+            "val_fpr": 0.0
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:36:45.306044",
+        "client_id": 35,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7372425828970331,
+            "val_precision": 0.7318904702209768,
+            "val_recall": 0.7726271982816486,
+            "val_f1": 0.7513602299558567,
+            "val_fpr": 0.15714285714285714
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:36:48.271261",
+        "client_id": 39,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7474603174603174,
+            "val_precision": 0.7337598769316831,
+            "val_recall": 0.8070976231597993,
+            "val_f1": 0.7674603174603175,
+            "val_fpr": 0.2152338489164592
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:36:49.475042",
+        "client_id": 42,
+        "round": 1,
+        "accepted": false,
+        "communication_type": "rejected",
+        "size_bytes": 0,
+        "size_mb": 0.0,
+        "metrics": {
+            "val_accuracy": 0.7527985739750445,
+            "val_precision": 0.7606051370147682,
+            "val_recall": 0.7654338270291458,
+            "val_f1": 0.7630069073083778,
+            "val_fpr": 0.1149896054593935
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:36:52.909354",
+        "client_id": 56,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7551282051282051,
+            "val_precision": 0.7463046757164404,
+            "val_recall": 0.7950779538719237,
+            "val_f1": 0.7694139194139195,
+            "val_fpr": 0.16939809612652915
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:36:55.328385",
+        "client_id": 64,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7264021164021164,
+            "val_precision": 0.7232601706285917,
+            "val_recall": 0.7597527208926173,
+            "val_f1": 0.7407802258548528,
+            "val_fpr": 0.1633604548781652
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:36:59.268257",
+        "client_id": 65,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7467204301075269,
+            "val_precision": 0.7370663420572124,
+            "val_recall": 0.7852980915385914,
+            "val_f1": 0.7599255583126552,
+            "val_fpr": 0.15676605504587157
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:36:59.886559",
+        "client_id": 66,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.774021164021164,
+            "val_precision": 0.7845339845339845,
+            "val_recall": 0.7892370534857582,
+            "val_f1": 0.7868733976981399,
+            "val_fpr": 0.12043451048617225
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:37:01.157241",
+        "client_id": 75,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.0,
+            "val_precision": 0.0,
+            "val_recall": 0.0,
+            "val_f1": 0.0,
+            "val_fpr": 0.0
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:37:02.232867",
+        "client_id": 69,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7120677361853832,
+            "val_precision": 0.6954010695187165,
+            "val_recall": 0.7701654674244758,
+            "val_f1": 0.7297279925956397,
+            "val_fpr": 0.21335805095903687
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:37:04.580883",
+        "client_id": 73,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.762719298245614,
+            "val_precision": 0.7559363525091799,
+            "val_recall": 0.8030113944655453,
+            "val_f1": 0.7782653455153776,
+            "val_fpr": 0.16669868962072013
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:37:10.974021",
+        "client_id": 77,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7456084656084656,
+            "val_precision": 0.7379089350920337,
+            "val_recall": 0.7833977574910218,
+            "val_f1": 0.7595329319467251,
+            "val_fpr": 0.16298004326000898
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:37:12.764779",
+        "client_id": 94,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7614893617021277,
+            "val_precision": 0.7513730826323601,
+            "val_recall": 0.8034685283687943,
+            "val_f1": 0.775948821161587,
+            "val_fpr": 0.1688341750841751
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:37:12.820230",
+        "client_id": 89,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7762032085561498,
+            "val_precision": 0.7634125108817311,
+            "val_recall": 0.8183498054147885,
+            "val_f1": 0.789257395748268,
+            "val_fpr": 0.1584276790942807
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:37:14.338227",
+        "client_id": 98,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7342198581560284,
+            "val_precision": 0.73216671805941,
+            "val_recall": 0.766511524822695,
+            "val_f1": 0.7486935423665546,
+            "val_fpr": 0.1558641975308642
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:37:14.743382",
+        "client_id": 52,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.0,
+            "val_precision": 0.0,
+            "val_recall": 0.0,
+            "val_f1": 0.0,
+            "val_fpr": 0.0
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:37:16.692348",
+        "client_id": 83,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7487634408602151,
+            "val_precision": 0.7473908918406071,
+            "val_recall": 0.7775854303890108,
+            "val_f1": 0.7619912889614808,
+            "val_fpr": 0.14642386966717408
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:37:19.290435",
+        "client_id": 74,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.0,
+            "val_precision": 0.0,
+            "val_recall": 0.0,
+            "val_f1": 0.0,
+            "val_fpr": 0.0
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:37:21.070801",
+        "client_id": 21,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7481081081081081,
+            "val_precision": 0.7565617163555308,
+            "val_recall": 0.7660028449502134,
+            "val_f1": 0.7612331081081081,
+            "val_fpr": 0.13214021750607116
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:37:22.799357",
+        "client_id": 41,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7745365418894831,
+            "val_precision": 0.7666793990323402,
+            "val_recall": 0.8104964022734272,
+            "val_f1": 0.7875498419726086,
+            "val_fpr": 0.15047185062441903
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:37:25.611633",
+        "client_id": 61,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7836842105263158,
+            "val_precision": 0.7780111336032389,
+            "val_recall": 0.8107976125881715,
+            "val_f1": 0.793833464257659,
+            "val_fpr": 0.1275185691112439
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:37:28.587533",
+        "client_id": 30,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7438709677419355,
+            "val_precision": 0.7397395123428745,
+            "val_recall": 0.7884084895569442,
+            "val_f1": 0.7627488555307144,
+            "val_fpr": 0.19010052036530062
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:37:30.624312",
+        "client_id": 60,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7717730496453901,
+            "val_precision": 0.7617118875658794,
+            "val_recall": 0.8194813829787234,
+            "val_f1": 0.7887649195640892,
+            "val_fpr": 0.18487800596805334
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:37:31.844975",
+        "client_id": 92,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7276811594202899,
+            "val_precision": 0.7175898352193766,
+            "val_recall": 0.7831838049229354,
+            "val_f1": 0.7479752770673487,
+            "val_fpr": 0.21030160595377986
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:37:35.504620",
+        "client_id": 38,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7091534391534391,
+            "val_precision": 0.7044116551158806,
+            "val_recall": 0.7491707103106067,
+            "val_f1": 0.7256887429301223,
+            "val_fpr": 0.1782575574589844
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:37:38.530755",
+        "client_id": 8,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.0,
+            "val_precision": 0.0,
+            "val_recall": 0.0,
+            "val_f1": 0.0,
+            "val_fpr": 0.0
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:37:39.791523",
+        "client_id": 55,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.739594127806563,
+            "val_precision": 0.7320183702308054,
+            "val_recall": 0.7826990347439573,
+            "val_f1": 0.7559610342813832,
+            "val_fpr": 0.1827573233563598
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:37:41.869381",
+        "client_id": 1,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7286736474694591,
+            "val_precision": 0.7355890703550312,
+            "val_recall": 0.7494428782386897,
+            "val_f1": 0.7424110212068327,
+            "val_fpr": 0.13428571428571429
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:37:44.369382",
+        "client_id": 27,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7342198581560284,
+            "val_precision": 0.7234287675262281,
+            "val_recall": 0.7795323581560284,
+            "val_f1": 0.7497659054257921,
+            "val_fpr": 0.18184043073910916
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:37:45.374009",
+        "client_id": 20,
+        "round": 1,
+        "accepted": false,
+        "communication_type": "rejected",
+        "size_bytes": 0,
+        "size_mb": 0.0,
+        "metrics": {
+            "val_accuracy": 0.736025641025641,
+            "val_precision": 0.7275036284470247,
+            "val_recall": 0.7836281365693131,
+            "val_f1": 0.7538075959128591,
+            "val_fpr": 0.18713010890335988
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:37:47.273940",
+        "client_id": 10,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.0,
+            "val_precision": 0.0,
+            "val_recall": 0.0,
+            "val_f1": 0.0,
+            "val_fpr": 0.0
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:37:47.827476",
+        "client_id": 40,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7534715025906735,
+            "val_precision": 0.7560552346480898,
+            "val_recall": 0.7830146497987954,
+            "val_f1": 0.7691365272212154,
+            "val_fpr": 0.15400485436893205
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:37:49.226249",
+        "client_id": 86,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7667543859649122,
+            "val_precision": 0.7597356066221892,
+            "val_recall": 0.8029571351058058,
+            "val_f1": 0.7803375145480409,
+            "val_fpr": 0.15194819694094006
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:37:55.381964",
+        "client_id": 87,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7524866310160427,
+            "val_precision": 0.7354145589439707,
+            "val_recall": 0.8048688299689224,
+            "val_f1": 0.7675350571661639,
+            "val_fpr": 0.1864365679181991
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:37:56.684847",
+        "client_id": 99,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7701351351351351,
+            "val_precision": 0.7514346946065008,
+            "val_recall": 0.8325035561877667,
+            "val_f1": 0.7883725452070776,
+            "val_fpr": 0.20890758114957403
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:37:58.332232",
+        "client_id": 54,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.734812834224599,
+            "val_precision": 0.7365201512977697,
+            "val_recall": 0.7681636195649131,
+            "val_f1": 0.7517825311942958,
+            "val_fpr": 0.16384288879594944
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:37:58.963239",
+        "client_id": 45,
+        "round": 1,
+        "accepted": false,
+        "communication_type": "rejected",
+        "size_bytes": 0,
+        "size_mb": 0.0,
+        "metrics": {
+            "val_accuracy": 0.7236594202898551,
+            "val_precision": 0.7112520128824477,
+            "val_recall": 0.7720985737290085,
+            "val_f1": 0.7396470746108427,
+            "val_fpr": 0.1859873644831272
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:38:01.541819",
+        "client_id": 14,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7493804537521815,
+            "val_precision": 0.7357318051035329,
+            "val_recall": 0.7959189152906431,
+            "val_f1": 0.7638768566298794,
+            "val_fpr": 0.17926533560336377
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:38:05.455397",
+        "client_id": 81,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7660383944153577,
+            "val_precision": 0.7554447871094216,
+            "val_recall": 0.8091153174922808,
+            "val_f1": 0.7807243847535221,
+            "val_fpr": 0.17205387205387204
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:38:05.498923",
+        "client_id": 46,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.777027027027027,
+            "val_precision": 0.773105458399576,
+            "val_recall": 0.8059743954480796,
+            "val_f1": 0.7889559610371792,
+            "val_fpr": 0.13657142857142857
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:38:06.570458",
+        "client_id": 6,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7686528497409326,
+            "val_precision": 0.7592921191473254,
+            "val_recall": 0.8085005654769732,
+            "val_f1": 0.7825951574332404,
+            "val_fpr": 0.1603932797330097
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:38:12.161690",
+        "client_id": 68,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7772486772486773,
+            "val_precision": 0.7880777804635672,
+            "val_recall": 0.7972832195630123,
+            "val_f1": 0.7926332926332926,
+            "val_fpr": 0.13402066953468822
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:38:14.461814",
+        "client_id": 58,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7266666666666667,
+            "val_precision": 0.7381443298969073,
+            "val_recall": 0.7473684210526316,
+            "val_f1": 0.7427083333333333,
+            "val_fpr": 0.14879047990635974
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:38:16.077561",
+        "client_id": 34,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7460204081632653,
+            "val_precision": 0.7470297978346268,
+            "val_recall": 0.7760204081632653,
+            "val_f1": 0.7610688343133863,
+            "val_fpr": 0.1536904761904762
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:38:18.971391",
+        "client_id": 15,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7789862542955326,
+            "val_precision": 0.7715056341404939,
+            "val_recall": 0.8145644855880496,
+            "val_f1": 0.792039782276068,
+            "val_fpr": 0.1502079002079002
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:38:22.059766",
+        "client_id": 62,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7733333333333333,
+            "val_precision": 0.7676056338028169,
+            "val_recall": 0.812607944732297,
+            "val_f1": 0.7889983579638752,
+            "val_fpr": 0.1630826772783363
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:38:25.050466",
+        "client_id": 67,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7226719576719576,
+            "val_precision": 0.716931216931217,
+            "val_recall": 0.7676892288291252,
+            "val_f1": 0.740883041616538,
+            "val_fpr": 0.18769696148810328
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:38:26.054331",
+        "client_id": 19,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7506521739130434,
+            "val_precision": 0.7499204665959702,
+            "val_recall": 0.786260639521509,
+            "val_f1": 0.7673526815272567,
+            "val_fpr": 0.16882507507507508
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:38:28.641942",
+        "client_id": 7,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7445161290322581,
+            "val_precision": 0.7361751152073732,
+            "val_recall": 0.7935737206552946,
+            "val_f1": 0.763045540796964,
+            "val_fpr": 0.19703473132372215
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:38:31.897340",
+        "client_id": 96,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7610416666666666,
+            "val_precision": 0.7517992424242423,
+            "val_recall": 0.804953231292517,
+            "val_f1": 0.7768429487179487,
+            "val_fpr": 0.17848557692307693
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:38:35.568115",
+        "client_id": 11,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7450093109869647,
+            "val_precision": 0.7319644391920929,
+            "val_recall": 0.7880890211318922,
+            "val_f1": 0.7583086307148559,
+            "val_fpr": 0.167719614921781
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:38:35.651962",
+        "client_id": 25,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7601063829787233,
+            "val_precision": 0.7441972920696325,
+            "val_recall": 0.8272938829787234,
+            "val_f1": 0.7819148936170213,
+            "val_fpr": 0.23082942097026604
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:38:37.126772",
+        "client_id": 37,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7492307692307691,
+            "val_precision": 0.7397838335058066,
+            "val_recall": 0.7925138513078211,
+            "val_f1": 0.7646494106209746,
+            "val_fpr": 0.17730732872282204
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:38:37.383005",
+        "client_id": 47,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7481088082901555,
+            "val_precision": 0.7355412407225879,
+            "val_recall": 0.7954165005978477,
+            "val_f1": 0.7635404629664144,
+            "val_fpr": 0.18112501798302402
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:38:44.575547",
+        "client_id": 3,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7378723404255318,
+            "val_precision": 0.7318346045764753,
+            "val_recall": 0.7770390070921986,
+            "val_f1": 0.7533178849799874,
+            "val_fpr": 0.16645133505598622
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:38:47.429066",
+        "client_id": 2,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7474561403508772,
+            "val_precision": 0.7453669384729429,
+            "val_recall": 0.787438958220293,
+            "val_f1": 0.7654209233156601,
+            "val_fpr": 0.17722371967654987
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:38:47.914162",
+        "client_id": 95,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7819354838709678,
+            "val_precision": 0.7707664475360546,
+            "val_recall": 0.8174154140629398,
+            "val_f1": 0.7929305087465897,
+            "val_fpr": 0.14277522935779818
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:38:48.578845",
+        "client_id": 70,
+        "round": 1,
+        "accepted": false,
+        "communication_type": "rejected",
+        "size_bytes": 0,
+        "size_mb": 0.0,
+        "metrics": {
+            "val_accuracy": 0.7680423280423281,
+            "val_precision": 0.7589179040791945,
+            "val_recall": 0.8124982865915509,
+            "val_f1": 0.7841398890179379,
+            "val_fpr": 0.1711392968402314
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:38:54.891961",
+        "client_id": 23,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.772482269503546,
+            "val_precision": 0.764387031408308,
+            "val_recall": 0.8061281028368794,
+            "val_f1": 0.7843230655234465,
+            "val_fpr": 0.14376218323586745
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:38:57.568425",
+        "client_id": 5,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7645365418894832,
+            "val_precision": 0.7561097506122245,
+            "val_recall": 0.8078786012263068,
+            "val_f1": 0.7805241962104708,
+            "val_fpr": 0.17471513552008713
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:38:57.892914",
+        "client_id": 51,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7511675579322639,
+            "val_precision": 0.7410749653396712,
+            "val_recall": 0.7971274183162079,
+            "val_f1": 0.767379679144385,
+            "val_fpr": 0.17631489529123523
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:38:59.193368",
+        "client_id": 36,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7618468468468469,
+            "val_precision": 0.7519021391059306,
+            "val_recall": 0.8003556187766714,
+            "val_f1": 0.7748601469299723,
+            "val_fpr": 0.15944976076555023
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:39:06.724048",
+        "client_id": 57,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7397747747747747,
+            "val_precision": 0.7266601443072032,
+            "val_recall": 0.794950213371266,
+            "val_f1": 0.7582297626093246,
+            "val_fpr": 0.1981694375663247
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:39:07.276392",
+        "client_id": 82,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7485449735449735,
+            "val_precision": 0.7414577461306433,
+            "val_recall": 0.7887435918524002,
+            "val_f1": 0.7638807638807639,
+            "val_fpr": 0.1669083151712164
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:39:07.528648",
+        "client_id": 71,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7663157894736843,
+            "val_precision": 0.7626365441906653,
+            "val_recall": 0.8031199131850244,
+            "val_f1": 0.7819808141042262,
+            "val_fpr": 0.16202235611225624
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:39:10.097968",
+        "client_id": 91,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.751762652705061,
+            "val_precision": 0.7426153658833556,
+            "val_recall": 0.7881729091153175,
+            "val_f1": 0.7642829779083131,
+            "val_fpr": 0.15210496772382823
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:39:16.189227",
+        "client_id": 33,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7541448516579407,
+            "val_precision": 0.7501384414015304,
+            "val_recall": 0.780426902939992,
+            "val_f1": 0.7647941485975602,
+            "val_fpr": 0.1342964151952916
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:39:17.517714",
+        "client_id": 53,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7362087912087912,
+            "val_precision": 0.721115333264866,
+            "val_recall": 0.7831874008344597,
+            "val_f1": 0.7500616590392152,
+            "val_fpr": 0.17450160459010017
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:39:18.528283",
+        "client_id": 84,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7932275132275133,
+            "val_precision": 0.7837701488864279,
+            "val_recall": 0.8336074786851989,
+            "val_f1": 0.8073451602863368,
+            "val_fpr": 0.15919783705532964
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:39:18.907722",
+        "client_id": 88,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7972486772486772,
+            "val_precision": 0.8054538054538054,
+            "val_recall": 0.8102365874386599,
+            "val_f1": 0.8078328696885397,
+            "val_fpr": 0.10131038916085644
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:39:26.071573",
+        "client_id": 50,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.74,
+            "val_precision": 0.744976076555024,
+            "val_recall": 0.7673366834170854,
+            "val_f1": 0.7558823529411764,
+            "val_fpr": 0.1517254638085168
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:39:27.328136",
+        "client_id": 90,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7651058201058201,
+            "val_precision": 0.7552910052910053,
+            "val_recall": 0.8071524522301725,
+            "val_f1": 0.7797635218173116,
+            "val_fpr": 0.16808099006049687
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:39:29.396471",
+        "client_id": 49,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7174725274725275,
+            "val_precision": 0.7116188689359422,
+            "val_recall": 0.7534083563495328,
+            "val_f1": 0.7315541601255887,
+            "val_fpr": 0.16246265712192098
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:39:30.140461",
+        "client_id": 79,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.763859649122807,
+            "val_precision": 0.7581453634085213,
+            "val_recall": 0.7950623982637005,
+            "val_f1": 0.7758728504429391,
+            "val_fpr": 0.1430748949493285
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:39:31.754771",
+        "client_id": 13,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.0,
+            "val_precision": 0.0,
+            "val_recall": 0.0,
+            "val_f1": 0.0,
+            "val_fpr": 0.0
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:39:35.414780",
+        "client_id": 44,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7431461675579323,
+            "val_precision": 0.741706038108094,
+            "val_recall": 0.7760170227062744,
+            "val_f1": 0.7582133380029364,
+            "val_fpr": 0.16251250054350191
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:39:38.875129",
+        "client_id": 63,
+        "round": 1,
+        "accepted": false,
+        "communication_type": "rejected",
+        "size_bytes": 0,
+        "size_mb": 0.0,
+        "metrics": {
+            "val_accuracy": 0.7377891156462585,
+            "val_precision": 0.735986702373257,
+            "val_recall": 0.7811224489795918,
+            "val_f1": 0.7574288622812546,
+            "val_fpr": 0.1957725321888412
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:39:40.557166",
+        "client_id": 12,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7511904761904762,
+            "val_precision": 0.7374517374517375,
+            "val_recall": 0.8017517887984209,
+            "val_f1": 0.7673551348250143,
+            "val_fpr": 0.1919355371354975
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:39:42.597414",
+        "client_id": 59,
+        "round": 1,
+        "accepted": false,
+        "communication_type": "rejected",
+        "size_bytes": 0,
+        "size_mb": 0.0,
+        "metrics": {
+            "val_accuracy": 0.7111231884057971,
+            "val_precision": 0.7033664743457655,
+            "val_recall": 0.7532925005751092,
+            "val_f1": 0.7269565217391304,
+            "val_fpr": 0.17985496272134205
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:39:43.542112",
+        "client_id": 0,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7647872340425532,
+            "val_precision": 0.7593646988312855,
+            "val_recall": 0.8063497340425532,
+            "val_f1": 0.781639085894405,
+            "val_fpr": 0.1739766081871345
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:39:48.321232",
+        "client_id": 97,
+        "round": 1,
+        "accepted": false,
+        "communication_type": "rejected",
+        "size_bytes": 0,
+        "size_mb": 0.0,
+        "metrics": {
+            "val_accuracy": 0.7270034542314334,
+            "val_precision": 0.7269405611496724,
+            "val_recall": 0.7645675567955361,
+            "val_f1": 0.7449682371962164,
+            "val_fpr": 0.17919825578514445
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:39:49.548655",
+        "client_id": 9,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7376344086021506,
+            "val_precision": 0.7320788530465949,
+            "val_recall": 0.7693098012723076,
+            "val_f1": 0.7499459663910952,
+            "val_fpr": 0.14919927742145003
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:39:51.825071",
+        "client_id": 32,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7715095986038394,
+            "val_precision": 0.7616611137553546,
+            "val_recall": 0.81702241911666,
+            "val_f1": 0.7876742572383777,
+            "val_fpr": 0.17581860330339033
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:39:52.072813",
+        "client_id": 80,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.8033333333333332,
+            "val_precision": 0.7957547169811321,
+            "val_recall": 0.8371134020618556,
+            "val_f1": 0.8155172413793104,
+            "val_fpr": 0.14058516063233045
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:39:57.745478",
+        "client_id": 22,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.759468085106383,
+            "val_precision": 0.7491256193529583,
+            "val_recall": 0.808843085106383,
+            "val_f1": 0.7770228296319304,
+            "val_fpr": 0.1867283950617284
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:39:59.516532",
+        "client_id": 48,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7493749999999999,
+            "val_precision": 0.741475149476831,
+            "val_recall": 0.7998511904761905,
+            "val_f1": 0.7687823190135241,
+            "val_fpr": 0.20117705570291777
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:40:01.621448",
+        "client_id": 78,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7662032085561498,
+            "val_precision": 0.7531438478255561,
+            "val_recall": 0.8157320043676681,
+            "val_f1": 0.7823007695317595,
+            "val_fpr": 0.18136345891079447
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:40:02.872908",
+        "client_id": 93,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7726963350785341,
+            "val_precision": 0.7665954176473413,
+            "val_recall": 0.8171835145657136,
+            "val_f1": 0.7904808387104953,
+            "val_fpr": 0.1823724108477472
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:40:04.888366",
+        "client_id": 72,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7566216216216216,
+            "val_precision": 0.7575822127546266,
+            "val_recall": 0.7874110953058322,
+            "val_f1": 0.7720033010109346,
+            "val_fpr": 0.15266457680250783
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:40:07.613546",
+        "client_id": 85,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.7548924731182796,
+            "val_precision": 0.7426197458455523,
+            "val_recall": 0.8068034678826774,
+            "val_f1": 0.7724472176438271,
+            "val_fpr": 0.19438073394495414
+        }
+    },
+    {
+        "timestamp": "2026-01-02T21:40:08.187037",
+        "client_id": 76,
+        "round": 1,
+        "accepted": true,
+        "communication_type": "full_model",
+        "size_bytes": 82140,
+        "size_mb": 0.07833480834960938,
+        "metrics": {
+            "val_accuracy": 0.744672131147541,
+            "val_precision": 0.7314368370298939,
+            "val_recall": 0.8037146843390304,
+            "val_f1": 0.7646599062086656,
+            "val_fpr": 0.21440018315018314
+        }
+    }
+]

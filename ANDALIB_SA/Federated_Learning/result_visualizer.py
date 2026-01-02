@@ -147,7 +147,7 @@ def plot_and_save_energy_temp(metrics_folder, result_path):
                     record = {
                         'call_number': entry.get('call_number'),
                         'client_id': entry.get('client_id'),
-                        'E': entry.get('E'),  # Direct access to 'E'
+                        'E' : entry.get("E", entry.get("prev_E")),
                         'temp': entry.get('temp')  # Direct access to 'temp'
                     }
                     all_records.append(record)
