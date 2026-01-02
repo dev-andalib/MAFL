@@ -218,7 +218,7 @@ class CommunicationAwareSA(SA):
                 plot_and_save_averaged_metrics('train_metrics',METRICS_BASE, RESULTS_BASE)
                 plot_and_save_averaged_metrics('val_metrics',METRICS_BASE, RESULTS_BASE)
                 plot_and_save_averaged_metrics('test_metrics',METRICS_BASE, RESULTS_BASE)
-                plot_and_save_energy_temp(r"D:\T24\MAFL\ANDALIB_SA\client_sa_metrics" , r"D:\T24\MAFL\ANDALIB_SA\results")
+                plot_and_save_energy_temp(r"D:\T24\MAFL\IDS-FL-CSE400-FINAL_Manuscript Phase\client_sa_metrics" , r"D:\T24\MAFL\IDS-FL-CSE400-FINAL_Manuscript Phase\results")
                 
                 
 

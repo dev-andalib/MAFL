@@ -1335,6 +1335,6 @@ def test(net, testloader, device, cid=None):
 
     
     
-    save_metrics_graphs(output_dict, 'test')
+    save_metrics_graphs(output_dict, cid, 'test')
     output_dict= {}
     return total_loss, len(testloader), output_dict
