@@ -3,7 +3,8 @@
 import torch
 from flwr.client import ClientApp, NumPyClient
 from flwr.common import Context
-from Federated_Learning.task import get_weights, data_load_preprocess, set_weights, test, train, BinaryNIDS
+from Federated_Learning.task import get_weights, load_data, set_weights, test, train, Net
+from Federated_Learning.getdist import get_class_distribution
 from Federated_Learning.communication_utils import (
     calculate_and_log_communication, 
     get_zero_parameters_for_rejected_client,
@@ -13,14 +14,17 @@ from Federated_Learning.communication_utils import (
 # Define Flower Client
 
 class FlowerClient(NumPyClient):
-    def __init__(self, trainloader, valloader, testloader, pos_weight, local_epochs, learning_rate, cid: int):
+    def __init__(self, trainloader, valloader, testloader, multiclass_loader, multiclass_val_loader, pos_weight, attack_class_weights, local_epochs, learning_rate, cid: int):
         # Use GPU if available, otherwise CPU
-        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")        
-        self.net = BinaryNIDS().to(self.device)
+        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")       
+        self.net = Net().to(self.device)
         self.trainloader = trainloader
         self.valloader = valloader
         self.testloader = testloader
+        self.multiclass_loader = multiclass_loader
+        self.multiclass_val_loader = multiclass_val_loader
         self.pos_weight = pos_weight.to(self.device) if pos_weight is not None else None
+        self.attack_class_weights = attack_class_weights.to(self.device) if attack_class_weights is not None else None
         self.local_epochs = local_epochs
         self.learning_rate = learning_rate
         self.cid = cid
@@ -33,29 +37,19 @@ class FlowerClient(NumPyClient):
         
         set_weights(self.net, parameters)
         temp = float(config.get("temp", 0.0))
-        results, client_accept = train(
-            model=self.net, 
-            train_loader=self.trainloader, 
-            val_loader=self.valloader,
-            device=self.device, 
-            epochs=self.local_epochs, 
-            learning_rate=self.learning_rate,
-            pos_weight=self.pos_weight,
-            cid=self.cid,
-            temp=temp,
-        )
-        results['val']["accept"] = client_accept
+        results, client_accept = train(self.net, self.trainloader, self.valloader, self.multiclass_loader, 
+                       self.multiclass_val_loader, self.pos_weight, self.attack_class_weights, 
+                       self.local_epochs, self.learning_rate, self.device, temp, self.cid)
+        results["accept"] = client_accept
         
         # COMMUNICATION OPTIMIZATION: Return different parameters based on SA decision
         if client_accept:
-            # Client accepted by SA - send full model parameters
             model_weights = get_weights(self.net)
         else:
-            # Client rejected by SA - send zero parameters to save communication
             full_weights = get_weights(self.net)
             model_weights = get_zero_parameters_for_rejected_client(full_weights)
         
-        # Log communication event for analysis
+        
         calculate_and_log_communication(
             client_id=self.cid,
             round_num=self.current_round,
@@ -70,7 +64,7 @@ class FlowerClient(NumPyClient):
             }
         )
         
-        return model_weights, len(self.trainloader.dataset), results['train']
+        return model_weights, len(self.trainloader.dataset), results
 
     def evaluate(self, parameters, config):
         set_weights(self.net, parameters)
@@ -88,9 +82,7 @@ def client_fn(context: Context):
     num_partitions = context.node_config["num-partitions"]
     # Read run_config to fetch hyperparameters relevant to this run
     batch_size = context.run_config["batch-size"]
-    trainloader, valloader, testloader,   pos_weight = data_load_preprocess(partition_id, 
-                                                                            num_partitions, 
-                                                                            batch_size)
+    trainloader, valloader, testloader, multiclass_loader, multiclass_val_loader, pos_weight, attack_class_weights = load_data(partition_id, num_partitions, batch_size)
     # get_class_distribution(partition_id, trainloader, "Training data class distribution")
     # get_class_distribution(partition_id, valloader, "Validation data class distribution")
     # get_class_distribution(partition_id, testloader, "Test data class distribution")    
@@ -98,9 +90,7 @@ def client_fn(context: Context):
     learning_rate = context.run_config["learning-rate"]
 
     # Return Client instance
-    return FlowerClient(trainloader, valloader, testloader, 
-                        pos_weight,  local_epochs, learning_rate, 
-                        partition_id).to_client()
+    return FlowerClient(trainloader, valloader, testloader, multiclass_loader, multiclass_val_loader, pos_weight, attack_class_weights, local_epochs, learning_rate, partition_id).to_client()
 
 
 # Flower ClientApp

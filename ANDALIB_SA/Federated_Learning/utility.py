@@ -7,15 +7,12 @@ import random
 import torch
 import shutil
 
-
-
 ##################################################
 #           BASIC UTILITY FUNCTION               #
 ##################################################
-def save_metrics_graphs(metrics_dict, client_id, file_name, output_folder=r"D:\T24\MAFL\ANDALIB_SA\client_metrics"):
+def save_metrics_graphs(metrics_dict, client_id, file_name, output_folder=r"client_metrics/"):
     
-    # 1. Define the directory path (e.g., .../client_metrics/train_metrics)
-    # 'file_name' acts as the subdirectory name here
+    # 1. Define the directory path
     target_directory = os.path.join(output_folder, file_name)
     
     # 2. Create the DIRECTORY
@@ -24,18 +21,17 @@ def save_metrics_graphs(metrics_dict, client_id, file_name, output_folder=r"D:\T
     # 3. Define the full FILE path
     output_file_path = os.path.join(target_directory, f"client_{client_id}_metrics.json")
 
-    # [SAFETY FIX] Check if a FOLDER exists with the same name as the file (from previous bugs)
+    # [SAFETY FIX] Check if a FOLDER exists with the same name as the file
     if os.path.exists(output_file_path) and os.path.isdir(output_file_path):
-        print(f"cleaning up incorrect directory: {output_file_path}")
         try:
-            shutil.rmtree(output_file_path) # Force delete the folder
+            shutil.rmtree(output_file_path)  # Force delete the folder
         except OSError as e:
-            print(f"Error removing conflicting directory {output_file_path}: {e}")
+            pass
 
     # 4. Initialize list to hold data
     existing_data = []
 
-    # 5. Read existing data if the file exists
+    # 5. Read existing data
     if os.path.exists(output_file_path) and os.path.isfile(output_file_path):
         try:
             if os.stat(output_file_path).st_size > 0:
@@ -46,10 +42,14 @@ def save_metrics_graphs(metrics_dict, client_id, file_name, output_folder=r"D:\T
                     elif isinstance(loaded_data, dict):
                         existing_data = [loaded_data]
         except (json.JSONDecodeError, OSError) as e:
-            # If corrupted, start over
-            existing_data = []
+            existing_data = []  # If corrupted, start over
 
-    # 6. Prepare the new data entry
+    # 6. Calculate averages for any list-type metrics
+    for key, value in metrics_dict.items():
+        if isinstance(value, list):
+            metrics_dict[key] = sum(value) / len(value) if value else 0
+
+    # 7. Prepare the new data entry
     call_number = len(existing_data) + 1
     new_entry = {
         "call_number": call_number,
@@ -57,14 +57,11 @@ def save_metrics_graphs(metrics_dict, client_id, file_name, output_folder=r"D:\T
         "metrics": metrics_dict
     }
 
-    # 7. Append and Write
+    # 8. Append and Write the new entry to the existing data
     existing_data.append(new_entry)
 
     with open(output_file_path, 'w') as f:
         json.dump(existing_data, f, indent=4)
-
-
-
 
 def print_msg(msg, output_folder="printmsg/", 
               output_file_prefix="msg"):
@@ -91,80 +88,13 @@ def print_msg(msg, output_folder="printmsg/",
     # Append the new message to the data
     all_data.append({"message": msg})
     
-    # Write the updated data back to the file at the end of the round
+    # Write the updated data back to the file
     with open(output_file, 'w') as f:
         json.dump(all_data, f, indent=4)
 
-def get_class_distribution(partition_id, dataloader, message, 
-                           output_folder="E:/New_IDS - Copy/class_dist", 
-                           output_file_prefix="class_distribution"):
-    # Ensure the output directory exists
-    if not os.path.exists(output_folder):
-        os.makedirs(output_folder)
-    
-    # Create a Counter to store the frequency of each label
-    label_counts = Counter()
-
-    for batch in dataloader:
-        # Assume batch is a tuple (features, labels) from TensorDataset
-        _, labels = batch  # Unpack the tuple, ignore features
-        labels = labels.cpu().numpy()  # Convert to numpy array
-
-        # For binary classification, labels are float tensors of shape [batch, 1]
-        # Convert to binary integers (0 or 1) by thresholding
-        labels = (labels > 0.5).astype(int).flatten()  # Threshold at 0.5 and flatten
-
-        # Update the Counter with the labels in the current batch
-        label_counts.update(labels)
-
-    # Convert int64 keys to Python int for JSON serialization
-    label_counts_converted = {int(key): value for key, value in label_counts.items()}
-
-    # Prepare the output dictionary for this call
-    partition_data = {
-        "Client no": partition_id,
-        "message": message,
-        "class_distribution": label_counts_converted
-    }
-
-    # Define the output file for this partition in the specified output folder
-    output_file = os.path.join(output_folder, f"{output_file_prefix}_client_{partition_id}.json")
-
-    # Read existing data from the JSON file, if it exists
-    all_data = []
-    if os.path.exists(output_file):
-        with open(output_file, 'r') as f:
-            try:
-                all_data = json.load(f)
-                if not isinstance(all_data, list):
-                    all_data = [all_data]  # Convert single dict to list if needed
-            except json.JSONDecodeError:
-                all_data = []  # Handle empty or invalid JSON file
-
-    # Calculate the call number (number of existing entries + 1)
-    call_number = len(all_data) + 1
-    partition_data["call_number"] = call_number
-
-    # Append the new data
-    all_data.append(partition_data)
-
-    # Write updated data back to the JSON file
-    with open(output_file, 'w') as f:
-        json.dump(all_data, f, indent=4)
-
-
-
-
-
-
-
-
-
-
-
-
-
-# 1. Check if the client folder exists inside "SA Metrics" and create it if not
+##################################################
+#                       SA                       #
+##################################################
 def isFirst(client_id, output_folder):
     js = os.path.join(output_folder, f"{client_id}.json")
     if not os.path.exists(output_folder):
@@ -175,13 +105,11 @@ def isFirst(client_id, output_folder):
         return True
     return False
 
-# 2. Read the accuracy from the JSON file for the client
 def read_file(client_id, output_folder):
     output_file = os.path.join(output_folder, f"{client_id}.json")
     with open(output_file, 'r') as f:
         return json.load(f)
 
-# 3. Save or update the accuracy in the JSON file for the client
 def save_sa(client_id, E, temp, output_folder):
     output_file = os.path.join(output_folder, f"{client_id}.json")
     
@@ -216,47 +144,43 @@ def energy_calc(output_dict):
     f1 = output_dict['val_f1']
     fpr = output_dict['val_fpr']
 
-    wa = 0.25 # weight for accuracy
-    wr = 0.25 # weight for recall
-    wfpr = 0.5 # weight for false positive rate
+    wa = 0.25
+    wr = 0.25
+    wfpr = 0.5
 
-    E = (wa * acc) + (wr * f1) + (1 - fpr * wfpr) # weights add up to 1
+    E = (wa * acc) + (wr * f1) + (1 - fpr) * wfpr
     return E
 
-# SA send model updates or not
 def file_handle(client, output_dict, temp, output_folder=r"client_sa_metrics/"):
-    if isinstance(client, (int, str)):  # Check if the client_id is a valid type
-        
-        
-        if isFirst(client, output_folder): # file not created yet
+    if isinstance(client, (int, str)):
+        if isFirst(client, output_folder): 
             if len(output_dict) == 0:
                 E = 0
-                save_sa(client, E, temp, output_folder) # Create a copy
-                return True  # Accept first client regardless
+                save_sa(client, E, temp, output_folder)
+                return True
             else:
                 E = energy_calc(output_dict)
                 save_sa(client, E, temp, output_folder)
-                return True  # Accept first client regardless
+                return True
         
         else:
-            existing_data = read_file(client, output_folder)  # Read existing client data
+            existing_data = read_file(client, output_folder)  
             if existing_data:
-                latest_entry = existing_data[-1]  # Get the most recent entry
-                prev_E = latest_entry.get('E', 0)  # Access the energy value
-                curr_E = energy_calc(output_dict)  # Get current energy
+                latest_entry = existing_data[-1]  
+                prev_E = latest_entry.get('E', 0)  
+                curr_E = energy_calc(output_dict)  
 
-                if curr_E:
-                    update = fl_sa(prev_E, curr_E, temp, output_folder, client)  # Call SA function
-                    save_sa(client, curr_E, temp, output_folder)  # Save the new energy and temp
+                if curr_E is not None:
+                    update = fl_sa(prev_E, curr_E, temp, output_folder, client)  
+                    save_sa(client, curr_E, temp, output_folder)  
                     if not update:
-                        count_update(output_folder, client, 1)  # Increment count if not updated
+                        count_update(output_folder, client, 1)  
                     
-                    return update     # Return whether the model was accepted based on SA decision
+                    return update     
             else:
-                return False  # If no data exists, reject the client
-    return False  # Default fallback - reject if type check fails
+                return False  
+    return False  
 
-# Keep track of how many times the client did not send the updates by count
 def count_update(output_folder, client_id, count):
     output_file = os.path.join(output_folder, f"{client_id}.json")
     
@@ -273,12 +197,11 @@ def count_update(output_folder, client_id, count):
         with open(output_file, 'w') as f:
             json.dump(existing_data, f, indent=4)
 
-# Simulated annealing function to decide whether to accept updates or not
 def fl_sa(prev_E, curr_E, temp, output_folder, client_id):
     if curr_E is None or prev_E is None:
         return False
     
-    if curr_E > prev_E:  # Always accept a better solution
+    if curr_E > prev_E:
         return True 
     
     if temp <= 0:
@@ -286,7 +209,7 @@ def fl_sa(prev_E, curr_E, temp, output_folder, client_id):
 
     existing_data = read_file(client_id, output_folder)
     
-    if 'count' in existing_data[-1]:  # Access the last entry in the list
+    if 'count' in existing_data[-1]:
         r = curr_E / prev_E
         k = 0.01 * math.exp(existing_data[-1]['count'])
         temp = temp * (1 + k * (1 - r))
@@ -294,19 +217,10 @@ def fl_sa(prev_E, curr_E, temp, output_folder, client_id):
         with open(os.path.join(output_folder, f"{client_id}.json"), 'w') as f:
             json.dump(existing_data, f, indent=4)
 
-    # Change in energy and temperature
     exp_T = math.exp((curr_E - prev_E) / temp)
     random_probability = random.random()
 
     if exp_T > random_probability:
-        return True  # Accept model update
+        return True  
     else:
-        return False  # Reject model update
-
-
-
-
-        
-        
-
-
+        return False  

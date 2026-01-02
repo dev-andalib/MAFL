@@ -6,41 +6,61 @@ import math
 import random
 import torch
 
-def save_metrics_to_json(metrics_dict, message, client_id, output_folder="E:/New_IDS - Copy/results/"):
-    # Ensure the output directory exists
-    if not os.path.exists(output_folder):
-        os.makedirs(output_folder)
+##################################################
+#           BASIC UTILITY FUNCTION               #
+##################################################
+def save_metrics_graphs(metrics_dict, client_id, file_name, output_folder=r"client_metrics/"):
     
-    # Prepare the output dictionary with client id, message, and metrics
-    partition_data = {
-        "message": message,
+    # 1. Define the directory path
+    target_directory = os.path.join(output_folder, file_name)
+    
+    # 2. Create the DIRECTORY
+    os.makedirs(target_directory, exist_ok=True)
+
+    # 3. Define the full FILE path
+    output_file_path = os.path.join(target_directory, f"client_{client_id}_metrics.json")
+
+    # [SAFETY FIX] Check if a FOLDER exists with the same name as the file
+    if os.path.exists(output_file_path) and os.path.isdir(output_file_path):
+        try:
+            shutil.rmtree(output_file_path)  # Force delete the folder
+        except OSError as e:
+            pass
+
+    # 4. Initialize list to hold data
+    existing_data = []
+
+    # 5. Read existing data
+    if os.path.exists(output_file_path) and os.path.isfile(output_file_path):
+        try:
+            if os.stat(output_file_path).st_size > 0:
+                with open(output_file_path, 'r') as f:
+                    loaded_data = json.load(f)
+                    if isinstance(loaded_data, list):
+                        existing_data = loaded_data
+                    elif isinstance(loaded_data, dict):
+                        existing_data = [loaded_data]
+        except (json.JSONDecodeError, OSError) as e:
+            existing_data = []  # If corrupted, start over
+
+    # 6. Calculate averages for any list-type metrics
+    for key, value in metrics_dict.items():
+        if isinstance(value, list):
+            metrics_dict[key] = sum(value) / len(value) if value else 0
+
+    # 7. Prepare the new data entry
+    call_number = len(existing_data) + 1
+    new_entry = {
+        "call_number": call_number,
+        "client_id": client_id,
         "metrics": metrics_dict
     }
-    
-    # Define the output file for this client
-    output_file = os.path.join(output_folder, f"client_{client_id}_metrics.json")
 
-    # Read existing data from the JSON file, if it exists
-    all_data = []
-    if os.path.exists(output_file):
-        with open(output_file, 'r') as f:
-            try:
-                all_data = json.load(f)
-                if not isinstance(all_data, list):
-                    all_data = [all_data]  # Convert single dict to list if needed
-            except json.JSONDecodeError:
-                all_data = []  # Handle empty or invalid JSON file
+    # 8. Append and Write the new entry to the existing data
+    existing_data.append(new_entry)
 
-    # Calculate the call number (number of existing entries + 1)
-    call_number = len(all_data) + 1
-    partition_data["call_number"] = call_number
-
-    # Append the new data
-    all_data.append(partition_data)
-
-    # Write updated data back to the JSON file
-    with open(output_file, 'w') as f:
-        json.dump(all_data, f, indent=4)
+    with open(output_file_path, 'w') as f:
+        json.dump(existing_data, f, indent=4)
 
 def print_msg(msg, output_folder="printmsg/", 
               output_file_prefix="msg"):
@@ -67,88 +87,20 @@ def print_msg(msg, output_folder="printmsg/",
     # Append the new message to the data
     all_data.append({"message": msg})
     
-    # Write the updated data back to the file at the end of the round
+    # Write the updated data back to the file
     with open(output_file, 'w') as f:
         json.dump(all_data, f, indent=4)
 
-def get_class_distribution(partition_id, dataloader, message, 
-                           output_folder="E:/New_IDS - Copy/class_dist", 
-                           output_file_prefix="class_distribution"):
-    # Ensure the output directory exists
-    if not os.path.exists(output_folder):
-        os.makedirs(output_folder)
-    
-    # Create a Counter to store the frequency of each label
-    label_counts = Counter()
 
-    for batch in dataloader:
-        # Assume batch is a tuple (features, labels) from TensorDataset
-        _, labels = batch  # Unpack the tuple, ignore features
-        labels = labels.cpu().numpy()  # Convert to numpy array
 
-        # For binary classification, labels are float tensors of shape [batch, 1]
-        # Convert to binary integers (0 or 1) by thresholding
-        labels = (labels > 0.5).astype(int).flatten()  # Threshold at 0.5 and flatten
 
-        # Update the Counter with the labels in the current batch
-        label_counts.update(labels)
 
-    # Convert int64 keys to Python int for JSON serialization
-    label_counts_converted = {int(key): value for key, value in label_counts.items()}
+##################################################
+#                       SA                       #
+##################################################
 
-    # Prepare the output dictionary for this call
-    partition_data = {
-        "Client no": partition_id,
-        "message": message,
-        "class_distribution": label_counts_converted
-    }
 
-    # Define the output file for this partition in the specified output folder
-    output_file = os.path.join(output_folder, f"{output_file_prefix}_client_{partition_id}.json")
-
-    # Read existing data from the JSON file, if it exists
-    all_data = []
-    if os.path.exists(output_file):
-        with open(output_file, 'r') as f:
-            try:
-                all_data = json.load(f)
-                if not isinstance(all_data, list):
-                    all_data = [all_data]  # Convert single dict to list if needed
-            except json.JSONDecodeError:
-                all_data = []  # Handle empty or invalid JSON file
-
-    # Calculate the call number (number of existing entries + 1)
-    call_number = len(all_data) + 1
-    partition_data["call_number"] = call_number
-
-    # Append the new data
-    all_data.append(partition_data)
-
-    # Write updated data back to the JSON file
-    with open(output_file, 'w') as f:
-        json.dump(all_data, f, indent=4)
-
-#average val_f1 from all clients
-def average_val_f1(folder):
-    val_f1_list = []
-    for file_name in os.listdir(folder):
-        if file_name.endswith(".json"):
-            file_path = os.path.join(folder, file_name)
-            with open(file_path, "r") as f:
-                try:
-                    data = json.load(f)
-                    if "val_f1" in data:
-                        val_f1_list.append(data["val_f1"])
-                except json.JSONDecodeError:
-                    print(f"Skipping {file_name} (invalid JSON)")
-
-    if val_f1_list:
-        avg_val_f1 = sum(val_f1_list) / len(val_f1_list)
-        return avg_val_f1, len(val_f1_list)
-    else:
-        return None, 0
-
-output_folder = "client_sa_metrics2/"
+output_folder = "client_sa_metrics/"
 
 # 1. Check if the client folder exists inside "SA Metrics" and create it if not
 def isFirst(client_id, output_folder):
