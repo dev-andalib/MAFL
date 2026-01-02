@@ -933,32 +933,11 @@ def load_data(partition_id: int, num_partitions: int, batch_size: int) -> Tuple[
     )
 
  
-def train(net, trainloader, valloader, multiclass_loader, multiclass_val_loader, pos_weight, attack_class_weights, epochs, learning_rate, device, temp, cid):
-   
-    
-    net.to(device)
-    binary_criterion = nn.BCEWithLogitsLoss(pos_weight=pos_weight.to(device))
-    
-    # FIX 2: Add multiclass class weights to handle imbalance
-    # Create balanced class weights for multiclass classification
-    multiclass_criterion = nn.CrossEntropyLoss(weight=attack_class_weights.to(device))
-    
-    
 
+ 
+
+def train(net, trainloader, valloader, multiclass_loader, multiclass_val_loader, pos_weight, attack_class_weights, epochs, learning_rate, device, temp, cid):
     
-    
-    
-    
-    # Phase 1: Binary Classification Training
-    print(f"Client {cid}: Phase 1 - Training Binary Classifier")
-    
-    # Freeze multiclass head to prevent interference
-    freeze_multiclass_head(net)
-    
-    # Create optimizer with only trainable parameters
-    optimizer = torch.optim.Adam(get_trainable_params(net), lr=0.001)
-    
-    num_epochs = 10  # Updated: Set to 20 epochs
     results = {
         'bin' : {
             'train' : {
@@ -1007,8 +986,35 @@ def train(net, trainloader, valloader, multiclass_loader, multiclass_val_loader,
             
             },
         }
-    patience = 3  # Early stopping patience
+
+    print(f"Training started on client {cid} using device: {device}")
+    
+    net.to(device)
+    binary_criterion = nn.BCEWithLogitsLoss(pos_weight=pos_weight.to(device))
+    
+    # FIX 2: Add multiclass class weights to handle imbalance
+    # Create balanced class weights for multiclass classification
+    multiclass_criterion = nn.CrossEntropyLoss(weight=attack_class_weights.to(device))
+    
+    print(f"Client {cid}: Using IMPROVED CrossEntropy with class weights for multiclass")
+
     best_val_acc = 0
+    train_losses = []
+    val_losses = []
+    train_accs = []
+    val_accs = []
+    
+    # Phase 1: Binary Classification Training
+    print(f"Client {cid}: Phase 1 - Training Binary Classifier")
+    
+    # Freeze multiclass head to prevent interference
+    freeze_multiclass_head(net)
+    
+    # Create optimizer with only trainable parameters
+    optimizer = torch.optim.Adam(get_trainable_params(net), lr=0.001)
+    
+    num_epochs = 10  # Updated: Set to 20 epochs
+    patience = 3  # Early stopping patience
     best_val_loss = float('inf')
     no_improve_count = 0
     
@@ -1032,6 +1038,12 @@ def train(net, trainloader, valloader, multiclass_loader, multiclass_val_loader,
             save_metrics_graphs(results['bin']['val'], cid, "bin_val_metrics")
 
 
+
+            train_losses.append(train_loss)
+            val_losses.append(val_loss)
+            train_accs.append(train_acc)
+            val_accs.append(val_acc)
+            
             if val_acc > best_val_acc:
                 best_val_acc = val_acc
                 os.makedirs('models', exist_ok=True)
@@ -1067,7 +1079,8 @@ def train(net, trainloader, valloader, multiclass_loader, multiclass_val_loader,
     # Check if we have enough attack samples for multiclass training
     if len(multiclass_loader.dataset) == 0:
         print(f"Client {cid}: No attack samples found, skipping multiclass training")
-       
+        multi_train_losses = []
+        multi_train_accs = []
     else:
         # Get actual number of unique attack classes for this client
         unique_attack_classes = torch.unique(multiclass_loader.dataset.tensors[1])
@@ -1090,7 +1103,8 @@ def train(net, trainloader, valloader, multiclass_loader, multiclass_val_loader,
         # Create optimizer with only trainable parameters
         optimizer_multi = torch.optim.Adam(get_trainable_params(net), lr=0.001)
         
-        
+        multi_train_losses = []
+        multi_train_accs = []
         
         # Updated: Set epochs to 20 and add early stopping
         multiclass_epochs = 10  # Updated: Set to 20 epochs
@@ -1117,6 +1131,9 @@ def train(net, trainloader, valloader, multiclass_loader, multiclass_val_loader,
 
                 save_metrics_graphs(results['mul']['train'], cid, "mul_train_metrics")
                 save_metrics_graphs(results['mul']['val'], cid, "mul_val_metrics")
+                
+                multi_train_losses.append(train_loss)
+                multi_train_accs.append(train_acc)
                 
                 # Early stopping logic for multiclass using VALIDATION loss
                 if val_loss < best_multi_loss:
@@ -1154,10 +1171,13 @@ def train(net, trainloader, valloader, multiclass_loader, multiclass_val_loader,
     # Create optimizer with all parameters now trainable
     optimizer_joint = torch.optim.Adam(net.parameters(), lr=0.0001)  # Lower LR for fine-tuning
     
-    
+    joint_train_losses = []
+    joint_val_losses = []
+    joint_train_accs = []
+    joint_val_accs = []
     
     # Updated: Set epochs to 20 and add early stopping
-    joint_epochs = epoch  # Updated: Set to 20 epochs
+    joint_epochs = 10  # Updated: Set to 20 epochs
     joint_patience = 3  # Early stopping patience
     best_joint_loss = float('inf')
     joint_no_improve_count = 0
@@ -1180,6 +1200,11 @@ def train(net, trainloader, valloader, multiclass_loader, multiclass_val_loader,
 
             save_metrics_graphs(results['joint']['train'], cid, "joint_train_metrics")
             save_metrics_graphs(results['joint']['val'], cid, "joint_val_metrics")
+            
+            joint_train_losses.append(train_loss)
+            joint_val_losses.append(val_loss)
+            joint_train_accs.append(train_acc)
+            joint_val_accs.append(val_avg_acc)  # Track averaged accuracy for consistency
             
             # Early stopping logic for joint training
             if val_loss < best_joint_loss:
@@ -1216,15 +1241,11 @@ def train(net, trainloader, valloader, multiclass_loader, multiclass_val_loader,
         "val_recall": val_avg_rec if 'val_avg_rec' in locals() else 0.0,
         "val_f1": val_macro_f1 if 'val_macro_f1' in locals() else 0.0,
         "val_fpr": val_avg_fpr if 'val_avg_fpr' in locals() else 0.0,
-        
         "binary_training_complete": True,
-        "multiclass_training_complete": len(results['mul']['train']['loss']) > 0 if 'multi_train_losses' in locals() else False,
-        "joint_training_complete": len(results['joint']['train']['loss']) > 0 if 'joint_train_losses' in locals() else False,
-        
-        
-        "final_train_loss": results['joint']['train']['loss'][-1] if 'joint_train_losses' in locals() and results['joint']['train']['loss'] else results['bin']['train']['loss'][-1] if results['bin']['train']['loss'] else 0.0,
-        "final_val_loss": results['joint']['val']['loss'][-1] if 'joint_val_losses' in locals() and results['joint']['val']['loss'] else results['bin']['val']['loss'][-1] if results['bin']['val']['loss'] else 0.0,
-        
+        "multiclass_training_complete": len(multi_train_losses) > 0 if 'multi_train_losses' in locals() else False,
+        "joint_training_complete": len(joint_train_losses) > 0 if 'joint_train_losses' in locals() else False,
+        "final_train_loss": joint_train_losses[-1] if 'joint_train_losses' in locals() and joint_train_losses else train_losses[-1] if train_losses else 0.0,
+        "final_val_loss": joint_val_losses[-1] if 'joint_val_losses' in locals() and joint_val_losses else val_losses[-1] if val_losses else 0.0,
         # Early stopping info
         "early_stop_binary": no_improve_count >= patience if 'no_improve_count' in locals() else False,
         "early_stop_multiclass": multi_no_improve_count >= multiclass_patience if 'multi_no_improve_count' in locals() else False,
@@ -1234,8 +1255,6 @@ def train(net, trainloader, valloader, multiclass_loader, multiclass_val_loader,
     
     client_accept = file_handle(cid,  final_metrics, temp)
     return final_metrics, client_accept
- 
-
 
 def test(net, testloader, device, cid=None):
     """Validate the model on the test set."""
@@ -1319,7 +1338,14 @@ def test(net, testloader, device, cid=None):
     # MULTI
     results['mul']['acc'] = multi_acc
     results['mul']['f1'] = multi_f1
-    results['mul']['fpr'] = multi_fpr
+
+    if len(multi_fpr) > 0:
+        multi_fpr_avg = sum(multi_fpr.values()) / len(multi_fpr)
+    else:
+        multi_fpr_avg = 0.0
+
+    results['mul']['fpr'] = multi_fpr_avg
+    
     
     
 
@@ -1335,6 +1361,6 @@ def test(net, testloader, device, cid=None):
 
     
     
-    save_metrics_graphs(output_dict, cid, 'test')
+    
     output_dict= {}
     return total_loss, len(testloader), output_dict
