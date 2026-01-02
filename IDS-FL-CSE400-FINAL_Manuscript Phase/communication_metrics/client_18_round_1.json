@@ -1,0 +1,16 @@
+{
+    "timestamp": "2026-01-02T21:36:28.795682",
+    "client_id": 18,
+    "round": 1,
+    "accepted": false,
+    "communication_type": "rejected",
+    "size_bytes": 0,
+    "size_mb": 0.0,
+    "metrics": {
+        "val_accuracy": 0.7528342245989305,
+        "val_precision": 0.741405653170359,
+        "val_recall": 0.7997452193633283,
+        "val_f1": 0.7687165775401069,
+        "val_fpr": 0.18074809036899325
+    }
+}
