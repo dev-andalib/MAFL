@@ -1022,6 +1022,8 @@ def train(net, trainloader, valloader, multiclass_loader, multiclass_val_loader,
         try:
             train_loss, train_acc, train_f1, train_fpr = train_epoch_binary(net, trainloader, binary_criterion, optimizer, device)
             val_loss, val_acc, val_f1, val_fpr = evaluate_binary(net, valloader, binary_criterion, device)
+
+
             
             # Binary
             results['bin']['train']['loss'].append(train_loss)
@@ -1032,10 +1034,9 @@ def train(net, trainloader, valloader, multiclass_loader, multiclass_val_loader,
             results['bin']['val']['loss'].append(val_loss)
             results['bin']['val']['acc'].append(val_acc)
             results['bin']['val']['f1'].append(val_f1)
-            results['bin']['val']['f1'].append(val_fpr)
+            results['bin']['val']['fpr'].append(val_fpr)
             
-            save_metrics_graphs(results['bin']['train'], cid, "bin_train_metrics")
-            save_metrics_graphs(results['bin']['val'], cid, "bin_val_metrics")
+            
 
 
 
@@ -1072,6 +1073,10 @@ def train(net, trainloader, valloader, multiclass_loader, multiclass_val_loader,
     best_model_path = f'models/best_binary_model_{cid}.pth'
     if os.path.exists(best_model_path):
         net.load_state_dict(torch.load(best_model_path, map_location=device, weights_only=True))
+    
+
+    save_metrics_graphs(results['bin']['train'], cid, "bin_train_metrics")
+    save_metrics_graphs(results['bin']['val'], cid, "bin_val_metrics")
     
     # Phase 2: Multi-class Classification Training (freeze feature extractors)
     print(f"Client {cid}: Phase 2 - Training Multi-class Classifier")
@@ -1129,8 +1134,7 @@ def train(net, trainloader, valloader, multiclass_loader, multiclass_val_loader,
                 results['mul']['val']['f1'].append(val_f1)
                 results['mul']['val']['fpr'].append(val_fpr)
 
-                save_metrics_graphs(results['mul']['train'], cid, "mul_train_metrics")
-                save_metrics_graphs(results['mul']['val'], cid, "mul_val_metrics")
+                
                 
                 multi_train_losses.append(train_loss)
                 multi_train_accs.append(train_acc)
@@ -1161,6 +1165,10 @@ def train(net, trainloader, valloader, multiclass_loader, multiclass_val_loader,
         if os.path.exists(best_multiclass_path):
             net.load_state_dict(torch.load(best_multiclass_path, map_location=device, weights_only=True))
             print(f"Client {cid}: Loaded best multiclass model")
+        
+    
+    save_metrics_graphs(results['mul']['train'], cid, "mul_train_metrics")
+    save_metrics_graphs(results['mul']['val'], cid, "mul_val_metrics")
     
     # Phase 3: Joint Fine-tuning - with early stopping
     print(f"Client {cid}: Phase 3 - Joint Fine-tuning with Early Stopping")
@@ -1184,7 +1192,7 @@ def train(net, trainloader, valloader, multiclass_loader, multiclass_val_loader,
     
     for epoch in range(joint_epochs):
         try:
-            train_loss, train_acc, train_avg_rec, train_avg_prec, train_avg_fpr, train_macro_f1 = train_epoch_joint(net, trainloader, binary_criterion, multiclass_criterion, optimizer_joint, device)
+            train_loss, train_acc, train_avg_fpr, train_macro_f1 = train_epoch_joint(net, trainloader, binary_criterion, multiclass_criterion, optimizer_joint, device)
             val_loss, val_avg_acc, val_avg_rec, val_avg_prec, val_avg_fpr, val_macro_f1 = evaluate_joint(net, valloader, multiclass_val_loader, binary_criterion, multiclass_criterion, device)
             
             # JOINT
@@ -1198,8 +1206,7 @@ def train(net, trainloader, valloader, multiclass_loader, multiclass_val_loader,
             results['joint']['val']['f1'].append(val_macro_f1)
             results['joint']['val']['fpr'].append(val_avg_fpr)
 
-            save_metrics_graphs(results['joint']['train'], cid, "joint_train_metrics")
-            save_metrics_graphs(results['joint']['val'], cid, "joint_val_metrics")
+            
             
             joint_train_losses.append(train_loss)
             joint_val_losses.append(val_loss)
@@ -1227,6 +1234,8 @@ def train(net, trainloader, valloader, multiclass_loader, multiclass_val_loader,
             print(f"Error in joint epoch {epoch}: {e}")
             break
     
+    save_metrics_graphs(results['joint']['train'], cid, "joint_train_metrics")
+    save_metrics_graphs(results['joint']['val'], cid, "joint_val_metrics")
     # Load best joint model if it exists
     best_joint_path = f'models/best_joint_model_{cid}.pth'
     if os.path.exists(best_joint_path):

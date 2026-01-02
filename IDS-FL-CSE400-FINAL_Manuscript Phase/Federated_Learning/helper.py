@@ -4,6 +4,7 @@ import torch
 import json
 from collections import Counter
 from imblearn.over_sampling import SMOTE
+from sklearn.metrics import f1_score, confusion_matrix
 
 def create_sequences(X, y_binary, y_attack_cat, seq_length=10):
     num_samples = len(X) - seq_length + 1
@@ -26,6 +27,9 @@ def train_epoch_joint(model, loader, binary_criterion, multiclass_criterion, opt
     binary_correct = 0
     total = 0
     multiclass_batches = 0
+
+    # ✅ Added for F1 and FPR (binary, over all samples)
+    tp = fp = tn = fn = 0
     
     for batch_x, batch_y_binary, batch_y_attack in loader:
         batch_x = batch_x.to(device)
@@ -62,12 +66,28 @@ def train_epoch_joint(model, loader, binary_criterion, multiclass_criterion, opt
         predicted = (binary_output > 0.0).float()  # Use 0.0 for logits
         binary_correct += (predicted == batch_y_binary).sum().item()
         total += batch_y_binary.size(0)
+
+        # ✅ Added: confusion elements for F1/FPR (same scope as accuracy)
+        tp += ((predicted == 1) & (batch_y_binary == 1)).sum().item()
+        fp += ((predicted == 1) & (batch_y_binary == 0)).sum().item()
+        tn += ((predicted == 0) & (batch_y_binary == 0)).sum().item()
+        fn += ((predicted == 0) & (batch_y_binary == 1)).sum().item()
     
     avg_loss = total_loss / len(loader)
     avg_acc = binary_correct / total
+
+    # ✅ Added: F1
+    precision = tp / (tp + fp) if (tp + fp) > 0 else 0.0
+    recall    = tp / (tp + fn) if (tp + fn) > 0 else 0.0
+    f1 = (2 * precision * recall / (precision + recall)) if (precision + recall) > 0 else 0.0
+
+    # ✅ Added: FPR
+    fpr = (fp / (fp + tn)) if (fp + tn) > 0 else 0.0
     
-    
-    return avg_loss, avg_acc
+    return avg_loss, avg_acc, f1, fpr
+
+
+
 
 def train_epoch_binary(model, loader, criterion, optimizer, device):
     """
@@ -80,6 +100,10 @@ def train_epoch_binary(model, loader, criterion, optimizer, device):
     total_loss = 0
     correct = 0
     total = 0
+
+    # NEW: collect predictions + labels for F1/FPR
+    all_preds = []
+    all_true = []
     
     for batch_x, batch_y_binary, _ in loader:
         batch_x, batch_y_binary = batch_x.to(device), batch_y_binary.to(device)
@@ -91,12 +115,26 @@ def train_epoch_binary(model, loader, criterion, optimizer, device):
         optimizer.step()
         
         total_loss += loss.item()
-        # FIXED: Use 0.0 threshold for logits (BCEWithLogitsLoss expects raw logits)
-        predicted = (outputs > 0.0).float()  # Threshold at 0 for logits, not 0.5
-        correct += (predicted == batch_y_binary).sum().item() # 
+
+        # Threshold at 0 for logits
+        predicted = (outputs > 0.0).float()
+        correct += (predicted == batch_y_binary).sum().item()
         total += batch_y_binary.size(0)
+
+        # NEW: store for metrics
+        all_preds.extend(predicted.detach().cpu().numpy().astype(int).tolist())
+        all_true.extend(batch_y_binary.detach().cpu().numpy().astype(int).tolist())
+
+    # NEW: F1
+    f1 = f1_score(all_true, all_preds, average="binary", zero_division=0)
+
+    # NEW: FPR = FP / (FP + TN)
+    tn = sum((t == 0 and p == 0) for t, p in zip(all_true, all_preds))
+    fp = sum((t == 0 and p == 1) for t, p in zip(all_true, all_preds))
+    fpr = (fp / (fp + tn)) if (fp + tn) > 0 else 0.0
     
-    return total_loss / len(loader), correct / total
+    return total_loss / len(loader), correct / total, f1, fpr
+
 
 
 def evaluate_binary(model, loader, criterion, device):
@@ -149,17 +187,24 @@ def evaluate_binary(model, loader, criterion, device):
         f1 = 0.0  # Both precision and recall are 0
     else:
         f1 = 2 * (precision * recall) / (precision + recall)
+
+    # ✅ Added: False Positive Rate (FPR)
+    if fp + tn == 0:
+        fpr = 0.0
+    else:
+        fpr = fp / (fp + tn)
     
-    print(f"Binary Classification Metrics: TP={tp}, FP={fp}, TN={tn}, FN={fn}")
-    print(f"Precision={precision:.4f}, Recall={recall:.4f}, F1={f1:.4f}")
     
-    return total_loss / len(loader), accuracy, precision, recall, f1
+    return total_loss / len(loader), accuracy, f1, fpr
 
 def train_epoch_multiclass(model, loader, criterion, optimizer, device):
     model.train()
     total_loss = 0
     correct = 0
     total = 0
+
+    all_true = []
+    all_pred = []
     
     for batch_x, batch_y in loader:
         batch_x, batch_y = batch_x.to(device), batch_y.to(device)
@@ -174,8 +219,29 @@ def train_epoch_multiclass(model, loader, criterion, optimizer, device):
         _, predicted = outputs.max(1)
         correct += predicted.eq(batch_y).sum().item()
         total += batch_y.size(0)
-    
-    return total_loss / len(loader), correct / total
+
+        # collect for metrics
+        all_true.append(batch_y.detach().cpu())
+        all_pred.append(predicted.detach().cpu())
+
+    # --- added metrics (single averaged values) ---
+    all_true = torch.cat(all_true).numpy()
+    all_pred = torch.cat(all_pred).numpy()
+
+    multi_f1 = f1_score(all_true, all_pred, average="weighted", zero_division=0)
+
+    cm = confusion_matrix(all_true, all_pred)
+    num_classes = cm.shape[0]
+    fpr_list = []
+    for i in range(num_classes):
+        FP = cm[:, i].sum() - cm[i, i]
+        TN = cm.sum() - cm[:, i].sum() - cm[i, :].sum() + cm[i, i]
+        fpr_list.append(FP / (FP + TN) if (FP + TN) > 0 else 0.0)
+    multi_fpr = float(sum(fpr_list) / len(fpr_list)) if len(fpr_list) > 0 else 0.0
+    # --------------------------------------------
+
+    return total_loss / len(loader), correct / total, multi_f1, multi_fpr
+
 
 def evaluate_multiclass(model, loader, criterion, device):
     """Evaluate multiclass classifier on attack samples only."""
@@ -183,6 +249,9 @@ def evaluate_multiclass(model, loader, criterion, device):
     total_loss = 0
     correct = 0
     total = 0
+
+    all_true = []
+    all_pred = []
     
     with torch.no_grad():
         for batch_x, batch_y_attack in loader:
@@ -198,11 +267,38 @@ def evaluate_multiclass(model, loader, criterion, device):
             _, predicted = multiclass_output.max(1)
             total += batch_y_attack.size(0)
             correct += predicted.eq(batch_y_attack).sum().item()
+
+            # collect for metrics
+            all_true.append(batch_y_attack.detach().cpu())
+            all_pred.append(predicted.detach().cpu())
     
     accuracy = correct / total if total > 0 else 0
     avg_loss = total_loss / len(loader) if len(loader) > 0 else 0
-    
-    return avg_loss, accuracy
+
+    # ---- added averaged multiclass metrics ----
+    if total > 0:
+        all_true = torch.cat(all_true).numpy()
+        all_pred = torch.cat(all_pred).numpy()
+
+        # Weighted F1 (single scalar)
+        f1 = f1_score(all_true, all_pred, average="weighted", zero_division=0)
+
+        # Macro-averaged FPR
+        cm = confusion_matrix(all_true, all_pred)
+        num_classes = cm.shape[0]
+        fpr_list = []
+        for i in range(num_classes):
+            FP = cm[:, i].sum() - cm[i, i]
+            TN = cm.sum() - cm[:, i].sum() - cm[i, :].sum() + cm[i, i]
+            fpr_list.append(FP / (FP + TN) if (FP + TN) > 0 else 0.0)
+
+        fpr = sum(fpr_list) / len(fpr_list) if len(fpr_list) > 0 else 0.0
+    else:
+        f1 = 0.0
+        fpr = 0.0
+    # -----------------------------------------
+
+    return avg_loss, accuracy, f1, fpr
 
 def evaluate_hierarchical(model, loader, binary_criterion, multiclass_criterion, device, hierarchical=False):
     """
