@@ -4,7 +4,7 @@ import os
 import numpy as np
 import math
 import random
-import torch
+import shutil
 
 ##################################################
 #           BASIC UTILITY FUNCTION               #
@@ -99,205 +99,202 @@ def print_msg(msg, output_folder="printmsg/",
 #                       SA                       #
 ##################################################
 
-
 output_folder = "client_sa_metrics/"
 
-# 1. Check if the client folder exists inside "SA Metrics" and create it if not
+
+# 1. Check if the client file exists, create base folder if not
 def isFirst(client_id, output_folder):
-     
     js = os.path.join(output_folder, f"{client_id}.json")
-    """Check if the folder for the client exists, and create it if not."""
-    # Create the base folder if it doesn't exist
     if not os.path.exists(output_folder):
         os.makedirs(output_folder)
         return True
-    
     if not os.path.exists(js):
         return True
     return False
 
-# 2. Read the accuracy from the JSON file for the client
+
+# 2. Read client history (ALWAYS returns a LIST of entries)
 def read_file(client_id, output_folder):
-    
-    """Read the existing accuracy from the client's JSON file."""
     output_file = os.path.join(output_folder, f"{client_id}.json")
-    
-    try:
-        with open(output_file, 'r') as f:
-            existing_data = json.load(f)
-            # print_msg("It is working")
-        return existing_data
-    except (FileNotFoundError, json.JSONDecodeError) as e:
-            print(f"Error reading {output_file}: {e}")
-            return None
+    if not os.path.exists(output_file):
+        return []
 
-# 3. Save or update the accuracy in the JSON file for the client
+    with open(output_file, "r") as f:
+        data = json.load(f)
+
+    # Backward compatibility: if old format was a dict, wrap it into a list
+    if isinstance(data, dict):
+        return [data]
+    if isinstance(data, list):
+        return data
+    return []
+
+
+# 3. Save SA metrics iteratively (append one entry per call)
 def save_sa(client_id, output_dict, temp, output_folder, weights, update=False):
-    
-    # update 
+    os.makedirs(output_folder, exist_ok=True)
     output_file = os.path.join(output_folder, f"{client_id}.json")
-    if os.path.exists(output_file):
-        existing_data = read_file(client_id, output_folder)
 
-        if update:
-            existing_data["val_accuracy"] = output_dict.get('val_accuracy')
-            existing_data["val_f1"] = output_dict.get('val_f1')
-            existing_data["val_fpr"] = output_dict.get('val_fpr')
-            existing_data['temp'] = temp
+    history = read_file(client_id, output_folder)
 
-            ### for energy ##
-            curr_metrics = [output_dict.get('val_accuracy'), output_dict.get('val_f1'), 1-output_dict.get('val_fpr') ]
-            curr_E = weights.compute_energy(curr_metrics)
-            existing_data['prev_E'] = curr_E
-            existing_data['theta'] = weights.theta.tolist()
-            
-            with open(output_file, 'w') as f:
-                json.dump(existing_data, f, indent=4)
+    # Energy calculation (same logic as yours)
+    curr_metrics = [
+        output_dict.get("val_accuracy"),
+        output_dict.get("val_f1"),
+        1 - output_dict.get("val_fpr"),
+    ]
+    curr_E = weights.compute_energy(curr_metrics)
 
-    #new save           
-    else:
-        ### for energy ##
-        curr_metrics = [output_dict.get('val_accuracy'), output_dict.get('val_f1'), 1-output_dict.get('val_fpr') ]
-        curr_E = weights.compute_energy(curr_metrics)
-        client_data = {
-            "val_accuracy": output_dict.get('val_accuracy'),
-            "val_f1": output_dict.get('val_f1'),
-            "val_fpr": output_dict.get('val_fpr'),
-            "temp":temp,
-            "prev_E": curr_E,
-            "theta" : weights.theta.tolist(),
-                       }
-        with open(output_file, 'w') as f:
-            json.dump(client_data, f, indent=4)
+    # Build new entry (one per round)
+    new_entry = {
+        "call_number": len(history) + 1,
+        "client_id": client_id,
+        "val_accuracy": output_dict.get("val_accuracy"),
+        "val_f1": output_dict.get("val_f1"),
+        "val_fpr": output_dict.get("val_fpr"),
+        "temp": temp,
+        "prev_E": curr_E,
+        "theta": weights.theta.tolist(),
+        "update": bool(update),
+    }
 
+    # Carry count forward if it exists in the previous entry
+    if len(history) > 0 and "count" in history[-1]:
+        new_entry["count"] = history[-1]["count"]
 
+    history.append(new_entry)
 
+    with open(output_file, "w") as f:
+        json.dump(history, f, indent=4)
 
-
-
-# SA send model updates or not
-def file_handle(client, output_dict, temp):
-    global output_folder 
-    if type(client) == int or type(client) == str:
-        
-        if isFirst(client, output_folder): # file not created yet
-                weights = SoftmaxWeightUpdater()
-                save_sa(client, output_dict, temp, output_folder, weights) 
-                return True  # Accept first client regardless
-            
-        else:
-            existing_data = read_file(client, output_folder) # read acc
-            if existing_data != None:
-                prev_E = existing_data.get('prev_E')
-                curr_metrics = [output_dict.get('val_accuracy'), output_dict.get('val_f1'), 1-output_dict.get('val_fpr') ] # get current E
-                
-                weights = SoftmaxWeightUpdater(init_theta=existing_data.get('theta'))
-                curr_E = weights.compute_energy(curr_metrics)
-                weights.step(curr_metrics, prev_E)
-                
-                if curr_E:
-                    update = fl_sa(prev_E, curr_E, temp, output_folder, client) # SA below this function
-                    if not update:
-                        count_update(output_folder, client, 1)
-                    save_sa(client, output_dict, temp, output_folder, weights,  update=update)
-                    return update     # based on sa will update or not
-                else:
-                    return False  # If curr_E is None/falsy, reject
-            else:
-                return False  # If existing_data is None, reject
-    
-    return False  # Default fallback - reject if type check fails
 
 # to keep track of how many times the client did not send the updates by count
 def count_update(output_folder, client_id, count):
     output_file = os.path.join(output_folder, f"{client_id}.json")
-    if os.path.exists(output_file):
-        existing_data = read_file(client_id, output_folder)
-        if 'count' in existing_data:
-            existing_data['count'] += count
-        else:
-            existing_data['count'] = count
+    if not os.path.exists(output_file):
+        return
 
-        with open(output_file, 'w') as f:
-                json.dump(existing_data, f, indent=4)
-        
+    history = read_file(client_id, output_folder)
+    if not history:
+        return
+
+    # ✅ Only modify the LAST entry
+    last_entry = history[-1]
+
+    # ✅ Update count on LAST entry only (create if missing on that last entry)
+    if "count" in last_entry:
+        last_entry["count"] += count
+    else:
+        last_entry["count"] = count
+
+    with open(output_file, "w") as f:
+        json.dump(history, f, indent=4)
+
+
 # simulated annealing function
 def fl_sa(prev_E, curr_E, temp, output_folder, client_id):
     if curr_E is None or prev_E is None:
         return False
-    
-    #  always accept a better solution
+
+    # always accept a better solution
     if curr_E > prev_E:
-        return True # yes accept weight from the client for aggregation
-    
+        return True
+
+    # Ensure temperature is positive to avoid division by zero
+    if temp <= 0:
+        return False
+
+    history = read_file(client_id, output_folder)
+    last_entry = history[-1] if history else {}
+
+    # your same logic, but "count" lives in LAST entry now
+    if "count" in last_entry:
+        r = curr_E / prev_E
+        k = 0.01 * math.exp(last_entry["count"])
+        temp = temp * (1 + k * (1 - r))
+
+        # store updated temp back into LAST entry only (same file, iterative history)
+        last_entry["temp"] = temp
+        with open(os.path.join(output_folder, f"{client_id}.json"), "w") as f:
+            json.dump(history, f, indent=4)
+
+    exp_T = math.exp((curr_E - prev_E) / temp)
+    random_probability = random.random()
+
+    if exp_T > random_probability:
+        return True
     else:
-        # Ensure temperature is positive to avoid division by zero
-        if temp <= 0:
+        return False
+
+
+# SA send model updates or not
+def file_handle(client, output_dict, temp):
+    global output_folder
+
+    if type(client) == int or type(client) == str:
+
+        # First time: accept
+        if isFirst(client, output_folder):
+            weights = SoftmaxWeightUpdater()
+            save_sa(client, output_dict, temp, output_folder, weights, update=True)
+            return True
+
+        # Not first time
+        history = read_file(client, output_folder)
+        if history is None or len(history) == 0:
             return False
 
-        existing_data = read_file(client_id, output_folder)
-        
-        if 'count' in existing_data:
-            
-            r = curr_E/prev_E
-            k = 0.01 * math.exp(existing_data['count'])
-            temp  = temp * (1 + k * (1 - r))
-            
-            with open(os.path.join(output_folder, f"{client_id}.json"), 'w') as f:
-                json.dump(existing_data, f, indent=4)
-            
-            
+        last_entry = history[-1]
+        prev_E = last_entry.get("prev_E")
+        prev_theta = last_entry.get("theta")
 
-        # change in E and the temperature.
-        exp_T = math.exp((curr_E - prev_E) / temp)
+        curr_metrics = [
+            output_dict.get("val_accuracy"),
+            output_dict.get("val_f1"),
+            1 - output_dict.get("val_fpr"),
+        ]
 
-        # Generate a random probability between 0 and 1
-        random_probability = random.random()
+        weights = SoftmaxWeightUpdater(init_theta=prev_theta)
+        curr_E = weights.compute_energy(curr_metrics)
+        weights.step(curr_metrics, prev_E)
 
-        # The rest of your logic now works correctly
-        if exp_T > random_probability:
-            return True  # yes accept weight from the client's for aggregation
-        
+        if curr_E:
+            update = fl_sa(prev_E, curr_E, temp, output_folder, client)
+
+            # ✅ REQUIRED ORDER: save_sa BEFORE count_update (your condition)
+            save_sa(client, output_dict, temp, output_folder, weights, update=update)
+
+            # ✅ count_update only touches the LAST entry
+            if not update:
+                count_update(output_folder, client, 1)
+
+            return update
         else:
-            return False # no don't take the client's weights
-        
+            return False
 
-
-
+    return False
 
 
 # weight updater
 class SoftmaxWeightUpdater:
-    def __init__(self, init_theta=None, lr=0.05): # initialize theta for weights [accuracy, f1, fpr]
+    def __init__(self, init_theta=None, lr=0.05):
         self.theta = np.array(init_theta) if init_theta is not None else np.zeros(3, dtype=float)
         self.lr = float(lr)
 
-    def softmax(self): # for summing the weights to 1 through normalization
+    def softmax(self):
         t = self.theta
         tmax = np.max(t)
         ex = np.exp(t - tmax)
         return ex / np.sum(ex)
 
-    def compute_energy(self, metrics): # compute energy based on weights and metrics
+    def compute_energy(self, metrics):
         w = self.softmax()
         return float(np.dot(w, metrics))
 
-    def step(self, metrics, prev_E,): # update theta based on metrics and previous energy (as average energy)
+    def step(self, metrics, prev_E):
         metrics = np.asarray(metrics, dtype=float)
         weights_before = self.softmax()
         grad = weights_before * (metrics - prev_E)
         self.theta = self.theta - self.lr * grad
+
         
-        
-        
-
-
-
-# def print_result(path):
-#     for i in range(10):
-#         dictt = torch.load("E:/Tahmid_SA/Final Working SA/"+path+f"_{i}.pth")
-#         print(f'Client {i}: ', dictt.keys())
-#         print()    
-
-# for i in ["best_multiclass_model", "best_binary_model", "best_joint_model"]:
-#     print_result(i)
