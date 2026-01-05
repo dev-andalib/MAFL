@@ -277,7 +277,7 @@ def file_handle(client, output_dict, temp):
 
 # weight updater
 class SoftmaxWeightUpdater:
-    def __init__(self, init_theta=None, lr=0.05):
+    def __init__(self, init_theta=None, lr=0.1):
         self.theta = np.array(init_theta) if init_theta is not None else np.zeros(3, dtype=float)
         self.lr = float(lr)
 
