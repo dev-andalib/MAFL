@@ -203,11 +203,12 @@ class UniformPartitioner:
             print(f"  Attack distribution: {dict(attack_dist)}")
 
 class Net(nn.Module):
-    def __init__(self, input_features=20, seq_length=10, num_attack_types=9):  # APPROACH 1: Clean 9-class model (0-8)
+    def __init__(self, input_features=10, seq_length=10, num_attack_types=9):  # Adjusted to 10 input features
         super().__init__()
 
+        # LSTM layer with adjusted input size
         self.bilstm = nn.LSTM(
-            input_size=input_features,
+            input_size=input_features,  # input_size is now 10 (adjusted)
             hidden_size=16,
             num_layers=2,
             batch_first=True,
@@ -231,7 +232,7 @@ class Net(nn.Module):
     def extract_features(self, x):
         x = x.permute(0, 2, 1)
         lstm_out, _ = self.bilstm(x)
-        features = lstm_out[:, -1, :]
+        features = lstm_out[:, -1, :]  # Using the last hidden state
         return features
     
     def forward(self, x, stage='both'):
@@ -261,6 +262,7 @@ class Net(nn.Module):
             binary_output = self.binary_head(features)
             multiclass_output = self.multiclass_head(features)
             return binary_output, multiclass_output
+
  
 
 
