@@ -222,19 +222,19 @@ class CommunicationAwareSA(SA):
                 METRICS_BASE = r"D:\T24\MAFL\IDS-FL-CSE400-FINAL_Manuscript Phase\client_metrics" 
                 RESULTS_BASE = r"D:\T24\MAFL\IDS-FL-CSE400-FINAL_Manuscript Phase\results"
 
-                # plot_and_save_averaged_metrics('bin_train_metrics',METRICS_BASE, RESULTS_BASE)
-                # plot_and_save_averaged_metrics('bin_val_metrics',METRICS_BASE, RESULTS_BASE)
+                plot_and_save_averaged_metrics('bin_train_metrics',METRICS_BASE, RESULTS_BASE)
+                plot_and_save_averaged_metrics('bin_val_metrics',METRICS_BASE, RESULTS_BASE)
 
-                # plot_and_save_averaged_metrics('mul_train_metrics',METRICS_BASE, RESULTS_BASE)
-                # plot_and_save_averaged_metrics('mul_val_metrics',METRICS_BASE, RESULTS_BASE)
+                plot_and_save_averaged_metrics('mul_train_metrics',METRICS_BASE, RESULTS_BASE)
+                plot_and_save_averaged_metrics('mul_val_metrics',METRICS_BASE, RESULTS_BASE)
 
-                # plot_and_save_averaged_metrics('joint_train_metrics',METRICS_BASE, RESULTS_BASE)
-                # plot_and_save_averaged_metrics('joint_val_metrics',METRICS_BASE, RESULTS_BASE)
+                plot_and_save_averaged_metrics('joint_train_metrics',METRICS_BASE, RESULTS_BASE)
+                plot_and_save_averaged_metrics('joint_val_metrics',METRICS_BASE, RESULTS_BASE)
                 
-                # plot_and_save_averaged_metrics('bin_test_metrics',METRICS_BASE, RESULTS_BASE)
-                # plot_and_save_averaged_metrics('mul_test_metrics',METRICS_BASE, RESULTS_BASE)
+                plot_and_save_averaged_metrics('bin_test_metrics',METRICS_BASE, RESULTS_BASE)
+                plot_and_save_averaged_metrics('mul_test_metrics',METRICS_BASE, RESULTS_BASE)
                 
-                # plot_and_save_energy_temp(r"D:\T24\MAFL\IDS-FL-CSE400-FINAL_Manuscript Phase\client_sa_metrics" , r"D:\T24\MAFL\IDS-FL-CSE400-FINAL_Manuscript Phase\results")
+                plot_and_save_energy_temp(r"D:\T24\MAFL\IDS-FL-CSE400-FINAL_Manuscript Phase\client_sa_metrics" , r"D:\T24\MAFL\IDS-FL-CSE400-FINAL_Manuscript Phase\results")
                 
                 
 

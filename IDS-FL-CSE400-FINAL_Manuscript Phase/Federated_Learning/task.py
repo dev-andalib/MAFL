@@ -203,7 +203,7 @@ class UniformPartitioner:
             print(f"  Attack distribution: {dict(attack_dist)}")
 
 class Net(nn.Module):
-    def __init__(self, input_features=20, num_attack_types=9):
+    def __init__(self, input_features=20, seq_length=10, num_attack_types=9):  # APPROACH 1: Clean 9-class model (0-8)
         super().__init__()
 
         self.bilstm = nn.LSTM(
