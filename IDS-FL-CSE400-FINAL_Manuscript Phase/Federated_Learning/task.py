@@ -203,98 +203,45 @@ class UniformPartitioner:
             print(f"  Attack distribution: {dict(attack_dist)}")
 
 class Net(nn.Module):
-    def __init__(self, input_features=20, seq_length=10, num_attack_types=9):  # APPROACH 1: Clean 9-class model (0-8)
+    def __init__(self, input_features=20, seq_length=10, num_attack_types=9):
         super().__init__()
 
-        self.conv1_3 = nn.Conv1d(input_features, 16, kernel_size=3, padding=1)  # Short patterns
-        self.conv1_5 = nn.Conv1d(input_features, 8, kernel_size=5, padding=2)   # Long patterns
-        
+        self.conv1_3 = nn.Conv1d(input_features, 16, kernel_size=3, padding=1)
+        self.conv1_5 = nn.Conv1d(input_features, 8, kernel_size=5, padding=2)
+
         self.bn1 = nn.BatchNorm1d(24)
         self.dropout1 = nn.Dropout(0.2)
-        
+
         self.conv2 = nn.Conv1d(24, 32, kernel_size=3, padding=1)
         self.bn2 = nn.BatchNorm1d(32)
-        self.pool = nn.MaxPool1d(2)
-        
-        self.bilstm = nn.LSTM(
-            input_size=32,
-            hidden_size=16,
-            num_layers=2,
-            batch_first=True,
-            bidirectional=True,
-            dropout=0.3
-        )
-        
-        self.attention = nn.Sequential(
-            nn.Linear(32, 16),
-            nn.Tanh(),
-            nn.Linear(16, 1)
-        )
-        
+
         self.binary_head = nn.Sequential(
             nn.Linear(32, 24),
             nn.ReLU(),
             nn.Dropout(0.3),
-            nn.Linear(24, 12),
-            nn.ReLU(),
-            nn.Linear(12, 1)
+            nn.Linear(24, 1)
         )
-        
+
         self.multiclass_head = nn.Sequential(
             nn.Linear(32, 32),
             nn.ReLU(),
             nn.Dropout(0.3),
-            nn.Linear(32, 16),
-            nn.ReLU(),
-            nn.Linear(16, num_attack_types)
+            nn.Linear(32, num_attack_types)
         )
-        
-        self._initialize_weights()
-    
-    def _initialize_weights(self):
-        for m in self.modules():
-            if isinstance(m, nn.Conv1d):
-                nn.init.kaiming_normal_(m.weight, mode='fan_out', nonlinearity='relu')
-            elif isinstance(m, nn.Linear):
-                nn.init.xavier_uniform_(m.weight)
-                nn.init.constant_(m.bias, 0)
-            elif isinstance(m, nn.LSTM):
-                for name, param in m.named_parameters():
-                    if 'weight_ih' in name:
-                        nn.init.xavier_uniform_(param.data)
-                    elif 'weight_hh' in name:
-                        nn.init.orthogonal_(param.data)
-                    elif 'bias' in name:
-                        nn.init.constant_(param.data, 0)
-    
-    def attention_net(self, lstm_output):
-        attention_scores = self.attention(lstm_output)
-        attention_weights = torch.softmax(attention_scores, dim=1)
-        weighted_output = torch.sum(lstm_output * attention_weights, dim=1)
-        return weighted_output
-    
+
     def extract_features(self, x):
         x = x.permute(0, 2, 1)
-        
-        conv_3 = self.conv1_3(x)
-        conv_5 = self.conv1_5(x)
-        x = torch.cat([conv_3, conv_5], dim=1)
-        
+
+        x = torch.cat([self.conv1_3(x), self.conv1_5(x)], dim=1)
         x = self.bn1(x)
         x = F.relu(x)
         x = self.dropout1(x)
-        
+
         x = self.conv2(x)
         x = self.bn2(x)
         x = F.relu(x)
-        x = self.pool(x)
-        
-        x = x.permute(0, 2, 1)
-        
-        lstm_out, _ = self.bilstm(x)
-        
-        features = self.attention_net(lstm_out)
-        
+
+        features = torch.mean(x, dim=2)
         return features
     
     def forward(self, x, stage='both'):

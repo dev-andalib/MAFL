@@ -1,0 +1,48 @@
+{
+    "timestamp": "2026-01-09T16:28:08.634130",
+    "simulation_info": {
+        "title": "Simulated Annealing Communication Savings Analysis",
+        "description": "Comprehensive analysis of communication costs and savings in federated learning with SA client selection"
+    },
+    "overall_statistics": {
+        "total_communication_events": 100,
+        "accepted_clients": 94,
+        "rejected_clients": 6,
+        "acceptance_rate": 0.94
+    },
+    "communication_costs": {
+        "average_model_size_mb": 0.06545257568359375,
+        "actual_communication_mb": 6.1525421142578125,
+        "without_sa_communication_mb": 6.545257568359375,
+        "average_model_size_bytes": 68632.0,
+        "actual_communication_bytes": 6451408,
+        "without_sa_communication_bytes": 6863200.0
+    },
+    "savings": {
+        "data_saved_mb": 0.3927154541015625,
+        "data_saved_bytes": 411792.0,
+        "savings_percentage": 6.0,
+        "communication_reduction_factor": 1.0638297872340425
+    },
+    "time_analysis": {
+        "network_speed_assumed_mbps": 10,
+        "time_without_sa_seconds": 5.2362060546875,
+        "time_with_sa_seconds": 4.92203369140625,
+        "time_saved_seconds": 0.31417236328124964,
+        "time_saved_minutes": 0.005236206054687494,
+        "time_saved_hours": 8.727010091145824e-05,
+        "time_savings_percentage": 5.999999999999994
+    },
+    "round_wise_summary": [
+        {
+            "round": "round_1",
+            "total_clients": 100,
+            "accepted_clients": 94,
+            "rejected_clients": 6,
+            "acceptance_rate": 0.94,
+            "communication_mb": 6.1525421142578125,
+            "potential_communication_mb": 6.545257568359375,
+            "savings_mb": 0.3927154541015625
+        }
+    ]
+}

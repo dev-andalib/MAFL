@@ -1,0 +1,10 @@
+{
+    "round": 8,
+    "timestamp": "2026-01-09T16:20:17.358178",
+    "total_clients": 10,
+    "accepted_clients": 8,
+    "rejected_clients": 2,
+    "acceptance_rate": 0.8,
+    "model_size_mb": 0.06545257568359375,
+    "communication_saved_mb": 0.1309051513671875
+}

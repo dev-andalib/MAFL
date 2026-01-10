@@ -1,0 +1,9 @@
+{
+    "timestamp": "2026-01-09T06:56:05.386865",
+    "model_architecture": "CNN-BiLSTM with Attention",
+    "input_features": 20,
+    "sequence_length": 10,
+    "attack_types": 9,
+    "model_size_mb": 0.02486419677734375,
+    "total_parameters": 6516
+}
