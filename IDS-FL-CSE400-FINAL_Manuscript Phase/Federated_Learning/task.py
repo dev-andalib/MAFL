@@ -203,17 +203,16 @@ class UniformPartitioner:
             print(f"  Attack distribution: {dict(attack_dist)}")
 
 class Net(nn.Module):
-    def __init__(self, input_features=20, seq_length=10, num_attack_types=9):
+    def __init__(self, input_features=20, num_attack_types=9):
         super().__init__()
 
-        self.conv1_3 = nn.Conv1d(input_features, 16, kernel_size=3, padding=1)
-        self.conv1_5 = nn.Conv1d(input_features, 8, kernel_size=5, padding=2)
-
-        self.bn1 = nn.BatchNorm1d(24)
-        self.dropout1 = nn.Dropout(0.2)
-
-        self.conv2 = nn.Conv1d(24, 32, kernel_size=3, padding=1)
-        self.bn2 = nn.BatchNorm1d(32)
+        self.bilstm = nn.LSTM(
+            input_size=input_features,
+            hidden_size=16,
+            num_layers=2,
+            batch_first=True,
+            bidirectional=True
+        )
 
         self.binary_head = nn.Sequential(
             nn.Linear(32, 24),
@@ -231,17 +230,8 @@ class Net(nn.Module):
 
     def extract_features(self, x):
         x = x.permute(0, 2, 1)
-
-        x = torch.cat([self.conv1_3(x), self.conv1_5(x)], dim=1)
-        x = self.bn1(x)
-        x = F.relu(x)
-        x = self.dropout1(x)
-
-        x = self.conv2(x)
-        x = self.bn2(x)
-        x = F.relu(x)
-
-        features = torch.mean(x, dim=2)
+        lstm_out, _ = self.bilstm(x)
+        features = lstm_out[:, -1, :]
         return features
     
     def forward(self, x, stage='both'):
@@ -271,6 +261,11 @@ class Net(nn.Module):
             binary_output = self.binary_head(features)
             multiclass_output = self.multiclass_head(features)
             return binary_output, multiclass_output
+ 
+
+
+
+
  
 def get_weights(net):
     try:
@@ -365,6 +360,10 @@ def set_weights(net, parameters):
         except Exception as fallback_error:
             print(f"CRITICAL ERROR: Both strict and non-strict loading failed: {fallback_error}")
             raise fallback_error
+ 
+
+
+
  
 fds = None  # Cache FederatedDataset
 path = "local_data.csv"  # Local data path
