@@ -1,0 +1,40 @@
+{
+    "total_communication_events": 99,
+    "accepted_clients": 96,
+    "rejected_clients": 3,
+    "acceptance_rate": 0.9696969696969697,
+    "communication_costs": {
+        "actual_mb": 4.450927734375,
+        "actual_bytes": 4667136,
+        "without_sa_mb": 4.590019226074219,
+        "without_sa_bytes": 4812984.0,
+        "average_model_size_mb": 0.04636383056640625,
+        "average_model_size_bytes": 48616.0
+    },
+    "savings": {
+        "saved_mb": 0.13909149169921875,
+        "saved_bytes": 145848.0,
+        "savings_percentage": 3.0303030303030303,
+        "communication_reduction_factor": 1.03125
+    },
+    "time_analysis": {
+        "assumed_network_speed_mbps": 10,
+        "time_without_sa_seconds": 3.672015380859375,
+        "time_with_sa_seconds": 3.5607421875,
+        "time_saved_seconds": 0.11127319335937536,
+        "time_saved_minutes": 0.001854553222656256,
+        "time_saved_hours": 3.0909220377604266e-05,
+        "time_savings_percentage": 3.0303030303030396
+    },
+    "round_wise_analysis": {
+        "round_1": {
+            "total_clients": 99,
+            "accepted_clients": 96,
+            "rejected_clients": 3,
+            "acceptance_rate": 0.9696969696969697,
+            "communication_mb": 4.450927734375,
+            "potential_communication_mb": 4.590019226074219,
+            "round_savings_mb": 0.13909149169921875
+        }
+    }
+}
