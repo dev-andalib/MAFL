@@ -1,0 +1,44 @@
+{
+    "round": 10,
+    "timestamp": "2026-01-11T20:04:30.273745",
+    "analysis": {
+        "total_communication_events": 100,
+        "accepted_clients": 99,
+        "rejected_clients": 1,
+        "acceptance_rate": 0.99,
+        "communication_costs": {
+            "actual_mb": 4.590019226074219,
+            "actual_bytes": 4812984,
+            "without_sa_mb": 4.636383056640625,
+            "without_sa_bytes": 4861600.0,
+            "average_model_size_mb": 0.04636383056640625,
+            "average_model_size_bytes": 48616.0
+        },
+        "savings": {
+            "saved_mb": 0.04636383056640625,
+            "saved_bytes": 48616.0,
+            "savings_percentage": 1.0,
+            "communication_reduction_factor": 1.0101010101010102
+        },
+        "time_analysis": {
+            "assumed_network_speed_mbps": 10,
+            "time_without_sa_seconds": 3.7091064453125,
+            "time_with_sa_seconds": 3.672015380859375,
+            "time_saved_seconds": 0.03709106445312482,
+            "time_saved_minutes": 0.0006181844075520803,
+            "time_saved_hours": 1.0303073459201339e-05,
+            "time_savings_percentage": 0.9999999999999951
+        },
+        "round_wise_analysis": {
+            "round_1": {
+                "total_clients": 100,
+                "accepted_clients": 99,
+                "rejected_clients": 1,
+                "acceptance_rate": 0.99,
+                "communication_mb": 4.590019226074219,
+                "potential_communication_mb": 4.636383056640625,
+                "round_savings_mb": 0.04636383056640625
+            }
+        }
+    }
+}
